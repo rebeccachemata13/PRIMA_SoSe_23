@@ -1,4 +1,23 @@
 {
+  "MeshCube|2022-10-06T13:20:48.138Z|01830": {
+    "ƒ.MeshCube": {
+      "idResource": "MeshCube|2022-10-06T13:20:48.138Z|01830",
+      "name": "MeshCube",
+      "type": "MeshCube"
+    }
+  },
+  "Material|2022-10-06T13:28:31.758Z|09330": {
+    "ƒ.Material": {
+      "name": "ShaderLit",
+      "idResource": "Material|2022-10-06T13:28:31.758Z|09330",
+      "shader": "ShaderLit",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[0.0392156862745098, 0.3411764705882353, 0, 1]"
+        }
+      }
+    }
+  },
   "Graph|2022-10-06T13:16:30.236Z|44782": {
     "ƒ.Graph": {
       "name": "Level",
@@ -11,7 +30,7 @@
               "pivot": {
                 "translation": "[0, 0, 0]",
                 "rotation": "[0, 0, 0]",
-                "scaling": "[1, 1, 1]"
+                "scaling": "[1, 0.07999999821186066, 1]"
               },
               "Component": {
                 "active": true
@@ -46,29 +65,18 @@
             "components": {},
             "children": []
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Enemies",
+            "active": true,
+            "components": {},
+            "children": []
+          }
         }
       ],
       "idResource": "Graph|2022-10-06T13:16:30.236Z|44782",
       "type": "Graph"
-    }
-  },
-  "MeshCube|2022-10-06T13:20:48.138Z|01830": {
-    "ƒ.MeshCube": {
-      "idResource": "MeshCube|2022-10-06T13:20:48.138Z|01830",
-      "name": "MeshCube",
-      "type": "MeshCube"
-    }
-  },
-  "Material|2022-10-06T13:28:31.758Z|09330": {
-    "ƒ.Material": {
-      "name": "ShaderLit",
-      "idResource": "Material|2022-10-06T13:28:31.758Z|09330",
-      "shader": "ShaderLit",
-      "coat": {
-        "ƒ.CoatColored": {
-          "color": "[1, 0, 0, 1]"
-        }
-      }
     }
   }
 }
