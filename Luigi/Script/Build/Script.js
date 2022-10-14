@@ -75,7 +75,7 @@ var Script;
         let coat = new ƒ.CoatTextured(undefined, luigiSpriteSheet);
         // add running animation
         let luigiAnimation = new ƒAid.SpriteSheetAnimation("luigi_Run", coat);
-        luigiAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 12, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
+        luigiAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 8, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(20));
         luigiSpriteNode = new ƒAid.NodeSprite("luigi_Sprite");
         // adds a transform component to the sprite
         luigiSpriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
@@ -83,9 +83,13 @@ var Script;
         // play animation forwards
         luigiSpriteNode.setFrameDirection(1);
         // wohl unnötig?
-        luigiSpriteNode.mtxLocal.translateY(-1);
+        luigiSpriteNode.mtxLocal.translateY(0.35);
+        luigiSpriteNode.mtxLocal.translateX(0);
+        luigiSpriteNode.mtxLocal.translateZ(1);
+        luigiSpriteNode.mtxLocal.scaleX(1.75);
+        luigiSpriteNode.mtxLocal.scaleY(2);
         //set framerate here
-        luigiSpriteNode.framerate = 10;
+        luigiSpriteNode.framerate = 12;
         return luigiSpriteNode;
     }
 })(Script || (Script = {}));

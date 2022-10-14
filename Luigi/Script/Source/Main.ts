@@ -51,7 +51,7 @@ namespace Script {
     
     // add running animation
     let luigiAnimation: ƒAid.SpriteSheetAnimation = new ƒAid.SpriteSheetAnimation("luigi_Run", coat);
-    luigiAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 12, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
+    luigiAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 8, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(20));
     
 
     luigiSpriteNode = new ƒAid.NodeSprite("luigi_Sprite");
@@ -63,10 +63,15 @@ namespace Script {
     luigiSpriteNode.setFrameDirection(1);
 
     // wohl unnötig?
-    luigiSpriteNode.mtxLocal.translateY(-1);
+    luigiSpriteNode.mtxLocal.translateY(0.35);
+    luigiSpriteNode.mtxLocal.translateX(0);
+    luigiSpriteNode.mtxLocal.translateZ(1);
+    luigiSpriteNode.mtxLocal.scaleX(1.75);
+    luigiSpriteNode.mtxLocal.scaleY(2);
+
 
     //set framerate here
-    luigiSpriteNode.framerate = 10;
+    luigiSpriteNode.framerate = 12;
 
     return luigiSpriteNode;
   }
