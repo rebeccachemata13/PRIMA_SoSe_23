@@ -36,10 +36,12 @@ namespace Script {
     ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, 10);
   }
   
-  function update(_event: Event): void {
+  async function update(_event: Event): Promise<void> {
     // ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
     ƒ.AudioManager.default.update();
+    console.log("Update");
+    luigiSpriteNode.mtxLocal.translateX(0.05);
   }
 
   async function createluigiSprite(): Promise<ƒAid.NodeSprite> {

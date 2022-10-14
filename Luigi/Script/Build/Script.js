@@ -63,10 +63,12 @@ var Script;
         // edit framerate here
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, 10);
     }
-    function update(_event) {
+    async function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
         viewport.draw();
         ƒ.AudioManager.default.update();
+        console.log("Update");
+        luigiSpriteNode.mtxLocal.translateX(0.05);
     }
     async function createluigiSprite() {
         // load spritesheet from folder and add a "coat" to it.
