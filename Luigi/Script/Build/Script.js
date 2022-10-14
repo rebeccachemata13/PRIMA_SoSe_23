@@ -85,7 +85,7 @@ var Script;
         // play animation forwards
         luigiSpriteNode.setFrameDirection(1);
         // wohl unnötig?
-        luigiSpriteNode.mtxLocal.translateY(0.35);
+        luigiSpriteNode.mtxLocal.translateY(0.25);
         luigiSpriteNode.mtxLocal.translateX(0);
         luigiSpriteNode.mtxLocal.translateZ(1);
         luigiSpriteNode.mtxLocal.scaleX(1.75);
