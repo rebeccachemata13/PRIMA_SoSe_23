@@ -7,10 +7,7 @@ namespace Script {
 
   let luigiSpriteNode: ƒAid.NodeSprite;
   let luigi: ƒ.Node;
-
-  let luigiStandingAnimation: ƒAid.SpriteSheetAnimation;
-  let luigiRunningAnimation: ƒAid.SpriteSheetAnimation;
-  let luigiJumpingAnimation: ƒAid.SpriteSheetAnimation;
+  let walkSpeed: number = 2.0;
 
   
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
@@ -20,10 +17,10 @@ namespace Script {
 
     let graph: ƒ.Node = viewport.getBranch();
     luigi = graph.getChildrenByName("LuigiPosition")[0].getChildrenByName("Luigi")[0];
+    luigi.getComponent(ƒ.ComponentMaterial).activate(false);
     
     luigiSpriteNode = await createluigiSprite();
     luigi.addChild(luigiSpriteNode);
-    luigi.getComponent(ƒ.ComponentMaterial).activate(false);
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
 
@@ -31,11 +28,22 @@ namespace Script {
   }
   
   async function update(_event: Event): Promise<void> {
-    // ƒ.Physics.simulate();  // if physics is included and used
-    viewport.draw();
-    ƒ.AudioManager.default.update();
-    console.log("Update");
-    luigiSpriteNode.mtxLocal.translateX(0.05);
+    if(ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D,ƒ.KEYBOARD_CODE.ARROW_RIGHT])){
+      luigiSpriteNode.mtxLocal.translateX(walkSpeed*ƒ.Loop.timeFrameGame/1000);
+    }
+
+    if(ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A,ƒ.KEYBOARD_CODE.ARROW_LEFT])){
+      luigiSpriteNode.mtxLocal.translateX(-walkSpeed*ƒ.Loop.timeFrameGame/1000);
+      luigiSpriteNode.mtxLocal.rotateY(180);
+      luigiSpriteNode.mtxLocal.rotation;
+      
+    }
+
+    ƒ.Loop.timeFrameGame
+
+     viewport.draw();
+     ƒ.AudioManager.default.update();
+     console.log("Update");
   }
 
   async function createluigiSprite(): Promise<ƒAid.NodeSprite> {

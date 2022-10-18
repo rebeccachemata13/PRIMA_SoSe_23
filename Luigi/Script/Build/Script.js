@@ -42,55 +42,48 @@ var Script;
     var ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
-    // Add eventlistener for the loading of the window
-    //window.addEventListener("load", onLoad);  
-    //window.addEventListener("interactiveViewportStarted", onViewportStart)
-    // Define luigiSpriteNode from FUDGE
     let luigiSpriteNode;
     let luigi;
-    // load Handler
+    let walkSpeed = 2.0;
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
-        // _event.detail IST der viewport. deshalb können wir das so zuweisen
         viewport = _event.detail;
         let graph = viewport.getBranch();
         luigi = graph.getChildrenByName("LuigiPosition")[0].getChildrenByName("Luigi")[0];
+        luigi.getComponent(ƒ.ComponentMaterial).activate(false);
         luigiSpriteNode = await createluigiSprite();
         luigi.addChild(luigiSpriteNode);
-        luigi.getComponent(ƒ.ComponentMaterial).activate(false);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
-        // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
-        // edit framerate here
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, 10);
     }
     async function update(_event) {
-        // ƒ.Physics.simulate();  // if physics is included and used
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
+            luigiSpriteNode.mtxLocal.translateX(walkSpeed * ƒ.Loop.timeFrameGame / 1000);
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
+            luigiSpriteNode.mtxLocal.translateX(-walkSpeed * ƒ.Loop.timeFrameGame / 1000);
+            luigiSpriteNode.mtxLocal.rotateY(180);
+        }
+        ƒ.Loop.timeFrameGame;
         viewport.draw();
         ƒ.AudioManager.default.update();
         console.log("Update");
-        luigiSpriteNode.mtxLocal.translateX(0.05);
     }
     async function createluigiSprite() {
-        // load spritesheet from folder and add a "coat" to it.
         let luigiSpriteSheet = new ƒ.TextureImage();
         await luigiSpriteSheet.load("modern_luigi_sprite_sheet_by_mbf1000_d86t2ex.png");
         let coat = new ƒ.CoatTextured(undefined, luigiSpriteSheet);
-        // add running animation
         let luigiAnimation = new ƒAid.SpriteSheetAnimation("luigi_Run", coat);
         luigiAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 8, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(20));
         luigiSpriteNode = new ƒAid.NodeSprite("luigi_Sprite");
-        // adds a transform component to the sprite
         luigiSpriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
         luigiSpriteNode.setAnimation(luigiAnimation);
-        // play animation forwards
         luigiSpriteNode.setFrameDirection(1);
-        // wohl unnötig?
-        luigiSpriteNode.mtxLocal.translateY(0.25);
+        luigiSpriteNode.mtxLocal.translateY(0.35);
         luigiSpriteNode.mtxLocal.translateX(0);
         luigiSpriteNode.mtxLocal.translateZ(1);
         luigiSpriteNode.mtxLocal.scaleX(1.75);
         luigiSpriteNode.mtxLocal.scaleY(2);
-        //set framerate here
         luigiSpriteNode.framerate = 12;
         return luigiSpriteNode;
     }
