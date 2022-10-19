@@ -7,7 +7,12 @@ namespace Script {
 
   let luigiSpriteNode: ƒAid.NodeSprite;
   let luigi: ƒ.Node;
-  let walkSpeed: number = 2.0;
+  let walkSpeed: number = 2;
+  let leftDirection: boolean;
+  let leftLastDirection : boolean = false;
+
+  let luigiWalkAnimation: ƒAid.SpriteSheetAnimation;
+  let luigiRunAnimation: ƒAid.SpriteSheetAnimation;
 
   
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
@@ -28,22 +33,50 @@ namespace Script {
   }
   
   async function update(_event: Event): Promise<void> {
-    if(ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D,ƒ.KEYBOARD_CODE.ARROW_RIGHT])){
-      luigiSpriteNode.mtxLocal.translateX(walkSpeed*ƒ.Loop.timeFrameGame/1000);
-    }
-
-    if(ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A,ƒ.KEYBOARD_CODE.ARROW_LEFT])){
-      luigiSpriteNode.mtxLocal.translateX(-walkSpeed*ƒ.Loop.timeFrameGame/1000);
-      luigiSpriteNode.mtxLocal.rotateY(180);
-      luigiSpriteNode.mtxLocal.rotation;
+    let amount = walkSpeed * ƒ.Loop.timeFrameGame / 1000;
+    
+    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
+      luigiSpriteNode.mtxLocal.translateX(-amount);
+      leftDirection = true;
+      luigiSpriteNode.setFrameDirection(1);
+      console.log(walkSpeed);
+      if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT, ƒ.KEYBOARD_CODE.SHIFT_RIGHT])){
+        console.log(luigiSpriteNode.framerate);
+        walkSpeed = -5;
+        luigiSpriteNode.setAnimation(luigiRunAnimation);
+        console.log(walkSpeed);
+      } else {
+        walkSpeed = -2;
+      }
       
+    } else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
+      luigiSpriteNode.mtxLocal.translateX(amount);
+      leftDirection = false;
+      luigiSpriteNode.setFrameDirection(1);
+      console.log(walkSpeed);
+      if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT, ƒ.KEYBOARD_CODE.SHIFT_RIGHT])){
+        walkSpeed = 5;
+        luigiSpriteNode.setAnimation(luigiRunAnimation);
+        console.log(walkSpeed);
+      } else {
+        walkSpeed = 2;
+      }
+    } else {
+      luigiSpriteNode.showFrame(0);
+      luigiSpriteNode.setAnimation(luigiWalkAnimation);
     }
 
-    ƒ.Loop.timeFrameGame
+    if (leftDirection && !leftLastDirection) {
+      luigiSpriteNode.mtxLocal.rotation = ƒ.Vector3.Y(180);
+      leftLastDirection = true;
+     
+    } else if (!leftDirection && leftLastDirection) {
+      luigiSpriteNode.mtxLocal.rotation = ƒ.Vector3.Y(0);
+      leftLastDirection = false;
+    }
 
-     viewport.draw();
-     ƒ.AudioManager.default.update();
-     console.log("Update");
+    viewport.draw();
+    ƒ.AudioManager.default.update();
   }
 
   async function createluigiSprite(): Promise<ƒAid.NodeSprite> {
@@ -52,13 +85,15 @@ namespace Script {
     await luigiSpriteSheet.load("modern_luigi_sprite_sheet_by_mbf1000_d86t2ex.png");
     let coat: ƒ.CoatTextured = new ƒ.CoatTextured(undefined, luigiSpriteSheet);
 
-    let luigiAnimation: ƒAid.SpriteSheetAnimation = new ƒAid.SpriteSheetAnimation("luigi_Run", coat);
-    luigiAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 8, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(20));
-    
+    luigiWalkAnimation = new ƒAid.SpriteSheetAnimation("luigi_walk", coat);
+    luigiWalkAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 8, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(20));
+
+    luigiRunAnimation = new ƒAid.SpriteSheetAnimation("luigi_run", coat); 
+    luigiRunAnimation.generateByGrid(ƒ.Rectangle.GET(8, 245, 37, 45), 2, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
 
     luigiSpriteNode = new ƒAid.NodeSprite("luigi_Sprite");
     luigiSpriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
-    luigiSpriteNode.setAnimation(luigiAnimation);
+    luigiSpriteNode.setAnimation(luigiWalkAnimation);
     luigiSpriteNode.setFrameDirection(1);
     
     luigiSpriteNode.mtxLocal.translateY(0.35);
