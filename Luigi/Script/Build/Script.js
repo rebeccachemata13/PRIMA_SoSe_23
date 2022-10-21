@@ -42,11 +42,14 @@ var Script;
     var ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
+    //LuigiSprite
     let luigiSpriteNode;
     let luigi;
+    //Speed and Direction Variables
     let walkSpeed = 2;
     let leftDirection;
-    let leftLastDirection = false;
+    let gravity = 5;
+    //Sprite Animations
     let luigiWalkAnimation;
     let luigiRunAnimation;
     document.addEventListener("interactiveViewportStarted", start);
@@ -57,52 +60,12 @@ var Script;
         luigi.getComponent(ƒ.ComponentMaterial).activate(false);
         luigiSpriteNode = await createluigiSprite();
         luigi.addChild(luigiSpriteNode);
+        luigiFall();
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, 10);
     }
     async function update(_event) {
-        let amount = walkSpeed * ƒ.Loop.timeFrameGame / 1000;
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
-            luigiSpriteNode.mtxLocal.translateX(-amount);
-            leftDirection = true;
-            luigiSpriteNode.setFrameDirection(1);
-            console.log(walkSpeed);
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT, ƒ.KEYBOARD_CODE.SHIFT_RIGHT])) {
-                console.log(luigiSpriteNode.framerate);
-                walkSpeed = -5;
-                luigiSpriteNode.setAnimation(luigiRunAnimation);
-                console.log(walkSpeed);
-            }
-            else {
-                walkSpeed = -2;
-            }
-        }
-        else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-            luigiSpriteNode.mtxLocal.translateX(amount);
-            leftDirection = false;
-            luigiSpriteNode.setFrameDirection(1);
-            console.log(walkSpeed);
-            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT, ƒ.KEYBOARD_CODE.SHIFT_RIGHT])) {
-                walkSpeed = 5;
-                luigiSpriteNode.setAnimation(luigiRunAnimation);
-                console.log(walkSpeed);
-            }
-            else {
-                walkSpeed = 2;
-            }
-        }
-        else {
-            luigiSpriteNode.showFrame(0);
-            luigiSpriteNode.setAnimation(luigiWalkAnimation);
-        }
-        if (leftDirection && !leftLastDirection) {
-            luigiSpriteNode.mtxLocal.rotation = ƒ.Vector3.Y(180);
-            leftLastDirection = true;
-        }
-        else if (!leftDirection && leftLastDirection) {
-            luigiSpriteNode.mtxLocal.rotation = ƒ.Vector3.Y(0);
-            leftLastDirection = false;
-        }
+        luigiControls();
         viewport.draw();
         ƒ.AudioManager.default.update();
     }
@@ -125,6 +88,41 @@ var Script;
         luigiSpriteNode.mtxLocal.scaleY(2);
         luigiSpriteNode.framerate = 12;
         return luigiSpriteNode;
+    }
+    async function luigiControls() {
+        let distance = walkSpeed * ƒ.Loop.timeFrameGame / 1000;
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
+            luigiSpriteNode.mtxLocal.translateX(-distance);
+            leftDirection = true;
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT, ƒ.KEYBOARD_CODE.SHIFT_RIGHT])) {
+                walkSpeed = -5;
+                luigiSpriteNode.setAnimation(luigiRunAnimation);
+            }
+            else {
+                walkSpeed = -2;
+            }
+        }
+        else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
+            luigiSpriteNode.mtxLocal.translateX(distance);
+            leftDirection = false;
+            if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT, ƒ.KEYBOARD_CODE.SHIFT_RIGHT])) {
+                walkSpeed = 5;
+                luigiSpriteNode.setAnimation(luigiRunAnimation);
+            }
+            else {
+                walkSpeed = 2;
+            }
+        }
+        else {
+            luigiSpriteNode.showFrame(0);
+            luigiSpriteNode.setAnimation(luigiWalkAnimation);
+        }
+        luigiSpriteNode.mtxLocal.rotation = ƒ.Vector3.Y(leftDirection ? 180 : 0);
+    }
+    async function luigiFall() {
+        let deltaTime = ƒ.Loop.timeFrameGame / 1000;
+        let y_Speed = gravity * deltaTime;
+        luigiSpriteNode.mtxLocal.translateY(y_Speed);
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
