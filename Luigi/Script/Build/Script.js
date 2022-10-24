@@ -53,11 +53,14 @@ var Script;
     //Sprite Animations
     let luigiWalkAnimation;
     let luigiRunAnimation;
+    let luigiJumpAnimation;
     async function initAnimations(coat) {
         luigiWalkAnimation = new ƒAid.SpriteSheetAnimation("luigi_walk", coat);
         luigiWalkAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 8, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(20));
         luigiRunAnimation = new ƒAid.SpriteSheetAnimation("luigi_run", coat);
         luigiRunAnimation.generateByGrid(ƒ.Rectangle.GET(8, 245, 37, 45), 2, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
+        luigiJumpAnimation = new ƒAid.SpriteSheetAnimation("luigi_run", coat);
+        luigiJumpAnimation.generateByGrid(ƒ.Rectangle.GET(320, 112, 37, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
     }
     async function update(_event) {
         //luigiFall();
@@ -94,6 +97,7 @@ var Script;
     //Speed and Direction Variables
     const xSpeedDefault = .9;
     const xSpeedSprint = 5;
+    const jumpForce = 0.05;
     let ySpeed = 0.1;
     let gravity = 0.05;
     let leftDirection;
@@ -153,6 +157,18 @@ var Script;
         else {
             luigiSpriteNode.showFrame(0);
             luigiSpriteNode.setAnimation(luigiWalkAnimation);
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && ySpeed === 0) {
+            luigiSpriteNode.mtxLocal.translation = new ƒ.Vector3(pos.x, 0, 0.001);
+            ySpeed = jumpForce;
+        }
+        if (ySpeed > 0) {
+            luigiSpriteNode.setAnimation(luigiJumpAnimation);
+            luigiSpriteNode.showFrame(0);
+        }
+        else if (ySpeed < 0) {
+            luigiSpriteNode.setAnimation(luigiJumpAnimation);
+            luigiSpriteNode.showFrame(1);
         }
         luigiSpriteNode.mtxLocal.rotation = ƒ.Vector3.Y(leftDirection ? 180 : 0);
     }
