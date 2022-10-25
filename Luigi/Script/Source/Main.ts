@@ -47,7 +47,7 @@ namespace Script {
     luigiSpriteNode = await createluigiSprite();
     luigi.addChild(luigiSpriteNode);
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
-    ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, 10);
+    ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, 30);
     
   }
 
@@ -78,9 +78,9 @@ namespace Script {
   //Speed and Direction Variables
   const xSpeedDefault: number = .9;
   const xSpeedSprint: number = 5;
-  const jumpForce: number = 0.05;
+  const jumpForce: number = 0.08;
   let ySpeed: number = 0.1;
-  let gravity: number = 0.05;
+  let gravity: number = 0.1;
 
   let leftDirection: boolean;
   let prevSprint: boolean = false;
