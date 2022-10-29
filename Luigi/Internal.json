@@ -77,11 +77,47 @@
       }
     }
   },
+  "Material|2022-10-14T10:41:22.184Z|22321": {
+    "ƒ.Material": {
+      "name": "ShaderBackgroundTextured",
+      "idResource": "Material|2022-10-14T10:41:22.184Z|22321",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2022-10-14T10:41:46.369Z|83759"
+        }
+      }
+    }
+  },
+  "TextureImage|2022-10-14T10:41:46.369Z|83759": {
+    "ƒ.TextureImage": {
+      "url": "Background_wiese_clouds.jpg",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2022-10-14T10:41:46.369Z|83759",
+        "name": "Background_wiese_clouds.jpg",
+        "mipmap": "CRISP"
+      }
+    }
+  },
   "Graph|2022-10-06T13:16:30.236Z|44782": {
     "ƒ.Graph": {
       "name": "Level",
       "active": true,
-      "components": {},
+      "components": {
+        "ComponentAudio": [
+          {
+            "ƒ.ComponentAudio": {
+              "active": true,
+              "idResource": "Audio|2022-10-27T12:33:16.344Z|47939",
+              "playing": true,
+              "loop": false,
+              "volume": 1
+            }
+          }
+        ]
+      },
       "children": [
         {
           "ƒ.Node": {
@@ -187,7 +223,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[1, 0, 0]",
+                            "translation": "[1, -1, 0]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -253,7 +289,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[2, 0, 0]",
+                            "translation": "[2, -1, 0]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -319,7 +355,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[3, 0, 0]",
+                            "translation": "[3, -1, 0]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -780,7 +816,6 @@
             "name": "Environment",
             "active": true,
             "components": {
-              "ComponentTransform": [],
               "ComponentMaterial": [
                 {
                   "ƒ.ComponentMaterial": {
@@ -804,7 +839,7 @@
                   "ƒ.ComponentMesh": {
                     "idMesh": "MeshQuad|2022-10-11T14:35:28.760Z|62963",
                     "pivot": {
-                      "translation": "[6.199999809265137, 3, -1.8999998569488525]",
+                      "translation": "[0.9999995231628418, 0, -1.8999998569488525]",
                       "rotation": "[0, 0, 0]",
                       "scaling": "[17, 8, 1]"
                     },
@@ -833,28 +868,12 @@
       "type": "Graph"
     }
   },
-  "Material|2022-10-14T10:41:22.184Z|22321": {
-    "ƒ.Material": {
-      "name": "ShaderBackgroundTextured",
-      "idResource": "Material|2022-10-14T10:41:22.184Z|22321",
-      "shader": "ShaderLitTextured",
-      "coat": {
-        "ƒ.CoatTextured": {
-          "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2022-10-14T10:41:46.369Z|83759"
-        }
-      }
-    }
-  },
-  "TextureImage|2022-10-14T10:41:46.369Z|83759": {
-    "ƒ.TextureImage": {
-      "url": "Background_wiese_clouds.jpg",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2022-10-14T10:41:46.369Z|83759",
-        "name": "Background_wiese_clouds.jpg",
-        "mipmap": "CRISP"
-      }
+  "Audio|2022-10-27T12:33:16.344Z|47939": {
+    "ƒ.Audio": {
+      "url": "SuperMarioBros.mp3",
+      "idResource": "Audio|2022-10-27T12:33:16.344Z|47939",
+      "name": "SuperMarioBros.mp3",
+      "type": "Audio"
     }
   }
 }

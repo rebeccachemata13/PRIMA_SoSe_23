@@ -43,6 +43,8 @@ var Script;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
+    //Environment
+    let graph;
     //LuigiSprite
     let luigiSpriteNode;
     let luigi;
@@ -63,7 +65,6 @@ var Script;
         luigiJumpAnimation.generateByGrid(ƒ.Rectangle.GET(320, 112, 37, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
     }
     async function update(_event) {
-        //luigiFall();
         luigiControls();
         viewport.draw();
         ƒ.AudioManager.default.update();
@@ -106,6 +107,8 @@ var Script;
         let deltaTime = ƒ.Loop.timeFrameGame / 1000;
         ySpeed -= gravity * deltaTime;
         luigiSpriteNode.mtxLocal.translateY(ySpeed);
+        let yOffset = ySpeed * deltaTime;
+        luigiSpriteNode.mtxLocal.translateY(yOffset);
         let pos = luigiSpriteNode.mtxLocal.translation;
         if (pos.y + ySpeed > 0) {
             luigiSpriteNode.mtxLocal.translateY(ySpeed);
@@ -171,6 +174,22 @@ var Script;
             luigiSpriteNode.showFrame(1);
         }
         luigiSpriteNode.mtxLocal.rotation = ƒ.Vector3.Y(leftDirection ? 180 : 0);
+        checkCollision();
+    }
+    async function checkCollision() {
+        graph = viewport.getBranch();
+        let floors = graph.getChildrenByName("Floors")[0];
+        let pos = luigiSpriteNode.mtxLocal.translation;
+        for (let floor of floors.getChildren()) {
+            let posFloor = floor.mtxLocal.translation;
+            if (Math.abs(pos.x - posFloor.x) < 0.5) {
+                if (pos.x - posFloor.x < 0.5) {
+                    pos.y = posFloor.y + 0.5;
+                    luigiSpriteNode.mtxLocal.translation = pos;
+                    ySpeed = 0;
+                }
+            }
+        }
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

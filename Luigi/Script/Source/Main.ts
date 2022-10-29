@@ -6,10 +6,14 @@ namespace Script {
   let viewport: ƒ.Viewport;
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
 
+  //Environment
+  let graph: ƒ.Node;
+
   //LuigiSprite
   let luigiSpriteNode: ƒAid.NodeSprite;
   let luigi: ƒ.Node;
- 
+
+
   async function start(_event: CustomEvent): Promise<void> {
     viewport = _event.detail;
     luigiNodeInit(_event);
@@ -20,7 +24,7 @@ namespace Script {
   let luigiRunAnimation: ƒAid.SpriteSheetAnimation;
   let luigiJumpAnimation: ƒAid.SpriteSheetAnimation;
 
-  async function initAnimations (coat: ƒ.CoatTextured): Promise<void> {
+  async function initAnimations(coat: ƒ.CoatTextured): Promise<void> {
     luigiWalkAnimation = new ƒAid.SpriteSheetAnimation("luigi_walk", coat);
     luigiWalkAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 8, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(20));
 
@@ -32,15 +36,12 @@ namespace Script {
   }
 
   async function update(_event: Event): Promise<void> {
-    
-    //luigiFall();
     luigiControls();
-
-    viewport.draw();
+    viewport.draw()    
     ƒ.AudioManager.default.update();
   }
 
-  async function luigiNodeInit(_event:CustomEvent): Promise<void> {
+  async function luigiNodeInit(_event: CustomEvent): Promise<void> {
     let graph: ƒ.Node = viewport.getBranch();
     luigi = graph.getChildrenByName("LuigiPosition")[0].getChildrenByName("Luigi")[0];
     luigi.getComponent(ƒ.ComponentMaterial).activate(false);
@@ -48,7 +49,7 @@ namespace Script {
     luigi.addChild(luigiSpriteNode);
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, 30);
-    
+
   }
 
   async function createluigiSprite(): Promise<ƒAid.NodeSprite> {
@@ -57,7 +58,7 @@ namespace Script {
     await luigiSpriteSheet.load("modern_luigi_sprite_sheet_by_mbf1000_d86t2ex.png");
     let coat: ƒ.CoatTextured = new ƒ.CoatTextured(undefined, luigiSpriteSheet);
     initAnimations(coat);
-    
+
 
     luigiSpriteNode = new ƒAid.NodeSprite("luigi_Sprite");
     luigiSpriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
@@ -85,14 +86,16 @@ namespace Script {
   let leftDirection: boolean;
   let prevSprint: boolean = false;
 
-  async function luigiControls(): Promise<void>{
+  async function luigiControls(): Promise<void> {
     let deltaTime: number = ƒ.Loop.timeFrameGame / 1000;
     ySpeed -= gravity * deltaTime;
     luigiSpriteNode.mtxLocal.translateY(ySpeed);
+    let yOffset: number = ySpeed * deltaTime;
+    luigiSpriteNode.mtxLocal.translateY(yOffset);
 
     let pos: ƒ.Vector3 = luigiSpriteNode.mtxLocal.translation;
-    if (pos.y + ySpeed > 0){
-    luigiSpriteNode.mtxLocal.translateY(ySpeed);
+    if (pos.y + ySpeed > 0) {
+      luigiSpriteNode.mtxLocal.translateY(ySpeed);
     }
     else {
       ySpeed = 0;
@@ -139,18 +142,18 @@ namespace Script {
         prevSprint = false;
       }
     } else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE, ƒ.KEYBOARD_CODE.ARROW_UP])) {
-      
+
 
     }
-     else {
+    else {
       luigiSpriteNode.showFrame(0);
       luigiSpriteNode.setAnimation(luigiWalkAnimation);
     }
 
     if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && ySpeed === 0) {
-      luigiSpriteNode.mtxLocal.translation = new ƒ.Vector3(pos.x, 0, 0.001);
+       luigiSpriteNode.mtxLocal.translation = new ƒ.Vector3(pos.x, 0, 0.001);
       ySpeed = jumpForce;
-    }
+      }
 
     if (ySpeed > 0) {
       luigiSpriteNode.setAnimation(luigiJumpAnimation);
@@ -160,8 +163,27 @@ namespace Script {
       luigiSpriteNode.showFrame(1);
     }
 
-    luigiSpriteNode.mtxLocal.rotation = ƒ.Vector3.Y(leftDirection ? 180:0);
-    
+    luigiSpriteNode.mtxLocal.rotation = ƒ.Vector3.Y(leftDirection ? 180 : 0);
+
+    checkCollision();
+
   }
 
+  async function checkCollision(): Promise<void> {
+    graph = viewport.getBranch();
+    let floors: ƒ.Node = graph.getChildrenByName("Floors")[0];
+    let pos: ƒ.Vector3 = luigiSpriteNode.mtxLocal.translation;
+    for (let floor of floors.getChildren()) {
+      let posFloor: ƒ.Vector3 = floor.mtxLocal.translation;
+      if (Math.abs(pos.x - posFloor.x) < 0.5) {
+        if (pos.x - posFloor.x < 0.5) {
+          pos.y = posFloor.y + 0.5;
+          luigiSpriteNode.mtxLocal.translation = pos;
+          ySpeed = 0;
+
+        }
+      }
+    }
+  }
 }
+
