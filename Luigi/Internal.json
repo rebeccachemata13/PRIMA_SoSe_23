@@ -101,6 +101,14 @@
       }
     }
   },
+  "Audio|2022-10-27T12:33:16.344Z|47939": {
+    "ƒ.Audio": {
+      "url": "SuperMarioBros.mp3",
+      "idResource": "Audio|2022-10-27T12:33:16.344Z|47939",
+      "name": "SuperMarioBros.mp3",
+      "type": "Audio"
+    }
+  },
   "Graph|2022-10-06T13:16:30.236Z|44782": {
     "ƒ.Graph": {
       "name": "Level",
@@ -139,50 +147,7 @@
                 }
               ]
             },
-            "children": [
-              {
-                "ƒ.Node": {
-                  "name": "Luigi",
-                  "active": true,
-                  "components": {
-                    "ComponentMesh": [
-                      {
-                        "ƒ.ComponentMesh": {
-                          "idMesh": "MeshQuad|2022-10-11T14:35:28.760Z|62963",
-                          "pivot": {
-                            "translation": "[0, 1.4000002145767212, 0]",
-                            "rotation": "[0, 0.4000000059604645, 0]",
-                            "scaling": "[1, 2, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          }
-                        }
-                      }
-                    ],
-                    "ComponentMaterial": [
-                      {
-                        "ƒ.ComponentMaterial": {
-                          "sortForAlpha": false,
-                          "clrPrimary": "[1, 1, 1, 1]",
-                          "clrSecondary": "[1, 1, 1, 1]",
-                          "pivot": {
-                            "translation": "[0.10200000554323196, 0.11000002175569534]",
-                            "rotation": 0,
-                            "scaling": "[0.03699996694922447, 0.09500005096197128]"
-                          },
-                          "Component": {
-                            "active": true
-                          },
-                          "idMaterial": "Material|2022-10-12T21:19:34.328Z|02306"
-                        }
-                      }
-                    ]
-                  },
-                  "children": []
-                }
-              }
-            ]
+            "children": []
           }
         },
         {
@@ -866,14 +831,6 @@
       "children": [],
       "idResource": "Graph|2022-10-11T14:09:35.259Z|40805",
       "type": "Graph"
-    }
-  },
-  "Audio|2022-10-27T12:33:16.344Z|47939": {
-    "ƒ.Audio": {
-      "url": "SuperMarioBros.mp3",
-      "idResource": "Audio|2022-10-27T12:33:16.344Z|47939",
-      "name": "SuperMarioBros.mp3",
-      "type": "Audio"
     }
   }
 }

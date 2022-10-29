@@ -4,17 +4,10 @@ namespace Script {
   ƒ.Debug.info("Main Program Template running!");
 
   let viewport: ƒ.Viewport;
+  let graph: ƒ.Node;
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
 
-  //Environment
-  let graph: ƒ.Node;
-
-  //LuigiSprite
-  let luigiSpriteNode: ƒAid.NodeSprite;
-  let luigi: ƒ.Node;
-
-
-  async function start(_event: CustomEvent): Promise<void> {
+  function start(_event: CustomEvent): void {
     viewport = _event.detail;
     luigiNodeInit(_event);
   }
@@ -24,7 +17,7 @@ namespace Script {
   let luigiRunAnimation: ƒAid.SpriteSheetAnimation;
   let luigiJumpAnimation: ƒAid.SpriteSheetAnimation;
 
-  async function initAnimations(coat: ƒ.CoatTextured): Promise<void> {
+  function initAnimations(coat: ƒ.CoatTextured): void {
     luigiWalkAnimation = new ƒAid.SpriteSheetAnimation("luigi_walk", coat);
     luigiWalkAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 8, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(20));
 
@@ -35,150 +28,165 @@ namespace Script {
     luigiJumpAnimation.generateByGrid(ƒ.Rectangle.GET(320, 112, 37, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
   }
 
-  async function update(_event: Event): Promise<void> {
-    luigiControls();
-    viewport.draw()    
-    ƒ.AudioManager.default.update();
-  }
+  //LuigiSprite
+  let luigiAvatar: ƒAid.NodeSprite;
+  
 
-  async function luigiNodeInit(_event: CustomEvent): Promise<void> {
-    let graph: ƒ.Node = viewport.getBranch();
-    luigi = graph.getChildrenByName("LuigiPosition")[0].getChildrenByName("Luigi")[0];
-    luigi.getComponent(ƒ.ComponentMaterial).activate(false);
-    luigiSpriteNode = await createluigiSprite();
-    luigi.addChild(luigiSpriteNode);
-    ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
-    ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, 30);
-
-  }
-
-  async function createluigiSprite(): Promise<ƒAid.NodeSprite> {
-
+  async function luigiNodeInit(_event: Event): Promise<void> {
     let luigiSpriteSheet: ƒ.TextureImage = new ƒ.TextureImage();
     await luigiSpriteSheet.load("modern_luigi_sprite_sheet_by_mbf1000_d86t2ex.png");
     let coat: ƒ.CoatTextured = new ƒ.CoatTextured(undefined, luigiSpriteSheet);
+
     initAnimations(coat);
 
+    luigiAvatar = new ƒAid.NodeSprite("luigi_Sprite");
+    luigiAvatar.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
 
-    luigiSpriteNode = new ƒAid.NodeSprite("luigi_Sprite");
-    luigiSpriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
-    luigiSpriteNode.setAnimation(luigiWalkAnimation);
-    luigiSpriteNode.setFrameDirection(1);
+    luigiAvatar.setAnimation(luigiWalkAnimation);
+    luigiAvatar.setFrameDirection(1);
+    luigiAvatar.framerate = 20;
+    
+    luigiAvatar.mtxLocal.translateY(-0.2);
+    luigiAvatar.mtxLocal.translateZ(0.001);
+    luigiAvatar.mtxLocal.scaleX(1.75);
+    luigiAvatar.mtxLocal.scaleY(2);
 
-    luigiSpriteNode.mtxLocal.translateY(0.35);
-    luigiSpriteNode.mtxLocal.translateX(0);
-    luigiSpriteNode.mtxLocal.translateZ(1);
-    luigiSpriteNode.mtxLocal.scaleX(1.75);
-    luigiSpriteNode.mtxLocal.scaleY(2);
 
-    luigiSpriteNode.framerate = 12;
+    graph = viewport.getBranch();
+    graph.addChild(luigiAvatar);
 
-    return luigiSpriteNode;
+    ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
+    ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
+
   }
 
-  //Speed and Direction Variables
   const xSpeedDefault: number = .9;
-  const xSpeedSprint: number = 5;
-  const jumpForce: number = 0.08;
-  let ySpeed: number = 0.1;
-  let gravity: number = 0.1;
+  const xSpeedSprint: number = 2;
+  const jumpForce: number = 10;
+  let ySpeed: number = 0;
+  let gravity: number = 9.81;
+  
 
-  let leftDirection: boolean;
-  let prevSprint: boolean = false;
+  let animationState: string = "stand";
+  let dead: boolean = false;
 
-  async function luigiControls(): Promise<void> {
+  function update(_event: Event): void {
     let deltaTime: number = ƒ.Loop.timeFrameGame / 1000;
     ySpeed -= gravity * deltaTime;
-    luigiSpriteNode.mtxLocal.translateY(ySpeed);
     let yOffset: number = ySpeed * deltaTime;
-    luigiSpriteNode.mtxLocal.translateY(yOffset);
+    luigiAvatar.mtxLocal.translateY(yOffset);
 
-    let pos: ƒ.Vector3 = luigiSpriteNode.mtxLocal.translation;
-    if (pos.y + ySpeed > 0) {
-      luigiSpriteNode.mtxLocal.translateY(ySpeed);
+    let pos: ƒ.Vector3 = luigiAvatar.mtxLocal.translation;
+    if (pos.y < -1 && !dead) {
+      dead = true;
+      //cmpAudio.setAudio(audioDeath);
+      //cmpAudio.play(true);
+      //avatar.setAnimation(animDeath);
+      ySpeed = jumpForce * .8;
+      viewport.draw();
+      return;
     }
-    else {
-      ySpeed = 0;
-      pos.y = 0;
-      luigiSpriteNode.mtxLocal.translation = pos;
+    // If dead, stop game and reset page
+    if (dead) {
+      //cmpAudio.volume = 10;
+      pos.y = -1;
+      ƒ.Time.game.setTimer(3000, 1, () => window.location.reload());
+      viewport.draw();
+      return;
     }
-
-
-    let walkSpeed: number = xSpeedDefault;
-    if (leftDirection) {
-      walkSpeed = -xSpeedDefault;
-    }
-
-    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT, ƒ.KEYBOARD_CODE.SHIFT_RIGHT])) {
-      walkSpeed = xSpeedSprint;
-      if (leftDirection) {
-        walkSpeed = -xSpeedSprint;
-      }
-    }
-
-    const xTranslation: number = walkSpeed * deltaTime;
-
-    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
-      luigiSpriteNode.mtxLocal.translateX(-xTranslation);
-      leftDirection = true;
-      if (walkSpeed < -1) {
-        if (!prevSprint) {
-          prevSprint = true;
-          luigiSpriteNode.setAnimation(luigiRunAnimation);
-        }
-      } else {
-        prevSprint = false;
-      }
-
-    } else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-      luigiSpriteNode.mtxLocal.translateX(xTranslation);
-      leftDirection = false;
-      if (walkSpeed > 1) {
-        if (!prevSprint) {
-          prevSprint = true;
-          luigiSpriteNode.setAnimation(luigiRunAnimation);
-        }
-      } else {
-        prevSprint = false;
-      }
-    } else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE, ƒ.KEYBOARD_CODE.ARROW_UP])) {
-
-
-    }
-    else {
-      luigiSpriteNode.showFrame(0);
-      luigiSpriteNode.setAnimation(luigiWalkAnimation);
-    }
-
-    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && ySpeed === 0) {
-       luigiSpriteNode.mtxLocal.translation = new ƒ.Vector3(pos.x, 0, 0.001);
-      ySpeed = jumpForce;
-      }
-
-    if (ySpeed > 0) {
-      luigiSpriteNode.setAnimation(luigiJumpAnimation);
-      luigiSpriteNode.showFrame(0);
-    } else if (ySpeed < 0) {
-      luigiSpriteNode.setAnimation(luigiJumpAnimation);
-      luigiSpriteNode.showFrame(1);
-    }
-
-    luigiSpriteNode.mtxLocal.rotation = ƒ.Vector3.Y(leftDirection ? 180 : 0);
 
     checkCollision();
 
+    let speed: number = xSpeedDefault;
+    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT, ƒ.KEYBOARD_CODE.SHIFT_RIGHT])) {
+      speed = xSpeedSprint;
+    }
+    // Calculate travel distance
+    const moveDistance = speed * ƒ.Loop.timeFrameGame / 1000;
+
+    // Check for key presses and move player accordingly
+    checkInput(moveDistance, speed);
+
+    // Rotate based on direction
+    luigiAvatar.mtxLocal.rotation = ƒ.Vector3.Y(animationState.includes("Left") ? 180 : 0);
+
+    // Jumping
+    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && ySpeed === 0) {
+      ySpeed = jumpForce;
+    }
+      //cmpAudio.volume = 6;
+      //cmpAudio.setAudio(audioJump);
+      //cmpAudio.play(true);
+   
+
+    if (ySpeed > 0) {
+      animationState = "jump";
+      luigiAvatar.setAnimation(luigiJumpAnimation);
+      luigiAvatar.showFrame(0);
+    } else if (ySpeed < 0) {
+      animationState = "jump";
+      luigiAvatar.setAnimation(luigiJumpAnimation);
+      luigiAvatar.showFrame(0);
+    }
+
+    if (ySpeed === 0 && animationState.includes("jump")) {
+      luigiAvatar.setAnimation(luigiWalkAnimation);
+      animationState = "walk";
+    }
+
+
+    viewport.draw();
+    ƒ.AudioManager.default.update();
   }
 
-  async function checkCollision(): Promise<void> {
+  function checkInput(moveDistance: number, speed: number): void {
+    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
+      luigiAvatar.mtxLocal.translateX(moveDistance);
+      if (speed > xSpeedDefault && animationState !== "sprintRight") {
+        luigiAvatar.setAnimation(luigiRunAnimation);
+        animationState = "sprintRight";
+        return;
+      }
+      if (speed <= xSpeedDefault && animationState !== "walkRight") {
+        luigiAvatar.setAnimation(luigiWalkAnimation);
+        animationState = "walkRight";
+        return;
+      }
+      return;
+    }
+    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
+      luigiAvatar.mtxLocal.translateX(moveDistance);
+      if (speed > xSpeedDefault && animationState !== "sprintLeft") {
+        luigiAvatar.setAnimation(luigiRunAnimation);
+        animationState = "sprintLeft";
+        return;
+      }
+      if (speed <= xSpeedDefault && animationState !== "walkLeft") {
+        luigiAvatar.setAnimation(luigiWalkAnimation);
+        animationState = "walkLeft";
+        return;
+      }
+      return;
+    }
+
+    if (animationState.includes("stand")) {
+      luigiAvatar.setAnimation(luigiWalkAnimation);
+      luigiAvatar.showFrame(0);
+      return;
+    }
+    animationState = `stand ${animationState.includes("Left") && "Left"}`;
+  }
+
+ function checkCollision(): void {
     graph = viewport.getBranch();
     let floors: ƒ.Node = graph.getChildrenByName("Floors")[0];
-    let pos: ƒ.Vector3 = luigiSpriteNode.mtxLocal.translation;
+    let pos: ƒ.Vector3 = luigiAvatar.mtxLocal.translation;
     for (let floor of floors.getChildren()) {
       let posFloor: ƒ.Vector3 = floor.mtxLocal.translation;
       if (Math.abs(pos.x - posFloor.x) < 0.5) {
         if (pos.x - posFloor.x < 0.5) {
           pos.y = posFloor.y + 0.5;
-          luigiSpriteNode.mtxLocal.translation = pos;
+          luigiAvatar.mtxLocal.translation = pos;
           ySpeed = 0;
 
         }
