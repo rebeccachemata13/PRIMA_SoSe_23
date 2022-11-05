@@ -52,6 +52,7 @@ var Script;
     let luigiWalkAnimation;
     let luigiRunAnimation;
     let luigiJumpAnimation;
+    let luigiDeathAnimation;
     function initAnimations(coat) {
         luigiWalkAnimation = new ƒAid.SpriteSheetAnimation("Walk", coat);
         luigiWalkAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 8, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(20));
@@ -59,6 +60,8 @@ var Script;
         luigiRunAnimation.generateByGrid(ƒ.Rectangle.GET(8, 245, 37, 45), 2, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
         luigiJumpAnimation = new ƒAid.SpriteSheetAnimation("Jump", coat);
         luigiJumpAnimation.generateByGrid(ƒ.Rectangle.GET(320, 112, 37, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
+        luigiDeathAnimation = new ƒAid.SpriteSheetAnimation("Die", coat);
+        luigiDeathAnimation.generateByGrid(ƒ.Rectangle.GET(43, 400, 20, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
     }
     //LuigiSprite
     let luigiAvatar;
@@ -98,7 +101,7 @@ var Script;
             dead = true;
             //cmpAudio.setAudio(audioDeath);
             //cmpAudio.play(true);
-            //avatar.setAnimation(animDeath);
+            luigiAvatar.setAnimation(luigiDeathAnimation);
             ySpeed = jumpForce * .8;
             viewport.draw();
             return;
@@ -106,8 +109,8 @@ var Script;
         // If dead, stop game and reset page
         if (dead) {
             //cmpAudio.volume = 10;
-            pos.y = -1;
-            ƒ.Time.game.setTimer(3000, 1, () => window.location.reload());
+            pos.y = -2;
+            window.location.reload();
             viewport.draw();
             return;
         }

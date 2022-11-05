@@ -16,6 +16,7 @@ namespace Script {
   let luigiWalkAnimation: ƒAid.SpriteSheetAnimation;
   let luigiRunAnimation: ƒAid.SpriteSheetAnimation;
   let luigiJumpAnimation: ƒAid.SpriteSheetAnimation;
+  let luigiDeathAnimation: ƒAid.SpriteSheetAnimation;
 
   function initAnimations(coat: ƒ.CoatTextured): void {
     luigiWalkAnimation = new ƒAid.SpriteSheetAnimation("Walk", coat);
@@ -26,6 +27,9 @@ namespace Script {
 
     luigiJumpAnimation = new ƒAid.SpriteSheetAnimation("Jump", coat);
     luigiJumpAnimation.generateByGrid(ƒ.Rectangle.GET(320, 112, 37, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
+
+    luigiDeathAnimation = new ƒAid.SpriteSheetAnimation("Die", coat);
+    luigiDeathAnimation.generateByGrid(ƒ.Rectangle.GET(43, 400, 20, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
   }
 
   //LuigiSprite
@@ -81,7 +85,7 @@ namespace Script {
       dead = true;
       //cmpAudio.setAudio(audioDeath);
       //cmpAudio.play(true);
-      //avatar.setAnimation(animDeath);
+      luigiAvatar.setAnimation(luigiDeathAnimation);
       ySpeed = jumpForce * .8;
       viewport.draw();
       return;
@@ -89,8 +93,8 @@ namespace Script {
     // If dead, stop game and reset page
     if (dead) {
       //cmpAudio.volume = 10;
-      pos.y = -1;
-      ƒ.Time.game.setTimer(3000, 1, () => window.location.reload());
+      pos.y = -2;
+      window.location.reload();
       viewport.draw();
       return;
     }
