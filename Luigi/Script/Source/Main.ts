@@ -20,20 +20,29 @@ namespace Script {
 
   function initAnimations(coat: ƒ.CoatTextured): void {
     luigiWalkAnimation = new ƒAid.SpriteSheetAnimation("Walk", coat);
-    luigiWalkAnimation.generateByGrid(ƒ.Rectangle.GET(10, 60, 20, 45), 8, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(20));
+    luigiWalkAnimation.generateByGrid(ƒ.Rectangle.GET(10, 56, 20, 45), 8, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(20));
 
     luigiRunAnimation = new ƒAid.SpriteSheetAnimation("Run", coat);
-    luigiRunAnimation.generateByGrid(ƒ.Rectangle.GET(8, 245, 37, 45), 2, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
+    luigiRunAnimation.generateByGrid(ƒ.Rectangle.GET(8, 243, 37, 45), 2, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
 
     luigiJumpAnimation = new ƒAid.SpriteSheetAnimation("Jump", coat);
-    luigiJumpAnimation.generateByGrid(ƒ.Rectangle.GET(320, 112, 37, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
+    luigiJumpAnimation.generateByGrid(ƒ.Rectangle.GET(12, 155, 25, 45), 4, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
 
     luigiDeathAnimation = new ƒAid.SpriteSheetAnimation("Die", coat);
     luigiDeathAnimation.generateByGrid(ƒ.Rectangle.GET(43, 400, 20, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
   }
 
+  let audioJump: ƒ.Audio;
+  let audioDeath: ƒ.Audio;
+
+  function initializeSounds(): void {
+    audioDeath = new ƒ.Audio("./sounds/super-mario-death-sound-sound-effect.wav");
+    audioJump = new ƒ.Audio("./sounds/maro-jump-sound-effect_1.wav");
+  }
+
   //LuigiSprite
   let luigiAvatar: ƒAid.NodeSprite;
+  let cmpAudio: ƒ.ComponentAudio;
   
 
   async function luigiNodeInit(_event: Event): Promise<void> {
@@ -42,6 +51,7 @@ namespace Script {
     let coat: ƒ.CoatTextured = new ƒ.CoatTextured(undefined, luigiSpriteSheet);
 
     initAnimations(coat);
+    initializeSounds();
 
     luigiAvatar = new ƒAid.NodeSprite("luigi_Sprite");
     luigiAvatar.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
@@ -58,6 +68,10 @@ namespace Script {
 
     graph = viewport.getBranch();
     graph.addChild(luigiAvatar);
+
+    cmpAudio = graph.getComponent(ƒ.ComponentAudio);
+    cmpAudio.connect(true);
+    cmpAudio.volume = 1;
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
@@ -83,8 +97,8 @@ namespace Script {
     let pos: ƒ.Vector3 = luigiAvatar.mtxLocal.translation;
     if (pos.y < -1 && !dead) {
       dead = true;
-      //cmpAudio.setAudio(audioDeath);
-      //cmpAudio.play(true);
+      cmpAudio.setAudio(audioDeath);
+      cmpAudio.play(true);
       luigiAvatar.setAnimation(luigiDeathAnimation);
       ySpeed = jumpForce * .8;
       viewport.draw();
@@ -92,7 +106,7 @@ namespace Script {
     }
     // If dead, stop game and reset page
     if (dead) {
-      //cmpAudio.volume = 10;
+      cmpAudio.volume = 10;
       pos.y = -2;
       window.location.reload();
       viewport.draw();
@@ -116,17 +130,23 @@ namespace Script {
 
     // Jumping
     if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && ySpeed === 0) {
+      cmpAudio.setAudio(audioJump);
+      cmpAudio.play(true);
+      cmpAudio.volume = 6;
       ySpeed = jumpForce;
+      
     }
-      //cmpAudio.volume = 6;
-      //cmpAudio.setAudio(audioJump);
-      //cmpAudio.play(true);
    
 
     if (ySpeed > 0) {
       animationState = "jump";
       luigiAvatar.setAnimation(luigiJumpAnimation);
       luigiAvatar.showFrame(0);
+    }
+    if (ySpeed < 0) {
+      animationState = "jump";
+      luigiAvatar.setAnimation(luigiJumpAnimation);
+      luigiAvatar.showFrame(2);
     }
 
     if (ySpeed === 0 && animationState.includes("jump")) {
