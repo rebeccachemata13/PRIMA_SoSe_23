@@ -58,7 +58,7 @@ var Script;
         luigiRunAnimation = new ƒAid.SpriteSheetAnimation("Run", coat);
         luigiRunAnimation.generateByGrid(ƒ.Rectangle.GET(8, 245, 37, 45), 2, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
         luigiJumpAnimation = new ƒAid.SpriteSheetAnimation("Jump", coat);
-        luigiJumpAnimation.generateByGrid(ƒ.Rectangle.GET(320, 112, 37, 45), 2, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
+        luigiJumpAnimation.generateByGrid(ƒ.Rectangle.GET(320, 112, 37, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
     }
     //LuigiSprite
     let luigiAvatar;
@@ -81,8 +81,8 @@ var Script;
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
     }
-    const xSpeedDefault = .9;
-    const xSpeedSprint = 2;
+    const xSpeedDefault = 1;
+    const xSpeedSprint = 3;
     const jumpForce = 4.5;
     let ySpeed = 0;
     let gravity = 9.81;
@@ -134,11 +134,6 @@ var Script;
             luigiAvatar.setAnimation(luigiJumpAnimation);
             luigiAvatar.showFrame(0);
         }
-        else if (ySpeed < 0) {
-            animationState = "jump";
-            luigiAvatar.setAnimation(luigiJumpAnimation);
-            luigiAvatar.showFrame(1);
-        }
         if (ySpeed === 0 && animationState.includes("jump")) {
             luigiAvatar.setAnimation(luigiWalkAnimation);
             animationState = "walk";
@@ -189,7 +184,7 @@ var Script;
         for (let floor of floors.getChildren()) {
             let posFloor = floor.mtxLocal.translation;
             if (Math.abs(pos.x - posFloor.x) < 0.5) {
-                if (pos.x - posFloor.x < 0.5) {
+                if (pos.y < posFloor.y + 0.5) {
                     pos.y = posFloor.y + 0.5;
                     luigiAvatar.mtxLocal.translation = pos;
                     ySpeed = 0;

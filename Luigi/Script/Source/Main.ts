@@ -25,7 +25,7 @@ namespace Script {
     luigiRunAnimation.generateByGrid(ƒ.Rectangle.GET(8, 245, 37, 45), 2, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
 
     luigiJumpAnimation = new ƒAid.SpriteSheetAnimation("Jump", coat);
-    luigiJumpAnimation.generateByGrid(ƒ.Rectangle.GET(320, 112, 37, 45), 2, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
+    luigiJumpAnimation.generateByGrid(ƒ.Rectangle.GET(320, 112, 37, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
   }
 
   //LuigiSprite
@@ -60,8 +60,8 @@ namespace Script {
 
   }
 
-  const xSpeedDefault: number = .9;
-  const xSpeedSprint: number = 2;
+  const xSpeedDefault: number = 1;
+  const xSpeedSprint: number = 3;
   const jumpForce: number = 4.5;
   let ySpeed: number = 0;
   let gravity: number = 9.81;
@@ -123,10 +123,6 @@ namespace Script {
       animationState = "jump";
       luigiAvatar.setAnimation(luigiJumpAnimation);
       luigiAvatar.showFrame(0);
-    } else if (ySpeed < 0) {
-      animationState = "jump";
-      luigiAvatar.setAnimation(luigiJumpAnimation);
-      luigiAvatar.showFrame(1);
     }
 
     if (ySpeed === 0 && animationState.includes("jump")) {
@@ -184,7 +180,7 @@ namespace Script {
     for (let floor of floors.getChildren()) {
       let posFloor: ƒ.Vector3 = floor.mtxLocal.translation;
       if (Math.abs(pos.x - posFloor.x) < 0.5) {
-        if (pos.x - posFloor.x < 0.5) {
+        if (pos.y < posFloor.y + 0.5) {
           pos.y = posFloor.y + 0.5;
           luigiAvatar.mtxLocal.translation = pos;
           ySpeed = 0;
