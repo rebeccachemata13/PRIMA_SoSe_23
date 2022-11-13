@@ -2,47 +2,6 @@
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
-    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
-    class CustomComponentScript extends ƒ.ComponentScript {
-        // Register the script as component for use in the editor via drag&drop
-        static iSubclass = ƒ.Component.registerSubclass(CustomComponentScript);
-        // Properties may be mutated by users in the editor via the automatically created user interface
-        speed = 1;
-        constructor() {
-            super();
-            // Don't start when running in editor
-            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
-                return;
-            // Listen to this component being added to or removed from a node
-            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
-            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
-        }
-        // Activate the functions of this component as response to events
-        hndEvent = (_event) => {
-            switch (_event.type) {
-                case "componentAdd" /* COMPONENT_ADD */:
-                    //ƒ.Debug.log(this.message, this.node);
-                    this.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
-                    break;
-                case "componentRemove" /* COMPONENT_REMOVE */:
-                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
-                    break;
-                case "nodeDeserialized" /* NODE_DESERIALIZED */:
-                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
-                    break;
-            }
-        };
-        update(_event) {
-            this.node.mtxLocal.rotateY(this.speed);
-        }
-    }
-    Script.CustomComponentScript = CustomComponentScript;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    var ƒ = FudgeCore;
     var ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
@@ -96,7 +55,7 @@ var Script;
         cmpAudio = graph.getComponent(ƒ.ComponentAudio);
         cmpAudio.connect(true);
         cmpAudio.volume = 1;
-        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
+        ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
     }
     const xSpeedDefault = 1;
@@ -215,5 +174,46 @@ var Script;
             }
         }
     }
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    class ScriptRotator extends ƒ.ComponentScript {
+        // Register the script as component for use in the editor via drag&drop
+        static iSubclass = ƒ.Component.registerSubclass(ScriptRotator);
+        // Properties may be mutated by users in the editor via the automatically created user interface
+        speed = 1;
+        constructor() {
+            super();
+            // Don't start when running in editor
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+            // Listen to this component being added to or removed from a node
+            this.addEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.hndEvent);
+        }
+        // Activate the functions of this component as response to events
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* ƒ.EVENT.COMPONENT_ADD */:
+                    //ƒ.Debug.log(this.message, this.node);
+                    this.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+                    break;
+                case "componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
+                    break;
+                case "nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */:
+                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    break;
+            }
+        };
+        update = (_event) => {
+            this.node.mtxLocal.rotateY(this.speed);
+        };
+    }
+    Script.ScriptRotator = ScriptRotator;
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
