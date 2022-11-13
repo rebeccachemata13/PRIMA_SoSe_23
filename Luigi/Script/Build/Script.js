@@ -198,8 +198,8 @@ var Script;
         hndEvent = (_event) => {
             switch (_event.type) {
                 case "componentAdd" /* ƒ.EVENT.COMPONENT_ADD */:
-                    //ƒ.Debug.log(this.message, this.node);
-                    this.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+                    this.node.addComponent(new ƒ.ComponentTransform());
+                    this.node.addEventListener("renderPrepare" /* ƒ.EVENT.RENDER_PREPARE */, this.update);
                     break;
                 case "componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */:
                     this.removeEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);

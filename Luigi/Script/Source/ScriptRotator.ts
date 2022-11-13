@@ -26,8 +26,8 @@ namespace Script {
     public hndEvent = (_event: Event): void => {
       switch (_event.type) {
         case ƒ.EVENT.COMPONENT_ADD:
-          //ƒ.Debug.log(this.message, this.node);
-          this.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
+          this.node.addComponent(new ƒ.ComponentTransform());
+          this.node.addEventListener(ƒ.EVENT.RENDER_PREPARE, this.update);
           break;
         case ƒ.EVENT.COMPONENT_REMOVE:
           this.removeEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);

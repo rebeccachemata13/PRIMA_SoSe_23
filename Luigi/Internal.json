@@ -856,11 +856,11 @@
                   }
                 }
               ],
-              "CustomComponentScript": [
+              "ScriptRotator": [
                 {
-                  "Script.CustomComponentScript": {
+                  "Script.ScriptRotator": {
                     "active": true,
-                    "message": "CustomComponentScript added to "
+                    "speed": 2.5
                   }
                 }
               ]
