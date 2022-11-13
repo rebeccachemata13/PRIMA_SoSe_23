@@ -119,7 +119,7 @@
             "ƒ.ComponentAudio": {
               "active": true,
               "idResource": "Audio|2022-10-27T12:33:16.344Z|47939",
-              "playing": true,
+              "playing": false,
               "loop": false,
               "volume": 1
             }
@@ -817,6 +817,56 @@
             },
             "children": []
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Cube",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshCube|2022-11-10T14:11:40.073Z|81329",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2022-11-10T14:12:28.618Z|54341"
+                  }
+                }
+              ],
+              "CustomComponentScript": [
+                {
+                  "Script.CustomComponentScript": {
+                    "active": true,
+                    "message": "CustomComponentScript added to "
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
         }
       ],
       "idResource": "Graph|2022-10-06T13:16:30.236Z|44782",
@@ -831,6 +881,25 @@
       "children": [],
       "idResource": "Graph|2022-10-11T14:09:35.259Z|40805",
       "type": "Graph"
+    }
+  },
+  "MeshCube|2022-11-10T14:11:40.073Z|81329": {
+    "ƒ.MeshCube": {
+      "idResource": "MeshCube|2022-11-10T14:11:40.073Z|81329",
+      "name": "Cube",
+      "type": "MeshCube"
+    }
+  },
+  "Material|2022-11-10T14:12:28.618Z|54341": {
+    "ƒ.Material": {
+      "name": "CubeLit",
+      "idResource": "Material|2022-11-10T14:12:28.618Z|54341",
+      "shader": "ShaderLit",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 1, 1, 1]"
+        }
+      }
     }
   }
 }

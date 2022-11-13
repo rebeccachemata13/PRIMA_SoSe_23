@@ -6,7 +6,10 @@ namespace Script {
     // Register the script as component for use in the editor via drag&drop
     public static readonly iSubclass: number = ƒ.Component.registerSubclass(CustomComponentScript);
     // Properties may be mutated by users in the editor via the automatically created user interface
-    public message: string = "CustomComponentScript added to ";
+    public speed: number = 1;
+    
+    
+    
 
 
     constructor() {
@@ -26,7 +29,8 @@ namespace Script {
     public hndEvent = (_event: Event): void => {
       switch (_event.type) {
         case ƒ.EVENT.COMPONENT_ADD:
-          ƒ.Debug.log(this.message, this.node);
+          //ƒ.Debug.log(this.message, this.node);
+          this.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
           break;
         case ƒ.EVENT.COMPONENT_REMOVE:
           this.removeEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
@@ -36,6 +40,11 @@ namespace Script {
           // if deserialized the node is now fully reconstructed and access to all its components and children is possible
           break;
       }
+    }
+
+    public update(_event: Event): void{
+    this.node.mtxLocal.rotateY(this.speed);
+
     }
 
     // protected reduceMutator(_mutator: ƒ.Mutator): void {
