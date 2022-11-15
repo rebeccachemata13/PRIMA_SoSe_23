@@ -1,0 +1,88 @@
+{
+  "MeshCube|2022-11-15T19:35:54.300Z|85228": {
+    "ƒ.MeshCube": {
+      "idResource": "MeshCube|2022-11-15T19:35:54.300Z|85228",
+      "name": "MeshCube",
+      "type": "MeshCube"
+    }
+  },
+  "Material|2022-11-15T19:47:44.628Z|07543": {
+    "ƒ.Material": {
+      "name": "ShaderFlat",
+      "idResource": "Material|2022-11-15T19:47:44.628Z|07543",
+      "shader": "ShaderFlat",
+      "coat": {
+        "ƒ.CoatRemissive": {
+          "color": "[1, 1, 1, 1]",
+          "diffuse": 1,
+          "specular": 0
+        }
+      }
+    }
+  },
+  "Graph|2022-11-15T19:36:53.190Z|68638": {
+    "ƒ.Graph": {
+      "name": "Level",
+      "active": true,
+      "components": {},
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Light",
+            "active": true,
+            "components": {
+              "ComponentLight": [
+                {
+                  "ƒ.ComponentLight": {
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "light": {
+                      "ƒ.LightAmbient": {
+                        "color": "[1, 1, 1, 1]"
+                      }
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": [
+              {
+                "ƒ.Node": {
+                  "name": "RaumschiffCube",
+                  "active": true,
+                  "components": {},
+                  "children": [
+                    {
+                      "ƒ.Node": {
+                        "name": "Raumschiff",
+                        "active": true,
+                        "components": {},
+                        "children": []
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "idResource": "Graph|2022-11-15T19:36:53.190Z|68638",
+      "type": "Graph"
+    }
+  },
+  "MeshObj|2022-11-15T20:15:10.107Z|38008": {
+    "ƒ.MeshObj": {
+      "idResource": "MeshObj|2022-11-15T20:15:10.107Z|38008",
+      "name": "Raumschiff.obj",
+      "type": "MeshObj",
+      "url": "Raumschiff.obj"
+    }
+  }
+}
