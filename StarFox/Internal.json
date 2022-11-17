@@ -57,16 +57,7 @@
                   "name": "RaumschiffCube",
                   "active": true,
                   "components": {},
-                  "children": [
-                    {
-                      "ƒ.Node": {
-                        "name": "Raumschiff",
-                        "active": true,
-                        "components": {},
-                        "children": []
-                      }
-                    }
-                  ]
+                  "children": []
                 }
               }
             ]
@@ -77,12 +68,12 @@
       "type": "Graph"
     }
   },
-  "MeshObj|2022-11-15T20:15:10.107Z|38008": {
+  "MeshObj|2022-11-17T18:46:19.201Z|83716": {
     "ƒ.MeshObj": {
-      "idResource": "MeshObj|2022-11-15T20:15:10.107Z|38008",
-      "name": "Raumschiff.obj",
+      "idResource": "MeshObj|2022-11-17T18:46:19.201Z|83716",
+      "name": "space_ship_atempt3.obj",
       "type": "MeshObj",
-      "url": "Raumschiff.obj"
+      "url": "space_ship_atempt3.obj"
     }
   }
 }
