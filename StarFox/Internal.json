@@ -20,6 +20,29 @@
       }
     }
   },
+  "MeshObj|2022-11-17T18:46:19.201Z|83716": {
+    "ƒ.MeshObj": {
+      "idResource": "MeshObj|2022-11-17T18:46:19.201Z|83716",
+      "name": "space_ship_atempt3.obj",
+      "type": "MeshObj",
+      "url": "space_ship_atempt3.obj"
+    }
+  },
+  "Material|2022-11-19T12:17:44.549Z|98704": {
+    "ƒ.Material": {
+      "name": "ShaderFlatTextured",
+      "idResource": "Material|2022-11-19T12:17:44.549Z|98704",
+      "shader": "ShaderFlatTextured",
+      "coat": {
+        "ƒ.CoatRemissiveTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2022-11-19T12:36:40.037Z|54167",
+          "diffuse": 1,
+          "specular": 0
+        }
+      }
+    }
+  },
   "Graph|2022-11-15T19:36:53.190Z|68638": {
     "ƒ.Graph": {
       "name": "Level",
@@ -28,9 +51,42 @@
       "children": [
         {
           "ƒ.Node": {
-            "name": "Light",
+            "name": "SpaceShip",
             "active": true,
             "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshObj|2022-11-17T18:46:19.201Z|83716",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[1, 1]",
+                      "rotation": 0.30000000000000004,
+                      "scaling": "[2, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2022-11-19T12:17:44.549Z|98704"
+                  }
+                }
+              ],
               "ComponentLight": [
                 {
                   "ƒ.ComponentLight": {
@@ -51,16 +107,7 @@
                 }
               ]
             },
-            "children": [
-              {
-                "ƒ.Node": {
-                  "name": "RaumschiffCube",
-                  "active": true,
-                  "components": {},
-                  "children": []
-                }
-              }
-            ]
+            "children": []
           }
         }
       ],
@@ -68,12 +115,15 @@
       "type": "Graph"
     }
   },
-  "MeshObj|2022-11-17T18:46:19.201Z|83716": {
-    "ƒ.MeshObj": {
-      "idResource": "MeshObj|2022-11-17T18:46:19.201Z|83716",
-      "name": "space_ship_atempt3.obj",
-      "type": "MeshObj",
-      "url": "space_ship_atempt3.obj"
+  "TextureImage|2022-11-19T12:36:40.037Z|54167": {
+    "ƒ.TextureImage": {
+      "url": "texture_spaceship.jpg",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2022-11-19T12:36:40.037Z|54167",
+        "name": "texture_spaceship.jpg",
+        "mipmap": "CRISP"
+      }
     }
   }
 }
