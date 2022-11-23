@@ -42,7 +42,7 @@ namespace Script {
 
     public update = (_event: Event): void => {
       let rigidBody: ƒ.ComponentRigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
-          rigidBody.applyTorque(ƒ.Vector3.X(10));
+          rigidBody.applyTorque(ƒ.Vector3.Y(1));
     }
 
     // protected reduceMutator(_mutator: ƒ.Mutator): void {
