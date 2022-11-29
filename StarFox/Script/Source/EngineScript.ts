@@ -7,7 +7,8 @@ namespace Script {
     public static readonly iSubclass: number = ƒ.Component.registerSubclass(EngineScript);
     // Properties may be mutated by users in the editor via the automatically created user interface
     // public message: string = "CustomComponentScript added to ";
-
+    private rigidbody: ƒ.ComponentRigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
+    public power: number = 15000;
 
     constructor() {
       super();
@@ -41,8 +42,24 @@ namespace Script {
     }
 
     public update = (_event: Event): void => {
-      let rigidBody: ƒ.ComponentRigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
-          rigidBody.applyTorque(ƒ.Vector3.Y(1));
+    //let rigidBody: ƒ.ComponentRigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
+    //       rigidBody.applyTorque(ƒ.Vector3.Y(1));
+    }
+
+    public yaw(_value: number) {
+      this.rigidbody.applyTorque(new ƒ.Vector3(0, _value * -10, 0));
+    }
+    public pitch(_value: number) {
+      this.rigidbody.applyTorque(ƒ.Vector3.SCALE(this.node.mtxWorld.getX(), _value * 7.5));
+    }
+    public roll(_value: number) {
+      this.rigidbody.applyTorque(ƒ.Vector3.SCALE(this.node.mtxWorld.getZ(), _value));
+    }
+    public backwards() {
+      this.rigidbody.applyForce(ƒ.Vector3.SCALE(this.node.mtxWorld.getZ(), -this.power));
+    }
+    public thrust() {
+      this.rigidbody.applyForce(ƒ.Vector3.SCALE(this.node.mtxWorld.getZ(), this.power));
     }
 
     // protected reduceMutator(_mutator: ƒ.Mutator): void {

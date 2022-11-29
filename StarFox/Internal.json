@@ -166,10 +166,84 @@
             },
             "children": []
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Environment",
+            "active": true,
+            "components": {
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2022-11-29T15:02:05.493Z|11424"
+                  }
+                }
+              ],
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshQuad|2022-11-29T15:01:21.311Z|09472",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0, -9, 0]",
+                      "rotation": "[-90, 0, 0]",
+                      "scaling": "[300, 300, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
         }
       ],
       "idResource": "Graph|2022-11-15T19:36:53.190Z|68638",
       "type": "Graph"
+    }
+  },
+  "MeshQuad|2022-11-29T15:01:21.311Z|09472": {
+    "ƒ.MeshQuad": {
+      "idResource": "MeshQuad|2022-11-29T15:01:21.311Z|09472",
+      "name": "MeshQuad"
+    }
+  },
+  "Material|2022-11-29T15:02:05.493Z|11424": {
+    "ƒ.Material": {
+      "name": "ShaderLit",
+      "idResource": "Material|2022-11-29T15:02:05.493Z|11424",
+      "shader": "ShaderLit",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[0.6431372549019608, 0.615686274509804, 0.615686274509804, 1]"
+        }
+      }
     }
   }
 }
