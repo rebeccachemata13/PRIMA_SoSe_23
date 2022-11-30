@@ -25,7 +25,7 @@ namespace Script {
   function hndMouse(e: MouseEvent): void {
     vecMouse.x = 2 * (e.clientX / window.innerWidth) - 1;
     vecMouse.y = 2 * (e.clientY / window.innerHeight) - 1;
-  }
+   }
 
   function update(_event: Event): void {
     control();
@@ -44,11 +44,11 @@ namespace Script {
     }
 
     if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
-      engine.roll(-5);
+      engine.roll(-1);
     }
 
     if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
-      engine.roll(5);
+      engine.roll(1);
     }
 
     engine.pitch(vecMouse.y);
