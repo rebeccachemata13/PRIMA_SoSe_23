@@ -36,13 +36,23 @@ namespace Script {
           break;
         case ƒ.EVENT.NODE_DESERIALIZED:
           this.rigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
+          this.rigidbody.addEventListener(ƒ.EVENT_PHYSICS.COLLISION_ENTER, this.hndCollision);
+          this.node.addEventListener("SensorHit", this.hndCollision);
+          this.node.addEventListener(ƒ.EVENT.RENDER_PREPARE, this.update);
           break;
       }
     }
 
+    private hndCollision = (_event: Event): void => {
+      console.log("Bumm");
+    }
+
     public update = (_event: Event): void => {
-    //let rigidBody: ƒ.ComponentRigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
-    //       rigidBody.applyTorque(ƒ.Vector3.Y(1));
+      if (!gameState)
+        return;
+      gameState.height = this.node.mtxLocal.translation.y;
+      gameState.velocity = Math.round(this.rigidbody.getVelocity().magnitude);
+      console.log(gameState.fuel);
     }
 
     public yaw(_value: number) {

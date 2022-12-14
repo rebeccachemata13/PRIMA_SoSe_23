@@ -96,6 +96,40 @@
       }
     }
   },
+  "Material|2022-11-30T22:23:08.785Z|05938": {
+    "ƒ.Material": {
+      "name": "ShaderFlat",
+      "idResource": "Material|2022-11-30T22:23:08.785Z|05938",
+      "shader": "ShaderFlat",
+      "coat": {
+        "ƒ.CoatRemissive": {
+          "color": "[1, 1, 1, 1]",
+          "diffuse": 1,
+          "specular": 0
+        }
+      }
+    }
+  },
+  "MeshObj|2022-11-30T22:20:47.600Z|54308": {
+    "ƒ.MeshObj": {
+      "idResource": "MeshObj|2022-11-30T22:20:47.600Z|54308",
+      "name": "low_poly.obj",
+      "type": "MeshObj",
+      "url": "low_poly.obj"
+    }
+  },
+  "Material|2022-12-14T18:54:18.667Z|86080": {
+    "ƒ.Material": {
+      "name": "ShaderLit",
+      "idResource": "Material|2022-12-14T18:54:18.667Z|86080",
+      "shader": "ShaderLit",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 1, 1, 1]"
+        }
+      }
+    }
+  },
   "Graph|2022-11-15T19:36:53.190Z|68638": {
     "ƒ.Graph": {
       "name": "Level",
@@ -756,32 +790,59 @@
               }
             ]
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Sensor",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshCube|2022-11-15T19:35:54.300Z|85228",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2022-12-14T18:54:18.667Z|86080"
+                  }
+                }
+              ],
+              "SensorScript": [
+                {
+                  "Script.SensorScript": {
+                    "active": true
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
         }
       ],
       "idResource": "Graph|2022-11-15T19:36:53.190Z|68638",
       "type": "Graph"
-    }
-  },
-  "MeshObj|2022-11-30T22:20:47.600Z|54308": {
-    "ƒ.MeshObj": {
-      "idResource": "MeshObj|2022-11-30T22:20:47.600Z|54308",
-      "name": "low_poly.obj",
-      "type": "MeshObj",
-      "url": "low_poly.obj"
-    }
-  },
-  "Material|2022-11-30T22:23:08.785Z|05938": {
-    "ƒ.Material": {
-      "name": "ShaderFlat",
-      "idResource": "Material|2022-11-30T22:23:08.785Z|05938",
-      "shader": "ShaderFlat",
-      "coat": {
-        "ƒ.CoatRemissive": {
-          "color": "[1, 1, 1, 1]",
-          "diffuse": 1,
-          "specular": 0
-        }
-      }
     }
   }
 }

@@ -5,10 +5,17 @@ namespace Script {
   let viewport: ƒ.Viewport;
   let engine: EngineScript;
   let vecMouse: ƒ.Vector2 = ƒ.Vector2.ZERO();
-  document.addEventListener("interactiveViewportStarted", <EventListener>start);
+  export let cmpTerrain: ƒ.ComponentMesh;
+  export let gameState: GameState;
+
+  document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
   window.addEventListener("mousemove", hndMouse)
 
-  function start(_event: CustomEvent): void {
+  async function start(_event: CustomEvent): Promise<void> {
+    let response: Response = await fetch("config.json");
+    let config: {[key: string]: number} = await response.json();
+
+    gameState = new GameState(config);
     viewport = _event.detail;
     viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
     ƒ.Physics.settings.solverIterations = 300;
@@ -17,6 +24,8 @@ namespace Script {
     engine = ship.getComponent(EngineScript);
     let cmpCamera = ship.getComponent(ƒ.ComponentCamera);
     viewport.camera = cmpCamera;
+
+    cmpTerrain = viewport.getBranch().getChildrenByName("Environment")[0].getChildrenByName("Terrain")[0].getComponent(ƒ.ComponentMesh);
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();
