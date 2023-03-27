@@ -77,6 +77,30 @@
       }
     }
   },
+  "Material|2023-03-22T13:07:47.331Z|50230": {
+    "ƒ.Material": {
+      "name": "Shadow Shader",
+      "idResource": "Material|2023-03-22T13:07:47.331Z|50230",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2023-03-22T13:07:37.827Z|43415"
+        }
+      }
+    }
+  },
+  "TextureImage|2023-03-22T13:07:37.827Z|43415": {
+    "ƒ.TextureImage": {
+      "url": "sprites\\shadow_sprite.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2023-03-22T13:07:37.827Z|43415",
+        "name": "sprites\\shadow_sprite.png",
+        "mipmap": "CRISP"
+      }
+    }
+  },
   "Graph|2023-03-22T12:29:10.344Z|89374": {
     "ƒ.Graph": {
       "name": "Level",
@@ -101,7 +125,7 @@
                           "pivot": {
                             "translation": "[0, -0.2500000596046448, 0]",
                             "rotation": "[0, 0, 0]",
-                            "scaling": "[2.7800002098083496, 1.4999998807907104, 1]"
+                            "scaling": "[3.7800002098083496, 1.899999976158142, 1]"
                           },
                           "Component": {
                             "active": true
@@ -171,7 +195,7 @@
                             {
                               "ƒ.ComponentTransform": {
                                 "local": {
-                                  "translation": "[0, -1.5000001192092896, 0]",
+                                  "translation": "[0, -1.5000001192092896, 0.10000000149011612]",
                                   "rotation": "[0, 0, 0]",
                                   "scaling": "[2.7800002098083496, 0.5999999642372131, 1]"
                                 },
@@ -197,7 +221,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[-0.8899999856948853, -1.1000001430511475, 0]",
+                            "translation": "[-0.8899999856948853, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -263,7 +287,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[-0.6899999380111694, -1.1000001430511475, 0]",
+                            "translation": "[-0.6899999380111694, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -329,7 +353,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[-0.489999920129776, -1.1000001430511475, 0]",
+                            "translation": "[-0.489999920129776, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -395,7 +419,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[-0.28999996185302734, -1.1000001430511475, 0]",
+                            "translation": "[-0.28999996185302734, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -461,7 +485,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[-0.08999993652105331, -1.1000001430511475, 0]",
+                            "translation": "[-0.08999993652105331, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -527,7 +551,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[0.11000003665685654, -1.1000001430511475, 0]",
+                            "translation": "[0.11000003665685654, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -593,7 +617,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[0.3100000321865082, -1.1000001430511475, 0]",
+                            "translation": "[0.3100000321865082, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -659,7 +683,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[0.5100000500679016, -1.1000001430511475, 0]",
+                            "translation": "[0.5100000500679016, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -725,7 +749,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[0.7100000381469727, -1.1000001430511475, 0]",
+                            "translation": "[0.7100000381469727, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -791,7 +815,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[-0.8899999856948853, -1.1000001430511475, 0]",
+                            "translation": "[-0.8899999856948853, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -857,7 +881,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[0.9100000858306885, -1.1000001430511475, 0]",
+                            "translation": "[0.9100000858306885, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -923,7 +947,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[-1.0899999141693115, -1.1000001430511475, 0]",
+                            "translation": "[-1.0899999141693115, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -989,7 +1013,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[-1.2899999618530273, -1.1000001430511475, 0]",
+                            "translation": "[-1.2899999618530273, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -1055,7 +1079,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[1.1100001335144043, -1.1000001430511475, 0]",
+                            "translation": "[1.1100001335144043, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -1121,7 +1145,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[1.3100001811981201, -1.1000001430511475, 0]",
+                            "translation": "[1.3100001811981201, -1.1000001430511475, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -1235,30 +1259,6 @@
       ],
       "idResource": "Graph|2023-03-22T12:29:10.344Z|89374",
       "type": "Graph"
-    }
-  },
-  "TextureImage|2023-03-22T13:07:37.827Z|43415": {
-    "ƒ.TextureImage": {
-      "url": "sprites\\shadow_sprite.png",
-      "type": "TextureImage",
-      "Texture": {
-        "idResource": "TextureImage|2023-03-22T13:07:37.827Z|43415",
-        "name": "sprites\\shadow_sprite.png",
-        "mipmap": "CRISP"
-      }
-    }
-  },
-  "Material|2023-03-22T13:07:47.331Z|50230": {
-    "ƒ.Material": {
-      "name": "Shadow Shader",
-      "idResource": "Material|2023-03-22T13:07:47.331Z|50230",
-      "shader": "ShaderLitTextured",
-      "coat": {
-        "ƒ.CoatTextured": {
-          "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2023-03-22T13:07:37.827Z|43415"
-        }
-      }
     }
   }
 }
