@@ -66,11 +66,13 @@ var Script;
         shadowDeathAnimation.generateByGrid(ƒ.Rectangle.GET(43, 400, 20, 45), 1, 50, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(40));
     }
     let audioJump;
-    let audioDeath;
-    // function initializeSounds(): void {
-    //   audioDeath = new ƒ.Audio("./sounds/super-mario-death-sound-sound-effect.wav");
-    //   audioJump = new ƒ.Audio("./sounds/maro-jump-sound-effect_1.wav");
-    // }
+    // let audioMusic: ƒ.Audio;
+    // let audioDeath: ƒ.Audio;
+    function initializeSounds() {
+        // audioDeath = new ƒ.Audio("./Sounds/death.wav");
+        audioJump = new ƒ.Audio("./Sounds/jump.wav");
+        // audioMusic = new ƒ.Audio("./Sounds/music.wav");
+    }
     //shadowSprite
     let shadowAvatar;
     let cmpAudio;
@@ -79,7 +81,7 @@ var Script;
         await shadowSpriteSheet.load("./sprites/shadow_sprite_sheet.png");
         let coat = new ƒ.CoatTextured(undefined, shadowSpriteSheet);
         initAnimations(coat);
-        // initializeSounds();
+        initializeSounds();
         shadowAvatar = new ƒAid.NodeSprite("shadow_Sprite");
         shadowAvatar.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
         shadowAvatar.setAnimation(shadowWalkAnimation);
@@ -91,8 +93,11 @@ var Script;
         shadowAvatar.mtxLocal.scaleY(0.5);
         graph = viewport.getBranch();
         graph.addChild(shadowAvatar);
-        // cmpAudio = graph.getComponent(ƒ.ComponentAudio);
-        // cmpAudio.connect(true);
+        cmpAudio = graph.getComponent(ƒ.ComponentAudio);
+        cmpAudio.connect(true);
+        cmpAudio.volume = 1;
+        // cmpAudio.setAudio(audioMusic);
+        // cmpAudio.play(true);
         // cmpAudio.volume = 1;
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.FRAME_REQUEST, 30);
@@ -140,9 +145,9 @@ var Script;
         shadowAvatar.mtxLocal.rotation = ƒ.Vector3.Y(animationState.includes("Left") ? 180 : 0);
         // Jumping
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && ySpeed === 0) {
-            // cmpAudio.setAudio(audioJump);
-            // cmpAudio.play(true);
-            // cmpAudio.volume = 6;
+            cmpAudio.setAudio(audioJump);
+            cmpAudio.play(true);
+            cmpAudio.volume = 4;
             ySpeed = jumpForce;
         }
         if (ySpeed > 0) {

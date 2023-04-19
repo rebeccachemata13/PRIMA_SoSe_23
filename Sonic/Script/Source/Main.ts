@@ -35,12 +35,14 @@ namespace Script {
   }
 
   let audioJump: ƒ.Audio;
-  let audioDeath: ƒ.Audio;
+  // let audioMusic: ƒ.Audio;
+  // let audioDeath: ƒ.Audio;
 
-  // function initializeSounds(): void {
-  //   audioDeath = new ƒ.Audio("./sounds/super-mario-death-sound-sound-effect.wav");
-  //   audioJump = new ƒ.Audio("./sounds/maro-jump-sound-effect_1.wav");
-  // }
+  function initializeSounds(): void {
+    // audioDeath = new ƒ.Audio("./Sounds/death.wav");
+    audioJump = new ƒ.Audio("./Sounds/jump.wav");
+    // audioMusic = new ƒ.Audio("./Sounds/music.wav");
+  }
 
   //shadowSprite
   let shadowAvatar: ƒAid.NodeSprite;
@@ -53,7 +55,7 @@ namespace Script {
     let coat: ƒ.CoatTextured = new ƒ.CoatTextured(undefined, shadowSpriteSheet);
 
     initAnimations(coat);
-    // initializeSounds();
+    initializeSounds();
 
     shadowAvatar = new ƒAid.NodeSprite("shadow_Sprite");
     shadowAvatar.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
@@ -71,8 +73,12 @@ namespace Script {
     graph = viewport.getBranch();
     graph.addChild(shadowAvatar);
 
-    // cmpAudio = graph.getComponent(ƒ.ComponentAudio);
-    // cmpAudio.connect(true);
+    cmpAudio = graph.getComponent(ƒ.ComponentAudio);
+    cmpAudio.connect(true);
+    cmpAudio.volume = 1;
+
+    // cmpAudio.setAudio(audioMusic);
+    // cmpAudio.play(true);
     // cmpAudio.volume = 1;
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
@@ -132,9 +138,9 @@ namespace Script {
 
     // Jumping
     if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && ySpeed === 0) {
-      // cmpAudio.setAudio(audioJump);
-      // cmpAudio.play(true);
-      // cmpAudio.volume = 6;
+      cmpAudio.setAudio(audioJump);
+      cmpAudio.play(true);
+      cmpAudio.volume = 4;
       ySpeed = jumpForce;
       
     }

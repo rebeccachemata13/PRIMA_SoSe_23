@@ -71,7 +71,7 @@ namespace Script {
     graph = viewport.getBranch();
     graph.addChild(luigiAvatar);
 
-    cmpAudio = graph.getComponent(ƒ.ComponentAudio);
+    cmpAudio = viewport.getBranch().getComponent(ƒ.ComponentAudio);
     cmpAudio.connect(true);
     cmpAudio.volume = 1;
 

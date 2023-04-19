@@ -130,6 +130,17 @@
               }
             }
           }
+        ],
+        "ComponentAudio": [
+          {
+            "ƒ.ComponentAudio": {
+              "active": true,
+              "idResource": "Audio|2023-04-19T16:24:45.738Z|88719",
+              "playing": true,
+              "loop": false,
+              "volume": 1
+            }
+          }
         ]
       },
       "children": [
@@ -610,72 +621,6 @@
                         "ƒ.ComponentTransform": {
                           "local": {
                             "translation": "[1.410000205039978, -0.10000014305114746, 0.10000000149011612]",
-                            "rotation": "[0, 0, 0]",
-                            "scaling": "[1, 1, 1]"
-                          },
-                          "Component": {
-                            "active": true
-                          }
-                        }
-                      }
-                    ]
-                  },
-                  "children": [
-                    {
-                      "ƒ.Node": {
-                        "name": "Floor",
-                        "active": true,
-                        "components": {
-                          "ComponentMesh": [
-                            {
-                              "ƒ.ComponentMesh": {
-                                "idMesh": "MeshQuad|2023-03-22T12:29:24.607Z|45768",
-                                "pivot": {
-                                  "translation": "[0, 0, 0]",
-                                  "rotation": "[0, 0, 0]",
-                                  "scaling": "[0.2000001072883606, 0.1999998688697815, 1]"
-                                },
-                                "Component": {
-                                  "active": true
-                                }
-                              }
-                            }
-                          ],
-                          "ComponentMaterial": [
-                            {
-                              "ƒ.ComponentMaterial": {
-                                "sortForAlpha": false,
-                                "clrPrimary": "[1, 1, 1, 1]",
-                                "clrSecondary": "[1, 1, 1, 1]",
-                                "pivot": {
-                                  "translation": "[0, 0]",
-                                  "rotation": 0,
-                                  "scaling": "[1, 1]"
-                                },
-                                "Component": {
-                                  "active": true
-                                },
-                                "idMaterial": "Material|2023-03-22T12:36:46.004Z|51196"
-                              }
-                            }
-                          ]
-                        },
-                        "children": []
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                "ƒ.Node": {
-                  "name": "Floor Transform",
-                  "active": true,
-                  "components": {
-                    "ComponentTransform": [
-                      {
-                        "ƒ.ComponentTransform": {
-                          "local": {
-                            "translation": "[0.8100000619888306, -0.10000009834766388, 0.10000000149011612]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -1266,6 +1211,14 @@
       ],
       "idResource": "Graph|2023-03-22T12:29:10.344Z|89374",
       "type": "Graph"
+    }
+  },
+  "Audio|2023-04-19T16:24:45.738Z|88719": {
+    "ƒ.Audio": {
+      "url": "Sounds\\music.wav",
+      "idResource": "Audio|2023-04-19T16:24:45.738Z|88719",
+      "name": "Sounds\\music.wav",
+      "type": "Audio"
     }
   }
 }
