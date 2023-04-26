@@ -74,15 +74,7 @@
           }
         ]
       },
-      "children": [
-        {
-          "ƒ.GraphInstance": {
-            "deserializeFromSource": true,
-            "name": "SingleBlockGraph",
-            "idSource": "Graph|2023-04-23T12:59:57.465Z|45818"
-          }
-        }
-      ],
+      "children": [],
       "idResource": "Graph|2023-04-21T12:30:02.806Z|95777",
       "type": "Graph"
     }
@@ -122,6 +114,20 @@
                 "active": true
               },
               "idMaterial": "Material|2023-04-21T12:29:48.810Z|82174"
+            }
+          }
+        ],
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
             }
           }
         ]
