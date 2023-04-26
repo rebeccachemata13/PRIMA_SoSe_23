@@ -36,21 +36,21 @@ var Script;
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             // Listen to this component being added to or removed from a node
-            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
-            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+            this.addEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.hndEvent);
         }
         // Activate the functions of this component as response to events
         hndEvent = (_event) => {
             switch (_event.type) {
-                case "componentAdd" /* COMPONENT_ADD */:
+                case "componentAdd" /* ƒ.EVENT.COMPONENT_ADD */:
                     ƒ.Debug.log(this.message, this.node);
                     break;
-                case "componentRemove" /* COMPONENT_REMOVE */:
-                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                case "componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
                     break;
-                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                case "nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
@@ -65,7 +65,7 @@ var Script;
     let viewport;
     document.addEventListener("interactiveViewportStarted", start);
     //let worldGraph: ƒ.Graph;
-    async function start(_event) {
+    function start(_event) {
         viewport = _event.detail;
         // let singleblockGraph: ƒ.Graph =<ƒ.Graph>ƒ.Project.resources["Graph|2023-04-23T12:59:57.465Z|45818"];
         // let instance: ƒ.GraphInstance = await ƒ.Project.createGraphInstance(singleblockGraph);
@@ -73,11 +73,18 @@ var Script;
         // instance.mtxLocal.translateX(1);
         // viewport.getBranch().addChild(instance);
         let standardMaterial = ƒ.Project.resources["Material|2023-04-21T12:29:48.810Z|82174"];
-        let instance = new Script.Block(ƒ.Vector3.X(1), standardMaterial);
-        viewport.getBranch().addChild(instance);
-        console.log(instance);
-        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
-        //ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        let cubeSize = 3;
+        for (let x = 0; x < cubeSize; x++) {
+            for (let y = 0; y < cubeSize; y++) {
+                for (let z = 0; z < cubeSize; z++) {
+                    let instance = new Script.Block(new ƒ.Vector3(x, y, z), standardMaterial);
+                    viewport.getBranch().addChild(instance);
+                    console.log(instance);
+                }
+            }
+        }
+        ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
+        ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
