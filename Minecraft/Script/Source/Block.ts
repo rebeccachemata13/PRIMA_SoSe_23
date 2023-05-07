@@ -13,15 +13,11 @@ namespace Script{
 
             let cmpTransform: ƒ.ComponentTransform = new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(_position));
             this.addComponent(cmpTransform);
-        
+
+            let cmpPicker: ƒ.ComponentPick = new ƒ.ComponentPick();
+            cmpPicker.pick = ƒ.PICK.RADIUS;
+            this.addComponent(cmpPicker);
 
         }
     }
 }
-
-//export class Block extends ƒ.Node
-//create Mesh
-//create Material
-//create Transform
-
-//Main.ts
