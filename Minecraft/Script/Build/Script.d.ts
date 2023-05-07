@@ -15,4 +15,15 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    import ƒ = FudgeCore;
+    let viewport: ƒ.Viewport;
+    let blocks: ƒ.Node;
+    let grid: Block[][][];
+}
+declare namespace Script {
+    function pickByComponent(_event: PointerEvent): void;
+    function hitComponent(_event: PointerEvent): void;
+    function pickByCamera(_event: PointerEvent): void;
+    function pickByRadius(_event: PointerEvent): void;
+    function pickByGrid(_event: PointerEvent): void;
 }

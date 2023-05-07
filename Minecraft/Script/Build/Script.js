@@ -34,21 +34,21 @@ var Script;
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             // Listen to this component being added to or removed from a node
-            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
-            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+            this.addEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.hndEvent);
         }
         // Activate the functions of this component as response to events
         hndEvent = (_event) => {
             switch (_event.type) {
-                case "componentAdd" /* COMPONENT_ADD */:
+                case "componentAdd" /* ƒ.EVENT.COMPONENT_ADD */:
                     ƒ.Debug.log(this.message, this.node);
                     break;
-                case "componentRemove" /* COMPONENT_REMOVE */:
-                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                case "componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
                     break;
-                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                case "nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
@@ -60,48 +60,123 @@ var Script;
 (function (Script) {
     var ƒ = FudgeCore;
     ƒ.Debug.info("Main Program Template running!");
-    let viewport;
+    Script.grid = [];
     document.addEventListener("interactiveViewportStarted", start);
     // let worldGraph: ƒ.Node;
     function start(_event) {
-        viewport = _event.detail;
-        // worldGraph = viewport.getBranch();
-        // let singleblockGraph: ƒ.Graph =<ƒ.Graph>ƒ.Project.resources["Graph|2023-04-23T12:59:57.465Z|45818"];
-        // let instance: ƒ.GraphInstance = await ƒ.Project.createGraphInstance(singleblockGraph);
-        // console.log(instance);
-        // instance.mtxLocal.translateX(1);
-        // viewport.getBranch().addChild(instance);
-        let standardMaterial = ƒ.Project.resources["Material|2023-04-21T12:29:48.810Z|82174"];
-        let cubeSize = 3;
-        for (let x = 0; x < cubeSize; x++) {
-            for (let y = 0; y < cubeSize; y++) {
-                for (let z = 0; z < cubeSize; z++) {
-                    let instance = new Script.Block(new ƒ.Vector3(x, y, z), standardMaterial);
-                    viewport.getBranch().addChild(instance);
-                    console.log(instance);
-                }
-            }
-        }
-        viewport.canvas.addEventListener("mousedown", pick);
-        viewport.getBranch().addEventListener("mousedown", click);
-        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
-        ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        Script.viewport = _event.detail;
+        generateWorld(10, 3, 9);
+        let pickAlgorithm = [Script.pickByComponent, Script.pickByCamera, Script.pickByRadius, Script.pickByGrid];
+        Script.viewport.canvas.addEventListener("pointerdown", pickAlgorithm[1]);
+        Script.viewport.getBranch().addEventListener("pointerdown", Script.hitComponent);
+        ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
+        // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
-        viewport.draw();
+        Script.viewport.draw();
         ƒ.AudioManager.default.update();
     }
-    function pick(_event) {
-        viewport.dispatchPointerEvent(_event);
+    function generateWorld(_width, _height, _depth) {
+        Script.blocks = new ƒ.Node("Blocks");
+        Script.viewport.getBranch().addChild(Script.blocks);
+        let standardMaterial = ƒ.Project.resources["Material|2023-04-21T12:29:48.810Z|82174"];
+        // let vctOffset: ƒ.Vector2 = new ƒ.Vector2(Math.floor(_width / 2), Math.floor(_depth / 2));
+        let vctOffset = ƒ.Vector2.ZERO();
+        for (let y = 0; y < _height; y++) {
+            Script.grid[y] = [];
+            for (let z = 0; z < _depth; z++) {
+                Script.grid[y][z] = [];
+                for (let x = 0; x < _width; x++) {
+                    let vctPostion = new ƒ.Vector3(x - vctOffset.x, y, z - vctOffset.y);
+                    let txtColor = ƒ.Random.default.getElement(["red", "lime", "blue", "yellow"]);
+                    let block = new Script.Block(vctPostion, standardMaterial);
+                    block.name = vctPostion.toString() + "|" + txtColor;
+                    Script.blocks.addChild(block);
+                    Script.grid[y][z][x] = block;
+                }
+            }
+        }
+        console.log(Script.grid);
     }
-    function click(_event) {
-        // let node: ƒ.Node = (<ƒ.Node>_event.target);
-        // let cmpPick: ƒ.ComponentPick = node.getComponent(ƒ.ComponentPick);
-        // console.log("Klicked" + cmpPick);
-        let pos = new ƒ.Vector2(_event.clientX, _event.clientY);
-        let rayTarget = viewport.getRayFromClient(pos);
-        console.log(rayTarget);
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    function pickByComponent(_event) {
+        console.log("pickByComponent");
+        Reflect.set(_event, "closestDistance", Infinity);
+        Reflect.set(_event, "closestBlock", null);
+        Script.viewport.dispatchPointerEvent(_event);
+        hitBlock(Reflect.get(_event, "closestBlock"));
+    }
+    Script.pickByComponent = pickByComponent;
+    function hitComponent(_event) {
+        let block = _event.target;
+        let closestDistance = Reflect.get(_event, "closestDistance");
+        let pick = Reflect.get(_event, "pick");
+        if (pick.zBuffer < closestDistance) {
+            Reflect.set(_event, "closestDistance", pick.zBuffer);
+            Reflect.set(_event, "closestBlock", block);
+        }
+    }
+    Script.hitComponent = hitComponent;
+    function pickByCamera(_event) {
+        console.log("pickCamera");
+        let picks = ƒ.Picker.pickViewport(Script.viewport, new ƒ.Vector2(_event.clientX, _event.clientY));
+        picks.sort((_a, _b) => _a.zBuffer < _b.zBuffer ? -1 : 1);
+        hitBlock(picks[0]?.node);
+        console.log(picks[0]);
+    }
+    Script.pickByCamera = pickByCamera;
+    function pickByRadius(_event) {
+        console.log("pickByRay");
+        let ray = Script.viewport.getRayFromClient(new ƒ.Vector2(_event.clientX, _event.clientY));
+        let shortest;
+        let found = null;
+        let compare = Math.pow(0.7, 2);
+        for (let block of Script.blocks.getChildren()) {
+            if (compare < ray.getDistance(block.mtxWorld.translation).magnitudeSquared)
+                continue;
+            let distance = ƒ.Vector3.DIFFERENCE(block.mtxWorld.translation, ray.origin).magnitudeSquared;
+            if (shortest == undefined || distance < shortest) {
+                shortest = distance;
+                found = block;
+            }
+        }
+        hitBlock(found);
+    }
+    Script.pickByRadius = pickByRadius;
+    function pickByGrid(_event) {
+        console.log("pickByGrid");
+        let ray = Script.viewport.getRayFromClient(new ƒ.Vector2(_event.clientX, _event.clientY));
+        let posCheck = ray.origin.clone;
+        let vctStep = ray.direction.clone;
+        // find largest component value
+        let largest = vctStep.get().reduce((_p, _c) => Math.max(_p, Math.abs(_c)));
+        // normalize to 1 in that direction
+        vctStep.scale(1 / largest);
+        for (let i = 0; i < 100; i++) {
+            posCheck.add(vctStep);
+            let posGrid = posCheck.map(_value => Math.round(_value));
+            console.log(posGrid.toString(), posCheck.toString());
+            try {
+                let block = Script.grid[posGrid.y][posGrid.z][posGrid.x];
+                if (block) {
+                    hitBlock(block);
+                    return;
+                }
+            }
+            catch (_e) { }
+        }
+    }
+    Script.pickByGrid = pickByGrid;
+    function hitBlock(_block) {
+        if (!_block)
+            return;
+        console.log(_block.name);
+        _block.getParent().removeChild(_block);
+        Script.viewport.draw();
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
