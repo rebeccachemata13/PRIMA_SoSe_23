@@ -1,5 +1,6 @@
 namespace Script {
   import ƒ = FudgeCore;
+  // import ƒAid = FudgeAid;
   ƒ.Debug.info("Main Program Template running!");
 
   export let viewport: ƒ.Viewport;
@@ -20,12 +21,12 @@ namespace Script {
     viewport.getBranch().addEventListener("pointerdown", <ƒ.EventListenerUnified>hitComponent);
    
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
-    // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
 
 
   function update(_event: Event): void {
-    // ƒ.Physics.simulate();  // if physics is included and used
+    ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
     ƒ.AudioManager.default.update();
   }

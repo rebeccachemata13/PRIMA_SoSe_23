@@ -32,6 +32,41 @@
       }
     }
   },
+  "MeshSphere|2023-05-07T12:50:42.536Z|90638": {
+    "ƒ.MeshSphere": {
+      "idResource": "MeshSphere|2023-05-07T12:50:42.536Z|90638",
+      "name": "MeshSphere",
+      "type": "MeshSphere",
+      "longitudes": 50,
+      "latitudes": 20
+    }
+  },
+  "Material|2023-05-07T12:54:56.928Z|34068": {
+    "ƒ.Material": {
+      "name": "ShaderFlatTextured",
+      "idResource": "Material|2023-05-07T12:54:56.928Z|34068",
+      "shader": "ShaderFlatTextured",
+      "coat": {
+        "ƒ.CoatRemissiveTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2023-05-07T12:55:19.402Z|81785",
+          "diffuse": 1,
+          "specular": 0
+        }
+      }
+    }
+  },
+  "TextureImage|2023-05-07T12:55:19.402Z|81785": {
+    "ƒ.TextureImage": {
+      "url": "Textures\\earth2.jpg",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2023-05-07T12:55:19.402Z|81785",
+        "name": "Textures\\earth2.jpg",
+        "mipmap": "CRISP"
+      }
+    }
+  },
   "Graph|2023-04-21T12:30:02.806Z|95777": {
     "ƒ.Graph": {
       "name": "Scene",
@@ -74,7 +109,97 @@
           }
         ]
       },
-      "children": [],
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Physictest",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSphere|2023-05-07T12:50:42.536Z|90638",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2023-05-07T12:54:56.928Z|34068"
+                  }
+                }
+              ],
+              "Physictester": [
+                {
+                  "Script.Physictester": {
+                    "active": true,
+                    "message": "CustomComponentScript added to "
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0, 4, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentRigidbody": [
+                {
+                  "ƒ.ComponentRigidbody": {
+                    "initialization": "TO_PIVOT",
+                    "friction": 0.2,
+                    "restitution": 0.2,
+                    "mass": 1,
+                    "dampTranslation": 0.1,
+                    "dampRotation": 0.1,
+                    "effectGravity": 0.2,
+                    "typeBody": "DYNAMIC",
+                    "typeCollider": "CUBE",
+                    "isTrigger": false,
+                    "id": 0,
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1.2000000476837158, 1.2000000476837158, 1.2000000476837158]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
       "idResource": "Graph|2023-04-21T12:30:02.806Z|95777",
       "type": "Graph"
     }
@@ -135,6 +260,17 @@
       "children": [],
       "idResource": "Graph|2023-04-23T12:59:57.465Z|45818",
       "type": "Graph"
+    }
+  },
+  "TextureImage|2023-05-07T12:54:03.420Z|61939": {
+    "ƒ.TextureImage": {
+      "url": "Textures\\texture_floor.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2023-05-07T12:54:03.420Z|61939",
+        "name": "Textures\\texture_floor.png",
+        "mipmap": "CRISP"
+      }
     }
   }
 }

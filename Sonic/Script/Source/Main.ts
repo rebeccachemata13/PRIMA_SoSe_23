@@ -1,6 +1,6 @@
 namespace Script {
   import ƒ = FudgeCore;
-  import ƒAid = FudgeAid;
+  // import ƒAid = FudgeAid;
   ƒ.Debug.info("Main Program Template running!");
 
   let viewport: ƒ.Viewport;
