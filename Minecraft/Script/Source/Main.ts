@@ -6,12 +6,23 @@ namespace Script {
   export let viewport: ƒ.Viewport;
   export let blocks: ƒ.Node;
   export let grid: Block [][][] = [];
+  let steve: ƒ.Node;
+  let rigidbodySteve: ƒ.ComponentRigidbody;
 
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
   // let worldGraph: ƒ.Node;
  
  function start(_event: CustomEvent): void {
     viewport = (<CustomEvent>_event).detail;
+    viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+    viewport.canvas.addEventListener("contextmenu", _event => _event.preventDefault());
+   
+    steve = viewport.getBranch().getChildrenByName("Steve")[0];
+    rigidbodySteve = steve.getComponent(ƒ.ComponentRigidbody);
+    rigidbodySteve.effectRotation = ƒ.Vector3.Y();
+    let cmpCamera: ƒ.ComponentCamera = steve.getComponent(ƒ.ComponentCamera);
+    viewport.camera = cmpCamera;
+    
 
     generateWorld(10,3,9);
 
@@ -24,8 +35,9 @@ namespace Script {
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
 
+function update(_event: Event): void {
+    rigidbodySteve.applyForce(ƒ.Vector3.Z(200));
 
-  function update(_event: Event): void {
     ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
     ƒ.AudioManager.default.update();
