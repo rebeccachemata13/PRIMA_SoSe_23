@@ -8,14 +8,15 @@ namespace Script {
   export let grid: Block [][][] = [];
   let steve: ƒ.Node;
   let rigidbodySteve: ƒ.ComponentRigidbody;
+  
 
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
   // let worldGraph: ƒ.Node;
  
  function start(_event: CustomEvent): void {
     viewport = (<CustomEvent>_event).detail;
-    viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
-    viewport.canvas.addEventListener("contextmenu", _event => _event.preventDefault());
+    // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+    // viewport.canvas.addEventListener("contextmenu", _event => _event.preventDefault());
    
     steve = viewport.getBranch().getChildrenByName("Steve")[0];
     rigidbodySteve = steve.getComponent(ƒ.ComponentRigidbody);
@@ -36,7 +37,24 @@ namespace Script {
   }
 
 function update(_event: Event): void {
-    rigidbodySteve.applyForce(ƒ.Vector3.Z(200));
+  
+  // rigidbodySteve.applyForce(ƒ.Vector3.Z(10));
+  
+  if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP])) {
+    rigidbodySteve.applyForce(ƒ.Vector3.SCALE(rigidbodySteve.node.mtxWorld.getZ(), 500 ));
+  }
+
+  if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN])) {
+    rigidbodySteve.applyForce(ƒ.Vector3.SCALE(rigidbodySteve.node.mtxWorld.getZ(), -500));
+  }
+
+  if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
+    rigidbodySteve.applyTorque(ƒ.Vector3.Y(0.5));
+  }
+
+  if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
+    rigidbodySteve.applyTorque(ƒ.Vector3.Y(-0.5));
+  }
 
     ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
