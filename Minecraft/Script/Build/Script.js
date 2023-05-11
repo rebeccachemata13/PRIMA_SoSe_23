@@ -38,28 +38,32 @@ var Script;
         steve = Script.viewport.getBranch().getChildrenByName("Steve")[0];
         rigidbodySteve = steve.getComponent(ƒ.ComponentRigidbody);
         rigidbodySteve.effectRotation = ƒ.Vector3.Y();
+        ƒ.Physics.settings.sleepingAngularVelocityThreshold = 0.1;
         let cmpCamera = steve.getComponent(ƒ.ComponentCamera);
         Script.viewport.camera = cmpCamera;
         generateWorld(10, 3, 9);
         let pickAlgorithm = [Script.pickByComponent, Script.pickByCamera, Script.pickByRadius, Script.pickByGrid];
         Script.viewport.canvas.addEventListener("pointerdown", pickAlgorithm[1]);
         Script.viewport.getBranch().addEventListener("pointerdown", Script.hitComponent);
-        ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
+        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     function update(_event) {
         // rigidbodySteve.applyForce(ƒ.Vector3.Z(10));
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP])) {
-            rigidbodySteve.applyForce(ƒ.Vector3.SCALE(rigidbodySteve.node.mtxWorld.getZ(), 500));
+            rigidbodySteve.applyForce(ƒ.Vector3.SCALE(rigidbodySteve.node.mtxWorld.getZ(), 2600));
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN])) {
-            rigidbodySteve.applyForce(ƒ.Vector3.SCALE(rigidbodySteve.node.mtxWorld.getZ(), -500));
+            rigidbodySteve.applyForce(ƒ.Vector3.SCALE(rigidbodySteve.node.mtxWorld.getZ(), -2600));
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
-            rigidbodySteve.applyTorque(ƒ.Vector3.Y(0.5));
+            rigidbodySteve.applyTorque(ƒ.Vector3.Y(12));
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-            rigidbodySteve.applyTorque(ƒ.Vector3.Y(-0.5));
+            rigidbodySteve.applyTorque(ƒ.Vector3.Y(-12));
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE, ƒ.KEYBOARD_CODE.ARROW_UP]) && rigidbodySteve.getVelocity().y == 0) {
+            rigidbodySteve.addVelocity(ƒ.Vector3.Y(5));
         }
         ƒ.Physics.simulate(); // if physics is included and used
         Script.viewport.draw();
@@ -76,7 +80,7 @@ var Script;
             for (let z = 0; z < _depth; z++) {
                 Script.grid[y][z] = [];
                 for (let x = 0; x < _width; x++) {
-                    let vctPostion = new ƒ.Vector3(x - vctOffset.x, y, z - vctOffset.y);
+                    let vctPostion = new ƒ.Vector3(x - vctOffset.x, y + Math.random() * 0.1, z - vctOffset.y);
                     let txtColor = ƒ.Random.default.getElement(["red", "lime", "blue", "yellow"]);
                     let block = new Script.Block(vctPostion, standardMaterial);
                     block.name = vctPostion.toString() + "|" + txtColor;
@@ -103,21 +107,21 @@ var Script;
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             // Listen to this component being added to or removed from a node
-            this.addEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
-            this.addEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
-            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.hndEvent);
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
         }
         // Activate the functions of this component as response to events
         hndEvent = (_event) => {
             switch (_event.type) {
-                case "componentAdd" /* ƒ.EVENT.COMPONENT_ADD */:
-                    this.node.addEventListener("renderPrepare" /* ƒ.EVENT.RENDER_PREPARE */, this.update);
+                case "componentAdd" /* COMPONENT_ADD */:
+                    this.node.addEventListener("renderPrepare" /* RENDER_PREPARE */, this.update);
                     break;
-                case "componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */:
-                    this.removeEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
-                    this.removeEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
+                case "componentRemove" /* COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
                     break;
-                case "nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */:
+                case "nodeDeserialized" /* NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }

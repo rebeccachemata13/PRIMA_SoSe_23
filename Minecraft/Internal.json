@@ -67,6 +67,20 @@
       }
     }
   },
+  "Material|2023-05-08T14:43:28.280Z|50639": {
+    "ƒ.Material": {
+      "name": "ShaderFlat",
+      "idResource": "Material|2023-05-08T14:43:28.280Z|50639",
+      "shader": "ShaderFlat",
+      "coat": {
+        "ƒ.CoatRemissive": {
+          "color": "[1, 1, 1, 1]",
+          "diffuse": 1,
+          "specular": 0
+        }
+      }
+    }
+  },
   "Graph|2023-04-21T12:30:02.806Z|95777": {
     "ƒ.Graph": {
       "name": "Scene",
@@ -207,7 +221,7 @@
                 {
                   "ƒ.ComponentTransform": {
                     "local": {
-                      "translation": "[0, 20, 0]",
+                      "translation": "[0, 10, 0]",
                       "rotation": "[0, 0, 0]",
                       "scaling": "[0.49999991059303284, 0.49999991059303284, 0.49999991059303284]"
                     },
@@ -221,11 +235,11 @@
                 {
                   "ƒ.ComponentRigidbody": {
                     "initialization": "TO_NODE",
-                    "friction": 0.2,
+                    "friction": 0,
                     "restitution": 0.2,
                     "mass": 60,
-                    "dampTranslation": 0.1,
-                    "dampRotation": 0.1,
+                    "dampTranslation": 2.3,
+                    "dampRotation": 5.1,
                     "effectGravity": 1,
                     "typeBody": "DYNAMIC",
                     "typeCollider": "CAPSULE",
@@ -386,20 +400,6 @@
       "coat": {
         "ƒ.CoatRemissive": {
           "color": "[0.9450980392156862, 0.9450980392156862, 0.9529411764705882, 0]",
-          "diffuse": 1,
-          "specular": 0
-        }
-      }
-    }
-  },
-  "Material|2023-05-08T14:43:28.280Z|50639": {
-    "ƒ.Material": {
-      "name": "ShaderFlat",
-      "idResource": "Material|2023-05-08T14:43:28.280Z|50639",
-      "shader": "ShaderFlat",
-      "coat": {
-        "ƒ.CoatRemissive": {
-          "color": "[1, 1, 1, 1]",
           "diffuse": 1,
           "specular": 0
         }

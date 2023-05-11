@@ -21,6 +21,7 @@ namespace Script {
     steve = viewport.getBranch().getChildrenByName("Steve")[0];
     rigidbodySteve = steve.getComponent(ƒ.ComponentRigidbody);
     rigidbodySteve.effectRotation = ƒ.Vector3.Y();
+    ƒ.Physics.settings.sleepingAngularVelocityThreshold = 0.1;
     let cmpCamera: ƒ.ComponentCamera = steve.getComponent(ƒ.ComponentCamera);
     viewport.camera = cmpCamera;
     
@@ -41,21 +42,20 @@ function update(_event: Event): void {
   // rigidbodySteve.applyForce(ƒ.Vector3.Z(10));
   
   if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W, ƒ.KEYBOARD_CODE.ARROW_UP])) {
-    rigidbodySteve.applyForce(ƒ.Vector3.SCALE(rigidbodySteve.node.mtxWorld.getZ(), 500 ));
+    rigidbodySteve.applyForce(ƒ.Vector3.SCALE(rigidbodySteve.node.mtxWorld.getZ(), 2600 ));
   }
-
   if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S, ƒ.KEYBOARD_CODE.ARROW_DOWN])) {
-    rigidbodySteve.applyForce(ƒ.Vector3.SCALE(rigidbodySteve.node.mtxWorld.getZ(), -500));
+    rigidbodySteve.applyForce(ƒ.Vector3.SCALE(rigidbodySteve.node.mtxWorld.getZ(), -2600));
   }
-
   if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A, ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
-    rigidbodySteve.applyTorque(ƒ.Vector3.Y(0.5));
+    rigidbodySteve.applyTorque(ƒ.Vector3.Y(12));
   }
-
   if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-    rigidbodySteve.applyTorque(ƒ.Vector3.Y(-0.5));
+    rigidbodySteve.applyTorque(ƒ.Vector3.Y(-12));
   }
-
+  if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE, ƒ.KEYBOARD_CODE.ARROW_UP]) && rigidbodySteve.getVelocity().y == 0) {
+    rigidbodySteve.addVelocity(ƒ.Vector3.Y(5));
+  }
     ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
     ƒ.AudioManager.default.update();
@@ -73,7 +73,7 @@ function update(_event: Event): void {
       for (let z: number = 0; z < _depth; z++) {
         grid[y][z] = [];
         for (let x: number = 0; x < _width; x++) {
-          let vctPostion: ƒ.Vector3 = new ƒ.Vector3(x - vctOffset.x, y, z - vctOffset.y);
+          let vctPostion: ƒ.Vector3 = new ƒ.Vector3(x - vctOffset.x, y + Math.random()*0.1, z - vctOffset.y);
           let txtColor: string = ƒ.Random.default.getElement(["red", "lime", "blue", "yellow"]);
           let block: Block = new Block(vctPostion, standardMaterial);
           block.name = vctPostion.toString() + "|" + txtColor;
