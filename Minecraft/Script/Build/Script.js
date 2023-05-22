@@ -29,24 +29,42 @@ var Script;
     Script.grid = [];
     let steve;
     let rigidbodySteve;
+    let isGrounded = false;
+    let MINECRAFT;
+    (function (MINECRAFT) {
+        MINECRAFT["STEVE_COLLIDES"] = "steveCollides";
+    })(MINECRAFT || (MINECRAFT = {}));
     document.addEventListener("interactiveViewportStarted", start);
     // let worldGraph: ƒ.Node;
-    function start(_event) {
-        Script.viewport = _event.detail;
-        // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
-        // viewport.canvas.addEventListener("contextmenu", _event => _event.preventDefault());
+    function setupSteve() {
         steve = Script.viewport.getBranch().getChildrenByName("Steve")[0];
         rigidbodySteve = steve.getComponent(ƒ.ComponentRigidbody);
         rigidbodySteve.effectRotation = ƒ.Vector3.Y();
         ƒ.Physics.settings.sleepingAngularVelocityThreshold = 0.1;
+        console.log(steve.getComponent(ƒ.ComponentCamera));
         let cmpCamera = steve.getComponent(ƒ.ComponentCamera);
         Script.viewport.camera = cmpCamera;
+        rigidbodySteve.addEventListener("ColliderEnteredCollision" /* COLLISION_ENTER */, steveCollided);
+    }
+    function start(_event) {
+        Script.viewport = _event.detail;
+        // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+        // viewport.canvas.addEventListener("contextmenu", _event => _event.preventDefault());
+        setupSteve();
         generateWorld(10, 3, 9);
         let pickAlgorithm = [Script.pickByComponent, Script.pickByCamera, Script.pickByRadius, Script.pickByGrid];
         Script.viewport.canvas.addEventListener("pointerdown", pickAlgorithm[1]);
         Script.viewport.getBranch().addEventListener("pointerdown", Script.hitComponent);
+        Script.viewport.getBranch().addEventListener(MINECRAFT.STEVE_COLLIDES, (_event) => console.log(_event));
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    }
+    function steveCollided(_event) {
+        // let vtcCollision: ƒ.Vector3 = ƒ.Vector3.DIFFERENCE(_event.collisionPoint, steve.mtxWorld.translation);
+        // if(Math.abs(vtcCollision.x) < 0.1 && Math.abs(vtcCollision.z) < 0.1 );
+        isGrounded = true;
+        let customEvent = new CustomEvent(MINECRAFT.STEVE_COLLIDES, { bubbles: true, detail: steve.mtxWorld.translation });
+        steve.dispatchEvent(customEvent);
     }
     function update(_event) {
         // rigidbodySteve.applyForce(ƒ.Vector3.Z(10));
@@ -62,8 +80,9 @@ var Script;
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D, ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
             rigidbodySteve.applyTorque(ƒ.Vector3.Y(-12));
         }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE, ƒ.KEYBOARD_CODE.ARROW_UP]) && rigidbodySteve.getVelocity().y == 0) {
-            rigidbodySteve.addVelocity(ƒ.Vector3.Y(5));
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE]) && isGrounded) {
+            rigidbodySteve.addVelocity(ƒ.Vector3.Y(7));
+            isGrounded = false;
         }
         ƒ.Physics.simulate(); // if physics is included and used
         Script.viewport.draw();
@@ -81,9 +100,9 @@ var Script;
                 Script.grid[y][z] = [];
                 for (let x = 0; x < _width; x++) {
                     let vctPostion = new ƒ.Vector3(x - vctOffset.x, y + Math.random() * 0.1, z - vctOffset.y);
-                    let txtColor = ƒ.Random.default.getElement(["red", "lime", "blue", "yellow"]);
+                    // let txtColor: string = ƒ.Random.default.getElement(["red", "lime", "blue", "yellow"]);
                     let block = new Script.Block(vctPostion, standardMaterial);
-                    block.name = vctPostion.toString() + "|" + txtColor;
+                    // block.name = vctPostion.toString() + "|" + txtColor;
                     Script.blocks.addChild(block);
                     Script.grid[y][z][x] = block;
                 }
