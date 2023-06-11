@@ -6,7 +6,7 @@ namespace Script {
   export let viewport: ƒ.Viewport;
   export let blocks: ƒ.Node;
   export let grid: Block[][][] = [];
-  let steve: ƒ.Node;
+  export let steve: ƒ.Node;
   let rigidbodySteve: ƒ.ComponentRigidbody;
   let isGrounded: boolean = false;
 

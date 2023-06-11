@@ -7,18 +7,19 @@ declare namespace Script {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
-    let viewport: ƒ.Viewport;
-    let blocks: ƒ.Node;
-    let grid: Block[][][];
-}
-declare namespace Script {
-    import ƒ = FudgeCore;
-    class Physictester extends ƒ.ComponentScript {
+    class CreeperMaschine extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         constructor();
         hndEvent: (_event: Event) => void;
         update: (_event: Event) => void;
     }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    let viewport: ƒ.Viewport;
+    let blocks: ƒ.Node;
+    let grid: Block[][][];
+    let steve: ƒ.Node;
 }
 declare namespace Script {
     function pickByComponent(_event: PointerEvent): void;

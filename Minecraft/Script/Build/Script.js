@@ -24,10 +24,61 @@ var Script;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    class CreeperMaschine extends ƒ.ComponentScript {
+        // Register the script as component for use in the editor via drag&drop
+        static iSubclass = ƒ.Component.registerSubclass(CreeperMaschine);
+        // Properties may be mutated by users in the editor via the automatically created user interface
+        // public message: string = "This is the CreeperMaschine Skript ";
+        constructor() {
+            super();
+            // Don't start when running in editor
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+            // Listen to this component being added to or removed from a node
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+            this.addEventListener("renderPrepare" /* RENDER_PREPARE */, this.hndEvent);
+        }
+        // Activate the functions of this component as response to events
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* COMPONENT_ADD */:
+                    this.node.addEventListener("renderPrepare" /* RENDER_PREPARE */, this.update);
+                    break;
+                case "componentRemove" /* COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                    break;
+                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    break;
+                case "renderPrepare" /* RENDER_PREPARE */:
+                    console.log("Rendering now..");
+                    break;
+            }
+        };
+        update = (_event) => {
+            let rigidbodySteve = Script.steve.getComponent(ƒ.ComponentRigidbody);
+            let rigidbodyCreeper = this.node.getComponent(ƒ.ComponentRigidbody);
+            let posSteve = rigidbodySteve.node.mtxWorld.translation;
+            let posCreeper = rigidbodySteve.node.mtxWorld.translation;
+            rigidbodyCreeper.applyForce(ƒ.Vector3.X(1));
+            rigidbodyCreeper.applyForce(ƒ.Vector3.Z(3));
+            let movementVector = ƒ.Vector3.DIFFERENCE(posSteve, posCreeper);
+            movementVector.normalize(100);
+            rigidbodyCreeper.applyForce(movementVector);
+        };
+    }
+    Script.CreeperMaschine = CreeperMaschine;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
     // import ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     Script.grid = [];
-    let steve;
     let rigidbodySteve;
     let isGrounded = false;
     let MINECRAFT;
@@ -37,12 +88,12 @@ var Script;
     document.addEventListener("interactiveViewportStarted", start);
     // let worldGraph: ƒ.Node;
     function setupSteve() {
-        steve = Script.viewport.getBranch().getChildrenByName("Steve")[0];
-        rigidbodySteve = steve.getComponent(ƒ.ComponentRigidbody);
+        Script.steve = Script.viewport.getBranch().getChildrenByName("Steve")[0];
+        rigidbodySteve = Script.steve.getComponent(ƒ.ComponentRigidbody);
         rigidbodySteve.effectRotation = ƒ.Vector3.Y();
         ƒ.Physics.settings.sleepingAngularVelocityThreshold = 0.1;
-        console.log(steve.getComponent(ƒ.ComponentCamera));
-        let cmpCamera = steve.getComponent(ƒ.ComponentCamera);
+        console.log(Script.steve.getComponent(ƒ.ComponentCamera));
+        let cmpCamera = Script.steve.getComponent(ƒ.ComponentCamera);
         Script.viewport.camera = cmpCamera;
         rigidbodySteve.addEventListener("ColliderEnteredCollision" /* COLLISION_ENTER */, steveCollided);
     }
@@ -63,8 +114,8 @@ var Script;
         // let vtcCollision: ƒ.Vector3 = ƒ.Vector3.DIFFERENCE(_event.collisionPoint, steve.mtxWorld.translation);
         // if(Math.abs(vtcCollision.x) < 0.1 && Math.abs(vtcCollision.z) < 0.1 );
         isGrounded = true;
-        let customEvent = new CustomEvent(MINECRAFT.STEVE_COLLIDES, { bubbles: true, detail: steve.mtxWorld.translation });
-        steve.dispatchEvent(customEvent);
+        let customEvent = new CustomEvent(MINECRAFT.STEVE_COLLIDES, { bubbles: true, detail: Script.steve.mtxWorld.translation });
+        Script.steve.dispatchEvent(customEvent);
     }
     function update(_event) {
         // rigidbodySteve.applyForce(ƒ.Vector3.Z(10));
@@ -110,47 +161,6 @@ var Script;
         }
         console.log(Script.grid);
     }
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    var ƒ = FudgeCore;
-    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
-    class Physictester extends ƒ.ComponentScript {
-        // Register the script as component for use in the editor via drag&drop
-        static iSubclass = ƒ.Component.registerSubclass(Physictester);
-        // Properties may be mutated by users in the editor via the automatically created user interface
-        // public message: string = "CustomComponentScript added to ";
-        constructor() {
-            super();
-            // Don't start when running in editor
-            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
-                return;
-            // Listen to this component being added to or removed from a node
-            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
-            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
-        }
-        // Activate the functions of this component as response to events
-        hndEvent = (_event) => {
-            switch (_event.type) {
-                case "componentAdd" /* COMPONENT_ADD */:
-                    this.node.addEventListener("renderPrepare" /* RENDER_PREPARE */, this.update);
-                    break;
-                case "componentRemove" /* COMPONENT_REMOVE */:
-                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
-                    break;
-                case "nodeDeserialized" /* NODE_DESERIALIZED */:
-                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
-                    break;
-            }
-        };
-        update = (_event) => {
-            let rigidBody = this.node.getComponent(ƒ.ComponentRigidbody);
-            rigidBody.applyTorque(ƒ.Vector3.Y(0));
-        };
-    }
-    Script.Physictester = Physictester;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
