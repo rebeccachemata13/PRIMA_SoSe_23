@@ -1,5 +1,6 @@
 namespace Script {
   import ƒ = FudgeCore;
+  import ƒUi = FudgeUserInterface;
   ƒ.Debug.info("Main Program Template running!");
 
   let viewport: ƒ.Viewport;
@@ -7,13 +8,18 @@ namespace Script {
   let rigidbodyAvatar: ƒ.ComponentRigidbody;
   //let rigidbodyTile: ƒ.ComponentRigidbody;
   let isGrounded: boolean;
-  document.addEventListener("interactiveViewportStarted", <EventListener>start);
+  document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
 
   enum BOUNCYBALL{
     AVATAR_COLLIDES = "avatarCollides"
   }
 
-  function start(_event: CustomEvent): void {
+  async function start(_event: CustomEvent): Promise<void> {
+    let response: Response = await fetch("config.json");
+    let config: Object = response.json;
+    console.log(response);
+    console.log(config);
+    
     viewport = _event.detail;
 
     setupAvatar();
@@ -30,7 +36,6 @@ namespace Script {
       rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(5));
       isGrounded = false;
     }
-
   }
 
   function setupAvatar(): void {

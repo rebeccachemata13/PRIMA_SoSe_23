@@ -60,15 +60,15 @@ var Script;
             }
         };
         update = (_event) => {
-            let rigidbodySteve = Script.steve.getComponent(ƒ.ComponentRigidbody);
-            let rigidbodyCreeper = this.node.getComponent(ƒ.ComponentRigidbody);
-            let posSteve = rigidbodySteve.node.mtxWorld.translation;
-            let posCreeper = rigidbodySteve.node.mtxWorld.translation;
-            rigidbodyCreeper.applyForce(ƒ.Vector3.X(1));
-            rigidbodyCreeper.applyForce(ƒ.Vector3.Z(3));
-            let movementVector = ƒ.Vector3.DIFFERENCE(posSteve, posCreeper);
-            movementVector.normalize(100);
-            rigidbodyCreeper.applyForce(movementVector);
+            // let rigidbodySteve: ƒ.ComponentRigidbody = steve.getComponent(ƒ.ComponentRigidbody);
+            // let rigidbodyCreeper: ƒ.ComponentRigidbody = this.node.getComponent(ƒ.ComponentRigidbody);
+            // let posSteve: ƒ.Vector3 = rigidbodySteve.node.mtxWorld.translation;
+            // let posCreeper: ƒ.Vector3 = rigidbodySteve.node.mtxWorld.translation;
+            // rigidbodyCreeper.applyForce(ƒ.Vector3.X(1));
+            // rigidbodyCreeper.applyForce(ƒ.Vector3.Z(3));
+            // let movementVector: ƒ.Vector3 = ƒ.Vector3.DIFFERENCE(posSteve, posCreeper);
+            // movementVector.normalize(100);
+            // rigidbodyCreeper.applyForce(movementVector);
         };
     }
     Script.CreeperMaschine = CreeperMaschine;
