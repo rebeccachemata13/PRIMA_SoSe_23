@@ -12,10 +12,11 @@ declare namespace Script {
 declare namespace Script {
     import ƒ = FudgeCore;
     class Tile extends ƒ.Node {
-        static meshCube: ƒ.MeshCube;
+        static meshTile: ƒ.MeshCube;
+        static mtrTile: ƒ.Material;
         tileNumber: number;
         pitch: string;
-        tileLength: number;
-        constructor(tileNumber: number, pitch: string, tileLength: number, _position: ƒ.Vector3, _material: ƒ.Material);
+        tileLength: string;
+        constructor(tileNumber: number, pitch: string, tileLength: string, _position: ƒ.Vector3, _color: ƒ.Color);
     }
 }

@@ -36,25 +36,25 @@ var Script;
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             // Listen to this component being added to or removed from a node
-            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
-            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
-            this.addEventListener("renderPrepare" /* RENDER_PREPARE */, this.hndEvent);
+            this.addEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.hndEvent);
+            this.addEventListener("renderPrepare" /* ƒ.EVENT.RENDER_PREPARE */, this.hndEvent);
         }
         // Activate the functions of this component as response to events
         hndEvent = (_event) => {
             switch (_event.type) {
-                case "componentAdd" /* COMPONENT_ADD */:
-                    this.node.addEventListener("renderPrepare" /* RENDER_PREPARE */, this.update);
+                case "componentAdd" /* ƒ.EVENT.COMPONENT_ADD */:
+                    this.node.addEventListener("renderPrepare" /* ƒ.EVENT.RENDER_PREPARE */, this.update);
                     break;
-                case "componentRemove" /* COMPONENT_REMOVE */:
-                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                case "componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
                     break;
-                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                case "nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
-                case "renderPrepare" /* RENDER_PREPARE */:
+                case "renderPrepare" /* ƒ.EVENT.RENDER_PREPARE */:
                     console.log("Rendering now..");
                     break;
             }
@@ -95,7 +95,7 @@ var Script;
         console.log(Script.steve.getComponent(ƒ.ComponentCamera));
         let cmpCamera = Script.steve.getComponent(ƒ.ComponentCamera);
         Script.viewport.camera = cmpCamera;
-        rigidbodySteve.addEventListener("ColliderEnteredCollision" /* COLLISION_ENTER */, steveCollided);
+        rigidbodySteve.addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, steveCollided);
     }
     function start(_event) {
         Script.viewport = _event.detail;
@@ -107,7 +107,7 @@ var Script;
         Script.viewport.canvas.addEventListener("pointerdown", pickAlgorithm[1]);
         Script.viewport.getBranch().addEventListener("pointerdown", Script.hitComponent);
         Script.viewport.getBranch().addEventListener(MINECRAFT.STEVE_COLLIDES, (_event) => console.log(_event));
-        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
+        ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     function steveCollided(_event) {

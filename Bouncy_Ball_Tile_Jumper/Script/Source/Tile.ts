@@ -2,20 +2,22 @@ namespace Script{
     import ƒ = FudgeCore;
 
     export class Tile extends ƒ.Node{
-        static meshCube: ƒ.MeshCube = new ƒ.MeshCube("Tile");
+        static meshTile: ƒ.MeshCube = new ƒ.MeshCube("Tile");
+        static mtrTile: ƒ.Material = new ƒ.Material("Tile", ƒ.ShaderFlat, new ƒ.CoatRemissive());
         tileNumber: number;
         pitch: string;
-        tileLength: number;
+        tileLength: string;
         
-        constructor(tileNumber: number, pitch: string, tileLength: number, _position: ƒ.Vector3, _material: ƒ.Material){
+        constructor(tileNumber: number, pitch: string, tileLength: string, _position: ƒ.Vector3, _color: ƒ.Color){
             super("Tile");
             this.tileNumber = tileNumber;
             this.pitch = pitch;
             this.tileLength = tileLength;
 
-            this.addComponent(new ƒ.ComponentMesh(Tile.meshCube));
+            this.addComponent(new ƒ.ComponentMesh(Tile.meshTile));
 
-            let cmpMaterial: ƒ.ComponentMaterial= new ƒ.ComponentMaterial(_material);
+            let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(Tile.mtrTile);
+            cmpMaterial.clrPrimary = _color;
             this.addComponent(cmpMaterial);
 
             let cmpTransform: ƒ.ComponentTransform = new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(_position));
