@@ -3,8 +3,16 @@ namespace Script{
 
     export class Tile extends ƒ.Node{
         static meshCube: ƒ.MeshCube = new ƒ.MeshCube("Tile");
-        constructor(_position: ƒ.Vector3, _material: ƒ.Material){
+        tileNumber: number;
+        pitch: string;
+        lenght: number;
+        
+        constructor(tileNumber: number, pitch: string, length: number, _position: ƒ.Vector3, _material: ƒ.Material){
             super("Tile");
+            this.tileNumber = tileNumber;
+            this.pitch = pitch;
+            this.lenght = length;
+
             this.addComponent(new ƒ.ComponentMesh(Tile.meshCube));
 
             let cmpMaterial: ƒ.ComponentMaterial= new ƒ.ComponentMaterial(_material);
