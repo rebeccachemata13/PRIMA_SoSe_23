@@ -6,7 +6,7 @@ namespace Script {
   let viewport: ƒ.Viewport;
   let avatar: ƒ.Node;
   let rigidbodyAvatar: ƒ.ComponentRigidbody;
-  let config: {[key: string]: number}; 
+  let config: {tiles: Tile[]}; 
   //let rigidbodyTile: ƒ.ComponentRigidbody;
   let isGrounded: boolean;
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
@@ -24,14 +24,16 @@ namespace Script {
     viewport = _event.detail;
 
     setupAvatar();
+    buildTiles();
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
 
-  function buildTiles(tile: Tile): void {
+  function buildTiles(): void {
+    console.log(config.tiles[0].tileNumber);
     for (let i: number = 0; i < 2; i++) {
-      tile = [config.tiles[i].tileNumber, config.tiles[i].pitch, config.tiles[i].tileLength, ];
+      let tile: Tile = new Tile (config.tiles[i].tileNumber, config.tiles[i].pitch, config.tiles[i].tileLength, );
     }
   }
   //relPos[0].xPos

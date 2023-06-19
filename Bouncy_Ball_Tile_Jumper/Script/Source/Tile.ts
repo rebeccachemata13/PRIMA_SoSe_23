@@ -5,13 +5,13 @@ namespace Script{
         static meshCube: ƒ.MeshCube = new ƒ.MeshCube("Tile");
         tileNumber: number;
         pitch: string;
-        lenght: number;
+        tileLength: number;
         
-        constructor(tileNumber: number, pitch: string, length: number, _position: ƒ.Vector3, _material: ƒ.Material){
+        constructor(tileNumber: number, pitch: string, tileLength: number, _position: ƒ.Vector3, _material: ƒ.Material){
             super("Tile");
             this.tileNumber = tileNumber;
             this.pitch = pitch;
-            this.lenght = length;
+            this.tileLength = tileLength;
 
             this.addComponent(new ƒ.ComponentMesh(Tile.meshCube));
 

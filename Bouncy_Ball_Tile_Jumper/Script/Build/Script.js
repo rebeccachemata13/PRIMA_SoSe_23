@@ -43,6 +43,7 @@ var Script;
     let viewport;
     let avatar;
     let rigidbodyAvatar;
+    let config;
     //let rigidbodyTile: ƒ.ComponentRigidbody;
     let isGrounded;
     document.addEventListener("interactiveViewportStarted", start);
@@ -50,12 +51,24 @@ var Script;
     (function (BOUNCYBALL) {
         BOUNCYBALL["AVATAR_COLLIDES"] = "avatarCollides";
     })(BOUNCYBALL || (BOUNCYBALL = {}));
-    function start(_event) {
+    async function start(_event) {
+        let response = await fetch("config.json");
+        config = await response.json();
+        console.log(response);
+        console.log(config);
         viewport = _event.detail;
         setupAvatar();
+        buildTiles();
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
+    function buildTiles() {
+        console.log(config.tiles[0].tileNumber);
+        for (let i = 0; i < 2; i++) {
+            let tile = new Script.Tile(config.tiles[i].tileNumber, config.tiles[i].pitch, config.tiles[i].tileLength);
+        }
+    }
+    //relPos[0].xPos
     function update(_event) {
         ƒ.Physics.simulate(); // if physics is included and used
         viewport.draw();
@@ -75,5 +88,29 @@ var Script;
         let customEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
         avatar.dispatchEvent(customEvent);
     }
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    class Tile extends ƒ.Node {
+        static meshCube = new ƒ.MeshCube("Tile");
+        tileNumber;
+        pitch;
+        tileLength;
+        constructor(tileNumber, pitch, tileLength, _position, _material) {
+            super("Tile");
+            this.tileNumber = tileNumber;
+            this.pitch = pitch;
+            this.tileLength = tileLength;
+            this.addComponent(new ƒ.ComponentMesh(Tile.meshCube));
+            let cmpMaterial = new ƒ.ComponentMaterial(_material);
+            this.addComponent(cmpMaterial);
+            let cmpTransform = new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(_position));
+            this.addComponent(cmpTransform);
+            let cpmRigidbody = new ƒ.ComponentRigidbody(1, ƒ.BODY_TYPE.STATIC, ƒ.COLLIDER_TYPE.CUBE);
+            this.addComponent(cpmRigidbody);
+        }
+    }
+    Script.Tile = Tile;
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
