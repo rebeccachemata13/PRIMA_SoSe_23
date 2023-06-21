@@ -90,8 +90,9 @@ namespace Script {
     ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
     ƒ.AudioManager.default.update();
+    rigidbodyAvatar.applyForce(ƒ.Vector3.X(1));
     if (isGrounded) {
-      rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(5));
+      rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(8));
       isGrounded = false;
     }
   }
