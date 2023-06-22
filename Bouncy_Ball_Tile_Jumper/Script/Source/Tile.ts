@@ -6,13 +6,13 @@ namespace Script{
         static mtrTile: ƒ.Material = new ƒ.Material("Tile", ƒ.ShaderFlat, new ƒ.CoatRemissive());
         tileNumber: number;
         pitch: string;
-        tileLength: string;
+        length: string;
         
-        constructor(tileNumber: number, pitch: string, tileLength: string, _position: ƒ.Vector3, _color: ƒ.Color){
+        constructor(tileNumber: number, pitch: string, length: string, _position: ƒ.Vector3, _color: ƒ.Color){
             super("Tile");
             this.tileNumber = tileNumber;
             this.pitch = pitch;
-            this.tileLength = tileLength;
+            this.length = length;
 
             this.addComponent(new ƒ.ComponentMesh(Tile.meshTile));
 

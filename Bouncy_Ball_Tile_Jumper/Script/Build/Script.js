@@ -14,21 +14,21 @@ var Script;
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             // Listen to this component being added to or removed from a node
-            this.addEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
-            this.addEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
-            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.hndEvent);
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
         }
         // Activate the functions of this component as response to events
         hndEvent = (_event) => {
             switch (_event.type) {
-                case "componentAdd" /* ƒ.EVENT.COMPONENT_ADD */:
+                case "componentAdd" /* COMPONENT_ADD */:
                     ƒ.Debug.log(this.message, this.node);
                     break;
-                case "componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */:
-                    this.removeEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
-                    this.removeEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
+                case "componentRemove" /* COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
                     break;
-                case "nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */:
+                case "nodeDeserialized" /* NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
@@ -58,41 +58,32 @@ var Script;
         console.log(response);
         console.log(config);
         viewport = _event.detail;
+        viewport.canvas.addEventListener("mousemove", handleMousemove);
         setupAvatar();
         buildTiles();
-        ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
+        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    }
+    function handleMousemove(_event) {
+        console.log(_event.movementX);
+        rigidbodyAvatar.applyForce(ƒ.Vector3.X(1));
+        if (_event.movementX < 0) {
+            rigidbodyAvatar.applyForce(ƒ.Vector3.Z(1));
+        }
+        else {
+            rigidbodyAvatar.applyForce(ƒ.Vector3.Z(-1));
+        }
     }
     function buildTiles() {
         let yPos = 1;
         let distance = 0;
         let pitch = 0;
+        let pitches = { "C": 0, "D": 2, "E": 4, "F": 6, "G": 8, "A": 10, "H": 12 };
         console.log(config.tiles[0].tileNumber);
-        for (let i = 0; i < config.tiles.length; i++) {
-            switch (config.tiles[i].pitch) {
-                case "C":
-                    pitch = 0;
-                    break;
-                case "D":
-                    pitch = 2;
-                    break;
-                case "E":
-                    pitch = 4;
-                    break;
-                case "F":
-                    pitch = 6;
-                    break;
-                case "G":
-                    pitch = 8;
-                    break;
-                case "A":
-                    pitch = 10;
-                    break;
-                case "H":
-                    pitch = 12;
-                    break;
-            }
-            switch (config.tiles[i].tileLength) {
+        let position = new ƒ.Vector3(distance, yPos, pitch);
+        for (let configTile of config.tiles) {
+            pitch = pitches[configTile.pitch];
+            switch (configTile.length) {
                 case "1/4":
                     distance = 4;
                     break;
@@ -100,16 +91,16 @@ var Script;
                     distance = 8;
                     break;
                 case "1/8":
-                    distance = 1;
+                    distance = 3;
                     break;
                 case "4/4":
                     distance = 16;
                     break;
             }
-            let position = new ƒ.Vector3(distance + i, yPos, pitch);
-            console.log(distance + (2 * i));
             // console.log(config.tiles[5].tileLength);
-            let tile = new Script.Tile(config.tiles[i].tileNumber, config.tiles[i].pitch, config.tiles[i].tileLength, position, ƒ.Color.CSS("blue"));
+            position.x += distance;
+            position.z = pitch;
+            let tile = new Script.Tile(configTile.tileNumber, configTile.pitch, configTile.length, position, ƒ.Color.CSS("blue"));
             tile.mtxLocal.scaleX(2.5);
             tile.mtxLocal.scaleY(0.2);
             tile.mtxLocal.scaleZ(1.5);
@@ -120,7 +111,6 @@ var Script;
         ƒ.Physics.simulate(); // if physics is included and used
         viewport.draw();
         ƒ.AudioManager.default.update();
-        rigidbodyAvatar.applyForce(ƒ.Vector3.X(1));
         if (isGrounded) {
             rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(8));
             isGrounded = false;
@@ -129,7 +119,7 @@ var Script;
     function setupAvatar() {
         avatar = viewport.getBranch().getChildrenByName("Avatar")[0];
         rigidbodyAvatar = avatar.getComponent(ƒ.ComponentRigidbody);
-        rigidbodyAvatar.addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, avatarCollided);
+        rigidbodyAvatar.addEventListener("ColliderEnteredCollision" /* COLLISION_ENTER */, avatarCollided);
     }
     function avatarCollided() {
         isGrounded = true;
@@ -145,12 +135,12 @@ var Script;
         static mtrTile = new ƒ.Material("Tile", ƒ.ShaderFlat, new ƒ.CoatRemissive());
         tileNumber;
         pitch;
-        tileLength;
-        constructor(tileNumber, pitch, tileLength, _position, _color) {
+        length;
+        constructor(tileNumber, pitch, length, _position, _color) {
             super("Tile");
             this.tileNumber = tileNumber;
             this.pitch = pitch;
-            this.tileLength = tileLength;
+            this.length = length;
             this.addComponent(new ƒ.ComponentMesh(Tile.meshTile));
             let cmpMaterial = new ƒ.ComponentMaterial(Tile.mtrTile);
             cmpMaterial.clrPrimary = _color;

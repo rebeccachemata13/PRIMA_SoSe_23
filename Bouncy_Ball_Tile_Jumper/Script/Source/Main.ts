@@ -6,7 +6,7 @@ namespace Script {
   let viewport: ƒ.Viewport;
   let avatar: ƒ.Node;
   let rigidbodyAvatar: ƒ.ComponentRigidbody;
-  let config: {tiles: Tile[]}; 
+  let config: { tiles: Tile[] };
   //let rigidbodyTile: ƒ.ComponentRigidbody;
   let isGrounded: boolean;
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
@@ -22,7 +22,7 @@ namespace Script {
     console.log(config);
 
     viewport = _event.detail;
-
+    viewport.canvas.addEventListener("mousemove", handleMousemove);
     setupAvatar();
     buildTiles();
 
@@ -30,55 +30,45 @@ namespace Script {
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
 
+  function handleMousemove(_event:MouseEvent):void {
+    console.log(_event.movementX);
+    rigidbodyAvatar.applyForce(ƒ.Vector3.X(1));
+   
+    if(_event.movementX < 0){
+      rigidbodyAvatar.applyForce(ƒ.Vector3.Z(1));
+    } else {
+      rigidbodyAvatar.applyForce(ƒ.Vector3.Z(-1));
+    }
+  }
+
   function buildTiles(): void {
     let yPos: number = 1;
     let distance: number = 0;
     let pitch: number = 0;
+    let pitches: {[note: string]: number} = {"C": 0, "D":2, "E":4, "F":6, "G":8, "A": 10, "H":12};
     console.log(config.tiles[0].tileNumber);
+    let position: ƒ.Vector3 = new ƒ.Vector3(distance, yPos, pitch);
 
-    for (let i: number = 0; i < config.tiles.length; i++) {
-    switch(config.tiles[i].pitch){
-      case "C":
-        pitch = 0;
-        break; 
-      case "D":
-        pitch = 2;
-        break; 
-      case "E":
-        pitch = 4;
-        break; 
-      case "F":
-        pitch = 6;
-        break; 
-      case "G":
-        pitch = 8;
-        break;
-      case "A":
-        pitch = 10;
-        break;
-      case "H":
-        pitch = 12;
-        break;
-    }
-
-    switch(config.tiles[i].tileLength){
-      case "1/4":
-        distance = 4;
-        break;
-      case "1/2":
-        distance = 8;
-        break;
-      case "1/8":
-        distance = 1;
-        break;
-      case "4/4":
-        distance = 16;
-        break;
+    for (let configTile of config.tiles) {
+      pitch = pitches[configTile.pitch];
+      switch (configTile.length) {
+        case "1/4":
+          distance = 4;
+          break;
+        case "1/2":
+          distance = 8;
+          break;
+        case "1/8":
+          distance = 3;
+          break;
+        case "4/4":
+          distance = 16;
+          break;
       }
-      let position: ƒ.Vector3 = new ƒ.Vector3(distance + i, yPos, pitch);
-      console.log(distance + (2*i));
       // console.log(config.tiles[5].tileLength);
-      let tile: Tile = new Tile (config.tiles[i].tileNumber, config.tiles[i].pitch, config.tiles[i].tileLength, position, ƒ.Color.CSS("blue"));
+      position.x += distance;
+      position.z = pitch;
+      let tile: Tile = new Tile(configTile.tileNumber, configTile.pitch, configTile.length, position, ƒ.Color.CSS("blue"));
       tile.mtxLocal.scaleX(2.5);
       tile.mtxLocal.scaleY(0.2);
       tile.mtxLocal.scaleZ(1.5);
@@ -90,8 +80,7 @@ namespace Script {
     ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
     ƒ.AudioManager.default.update();
-    rigidbodyAvatar.applyForce(ƒ.Vector3.X(1));
-    if (isGrounded) {
+   if (isGrounded) {
       rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(8));
       isGrounded = false;
     }

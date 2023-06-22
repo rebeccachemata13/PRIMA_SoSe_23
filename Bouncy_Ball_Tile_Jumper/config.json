@@ -4,71 +4,66 @@
             {
                 "tileNumber": 1,
                 "pitch": "C",
-                "tileLength": "1/4"
-            },
-            {
-                "tileNumber": 1,
-                "pitch": "C",
-                "tileLength": "1/2"
+                "length": "1/4"
             },
             {
                 "tileNumber": 2,
                 "pitch": "D",
-                "tileLength": "1/4"
+                "length": "1/4"
 
             },
             {
                 "tileNumber": 3,
                 "pitch": "E",
-                "tileLength": "1/4"
+                "length": "1/4"
 
             },
             {
                 "tileNumber": 4,
                 "pitch": "F",
-                "tileLength": "1/4"
+                "length": "1/4"
 
             },
             {
                 "tileNumber": 5,
                 "pitch": "G",
-                "tileLength": "1/2"
+                "length": "1/2"
 
             },
             {
                 "tileNumber": 6,
                 "pitch": "G",
-                "tileLength": "1/2"
+                "length": "1/2"
 
             }, 
             {
                 "tileNumber": 7,
                 "pitch": "A",
-                "tileLength": "1/8"
+                "length": "1/2"
 
             },
             {
                 "tileNumber": 8,
                 "pitch": "A",
-                "tileLength": "1/8"
+                "length": "1/8"
 
             },
             {
                 "tileNumber": 9,
                 "pitch": "A",
-                "tileLength": "1/8"
+                "length": "1/8"
 
             },
             {
                 "tileNumber": 10,
                 "pitch": "A",
-                "tileLength": "1/8"
+                "length": "1/8"
 
             },
             {
                 "tileNumber": 11,
                 "pitch": "G",
-                "tileLength": "4/4"
+                "length": "4/4"
 
             }
 

@@ -16,7 +16,7 @@ declare namespace Script {
         static mtrTile: ƒ.Material;
         tileNumber: number;
         pitch: string;
-        tileLength: string;
-        constructor(tileNumber: number, pitch: string, tileLength: string, _position: ƒ.Vector3, _color: ƒ.Color);
+        length: string;
+        constructor(tileNumber: number, pitch: string, length: string, _position: ƒ.Vector3, _color: ƒ.Color);
     }
 }
