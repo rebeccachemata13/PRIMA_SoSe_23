@@ -82,24 +82,12 @@ var Script;
         let distance = 0;
         let pitch = 0;
         let pitches = { "C": 0, "D": 2, "E": 4, "F": 6, "G": 8, "A": 10, "H": 12 };
+        let distances = { "1/4": 4, "1/2": 8, "1/8": 3, "4/4": 16 };
         console.log(config.tiles[0].tileNumber);
         let position = new ƒ.Vector3(pitch, yPos, distance);
         for (let configTile of config.tiles) {
             pitch = pitches[configTile.pitch];
-            switch (configTile.length) {
-                case "1/4":
-                    distance = 4;
-                    break;
-                case "1/2":
-                    distance = 8;
-                    break;
-                case "1/8":
-                    distance = 3;
-                    break;
-                case "4/4":
-                    distance = 16;
-                    break;
-            }
+            distance = distances[configTile.length];
             // console.log(config.tiles[5].tileLength);
             position.z -= distance;
             position.x = pitch;
