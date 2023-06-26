@@ -155,8 +155,8 @@
                     "initialization": "TO_PIVOT",
                     "friction": 0.2,
                     "restitution": 0.2,
-                    "mass": 0.40000000000000013,
-                    "dampTranslation": 0.1,
+                    "mass": 25,
+                    "dampTranslation": 1.1,
                     "dampRotation": 0.1,
                     "effectGravity": 1,
                     "typeBody": "DYNAMIC",
@@ -173,8 +173,7 @@
                     }
                   }
                 }
-              ],
-              "ComponentCamera": []
+              ]
             },
             "children": []
           }
