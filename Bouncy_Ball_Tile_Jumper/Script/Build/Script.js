@@ -14,21 +14,21 @@ var Script;
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             // Listen to this component being added to or removed from a node
-            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
-            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+            this.addEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.hndEvent);
         }
         // Activate the functions of this component as response to events
         hndEvent = (_event) => {
             switch (_event.type) {
-                case "componentAdd" /* COMPONENT_ADD */:
+                case "componentAdd" /* ƒ.EVENT.COMPONENT_ADD */:
                     ƒ.Debug.log(this.message, this.node);
                     break;
-                case "componentRemove" /* COMPONENT_REMOVE */:
-                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
-                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                case "componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
                     break;
-                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                case "nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
@@ -48,6 +48,7 @@ var Script;
     let config;
     //let rigidbodyTile: ƒ.ComponentRigidbody;
     let isGrounded;
+    // let control: ƒ.Control = new ƒ.Control("Proportional", 1, ƒ.CONTROL_TYPE.PROPORTIONAL, 2);
     document.addEventListener("interactiveViewportStarted", start);
     let BOUNCYBALL;
     (function (BOUNCYBALL) {
@@ -64,18 +65,18 @@ var Script;
         viewport.canvas.addEventListener("mousemove", handleMousemove);
         setupAvatar();
         buildTiles();
-        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
+        ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     function handleMousemove(_event) {
-        rigidbodyAvatar.applyForce(ƒ.Vector3.X(_event.movementX * 0.1));
+        rigidbodyAvatar.applyForce(ƒ.Vector3.X(_event.movementX * 0.4));
     }
     function buildTiles() {
         let yPos = 1;
         let distance = 0;
         let pitch = 0;
-        let pitches = { "C": 0, "D": 2, "E": 4, "F": 6, "G": 8, "A": 10, "H": 12 };
-        let distances = { "1/4": 4, "1/2": 8, "1/8": 3, "4/4": 16 };
+        let pitches = { "C": 0, "D": 3, "E": 6, "F": 9, "G": 12, "A": 15, "H": 18 };
+        let distances = { "1/4": 4, "1/2": 9, "1/8": 3, "4/4": 17 };
         console.log(config.tiles[0].tileNumber);
         let position = new ƒ.Vector3(pitch, yPos, distance);
         for (let configTile of config.tiles) {
@@ -94,20 +95,28 @@ var Script;
     }
     function update(_event) {
         ƒ.Physics.simulate(); // if physics is included and used
-        viewport.draw();
-        ƒ.AudioManager.default.update();
-        rigidbodyAvatar.applyForce(ƒ.Vector3.X(0.3));
+        cameraMover();
+        // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
+        rigidbodyAvatar.applyForce(ƒ.Vector3.Z(-3));
         if (isGrounded) {
-            rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(1));
-        }
-        else {
+            rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(7));
             isGrounded = false;
         }
+        viewport.draw();
+        ƒ.AudioManager.default.update();
+    }
+    function cameraMover() {
+        console.log("is this working?");
+        let posCamera = cmpCamera.mtxPivot.translation;
+        let posBall = avatar.mtxLocal.translation;
+        let cameraMovement = new ƒ.Vector3(posBall.x, posCamera.y, posBall.z + 9);
+        cmpCamera.mtxPivot.translation = cameraMovement;
+        console.log(cameraMovement);
     }
     function setupAvatar() {
         avatar = viewport.getBranch().getChildrenByName("Avatar")[0];
         rigidbodyAvatar = avatar.getComponent(ƒ.ComponentRigidbody);
-        rigidbodyAvatar.addEventListener("ColliderEnteredCollision" /* COLLISION_ENTER */, avatarCollided);
+        rigidbodyAvatar.addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, avatarCollided);
     }
     function avatarCollided() {
         isGrounded = true;

@@ -10,6 +10,7 @@ namespace Script {
   let config: { tiles: Tile[] };
   //let rigidbodyTile: ƒ.ComponentRigidbody;
   let isGrounded: boolean;
+  // let control: ƒ.Control = new ƒ.Control("Proportional", 1, ƒ.CONTROL_TYPE.PROPORTIONAL, 2);
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
 
   enum BOUNCYBALL {
@@ -34,7 +35,7 @@ namespace Script {
   }
 
   function handleMousemove(_event: MouseEvent): void {
-    rigidbodyAvatar.applyForce(ƒ.Vector3.X(_event.movementX * 0.1));
+    rigidbodyAvatar.applyForce(ƒ.Vector3.X(_event.movementX * 0.4));
 
   }
 
@@ -42,8 +43,8 @@ namespace Script {
     let yPos: number = 1;
     let distance: number = 0;
     let pitch: number = 0;
-    let pitches: { [note: string]: number } = { "C": 0, "D": 2, "E": 4, "F": 6, "G": 8, "A": 10, "H": 12 };
-    let distances: { [abstand: string]: number } = { "1/4": 4, "1/2": 8, "1/8": 3, "4/4": 16 };
+    let pitches: { [note: string]: number } = { "C": 0, "D": 3, "E": 6, "F": 9, "G": 12, "A": 15, "H": 18 };
+    let distances: { [abstand: string]: number } = { "1/4": 4, "1/2": 9, "1/8": 3, "4/4": 17 };
     console.log(config.tiles[0].tileNumber);
     let position: ƒ.Vector3 = new ƒ.Vector3(pitch, yPos, distance);
 
@@ -64,14 +65,28 @@ namespace Script {
 
   function update(_event: Event): void {
     ƒ.Physics.simulate();  // if physics is included and used
-    viewport.draw();
-    ƒ.AudioManager.default.update();
-    rigidbodyAvatar.applyForce(ƒ.Vector3.X(0.3));
+   
+    cameraMover();
+    // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
+
+    rigidbodyAvatar.applyForce(ƒ.Vector3.Z(-3));
     if (isGrounded) {
-      rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(1));
-    } else {
+      rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(7));
       isGrounded = false;
     }
+
+    viewport.draw();
+    ƒ.AudioManager.default.update();
+  }
+
+  function cameraMover():void {
+    console.log("is this working?");
+    let posCamera: ƒ.Vector3 = cmpCamera.mtxPivot.translation;
+    let posBall: ƒ.Vector3 = avatar.mtxLocal.translation;
+
+    let cameraMovement: ƒ.Vector3 = new ƒ.Vector3 (posBall.x, posCamera.y, posBall.z + 9);
+    cmpCamera.mtxPivot.translation = cameraMovement;
+    console.log(cameraMovement);
   }
 
   function setupAvatar(): void {

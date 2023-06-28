@@ -139,7 +139,7 @@
                 {
                   "ƒ.ComponentTransform": {
                     "local": {
-                      "translation": "[0, 0.6000000238418579, 0]",
+                      "translation": "[0, 0.6000000238418579, -4.199999809265137]",
                       "rotation": "[0, 0, 0]",
                       "scaling": "[1, 1, 1]"
                     },
@@ -155,10 +155,10 @@
                     "initialization": "TO_PIVOT",
                     "friction": 0.2,
                     "restitution": 0.2,
-                    "mass": 25,
-                    "dampTranslation": 1.1,
+                    "mass": 0.4,
+                    "dampTranslation": 0.49999999999999967,
                     "dampRotation": 0.1,
-                    "effectGravity": 1,
+                    "effectGravity": 2,
                     "typeBody": "DYNAMIC",
                     "typeCollider": "SPHERE",
                     "isTrigger": false,
