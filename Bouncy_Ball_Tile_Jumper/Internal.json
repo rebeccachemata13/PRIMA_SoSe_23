@@ -156,7 +156,7 @@
                     "friction": 0.2,
                     "restitution": 0.2,
                     "mass": 0.4,
-                    "dampTranslation": 0.49999999999999967,
+                    "dampTranslation": 0.6499999999999997,
                     "dampRotation": 0.1,
                     "effectGravity": 2,
                     "typeBody": "DYNAMIC",
