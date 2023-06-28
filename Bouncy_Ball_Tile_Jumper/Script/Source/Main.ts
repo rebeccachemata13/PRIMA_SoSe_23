@@ -8,6 +8,7 @@ namespace Script {
   let rigidbodyAvatar: ƒ.ComponentRigidbody;
   let cmpCamera: ƒ.ComponentCamera;
   let config: { tiles: Tile[] };
+  let jumpforce: number;
   //let rigidbodyTile: ƒ.ComponentRigidbody;
   let isGrounded: boolean;
   // let control: ƒ.Control = new ƒ.Control("Proportional", 1, ƒ.CONTROL_TYPE.PROPORTIONAL, 2);
@@ -27,6 +28,7 @@ namespace Script {
     cmpCamera = viewport.getBranch().getComponent(ƒ.ComponentCamera);
     viewport.camera = cmpCamera;
     viewport.canvas.addEventListener("mousemove", handleMousemove);
+    
     setupAvatar();
     buildTiles();
 
@@ -44,17 +46,18 @@ namespace Script {
     let distance: number = 0;
     let pitch: number = 0;
     let pitches: { [note: string]: number } = { "C": 0, "D": 3, "E": 6, "F": 9, "G": 12, "A": 15, "H": 18 };
-    let distances: { [abstand: string]: number } = { "1/4": 4, "1/2": 9, "1/8": 3, "4/4": 17 };
+    let distances: { [abstand: string]: number } = { "1/4": 4, "1/2": 10, "1/8": 3, "4/4": 17 };
     console.log(config.tiles[0].tileNumber);
     let position: ƒ.Vector3 = new ƒ.Vector3(pitch, yPos, distance);
 
     for (let configTile of config.tiles) {
       pitch = pitches[configTile.pitch];
       distance = distances[configTile.length];
+      jumpforce = configTile.jumpforce;
       // console.log(config.tiles[5].tileLength);
       position.z -= distance;
       position.x = pitch;
-      let tile: Tile = new Tile(configTile.tileNumber, configTile.pitch, configTile.length, position, ƒ.Color.CSS("blue"));
+      let tile: Tile = new Tile(configTile.tileNumber, configTile.pitch, configTile.length, configTile.jumpforce, position, ƒ.Color.CSS("blue"));
       tile.mtxLocal.scaleX(1.5);
       tile.mtxLocal.scaleY(0.2);
       tile.mtxLocal.scaleZ(2.5);
@@ -68,8 +71,8 @@ namespace Script {
    
     cameraMover();
     // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
-
-    rigidbodyAvatar.applyForce(ƒ.Vector3.Z(-3));
+    rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
+    console.log(jumpforce);
     if (isGrounded) {
       rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(7));
       isGrounded = false;

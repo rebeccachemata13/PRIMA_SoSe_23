@@ -17,6 +17,7 @@ declare namespace Script {
         tileNumber: number;
         pitch: string;
         length: string;
-        constructor(tileNumber: number, pitch: string, length: string, _position: ƒ.Vector3, _color: ƒ.Color);
+        jumpforce: number;
+        constructor(tileNumber: number, pitch: string, length: string, jumpforce: number, _position: ƒ.Vector3, _color: ƒ.Color);
     }
 }

@@ -46,6 +46,7 @@ var Script;
     let rigidbodyAvatar;
     let cmpCamera;
     let config;
+    let jumpforce;
     //let rigidbodyTile: ƒ.ComponentRigidbody;
     let isGrounded;
     // let control: ƒ.Control = new ƒ.Control("Proportional", 1, ƒ.CONTROL_TYPE.PROPORTIONAL, 2);
@@ -76,16 +77,17 @@ var Script;
         let distance = 0;
         let pitch = 0;
         let pitches = { "C": 0, "D": 3, "E": 6, "F": 9, "G": 12, "A": 15, "H": 18 };
-        let distances = { "1/4": 4, "1/2": 9, "1/8": 3, "4/4": 17 };
+        let distances = { "1/4": 4, "1/2": 10, "1/8": 3, "4/4": 17 };
         console.log(config.tiles[0].tileNumber);
         let position = new ƒ.Vector3(pitch, yPos, distance);
         for (let configTile of config.tiles) {
             pitch = pitches[configTile.pitch];
             distance = distances[configTile.length];
+            jumpforce = configTile.jumpforce;
             // console.log(config.tiles[5].tileLength);
             position.z -= distance;
             position.x = pitch;
-            let tile = new Script.Tile(configTile.tileNumber, configTile.pitch, configTile.length, position, ƒ.Color.CSS("blue"));
+            let tile = new Script.Tile(configTile.tileNumber, configTile.pitch, configTile.length, configTile.jumpforce, position, ƒ.Color.CSS("blue"));
             tile.mtxLocal.scaleX(1.5);
             tile.mtxLocal.scaleY(0.2);
             tile.mtxLocal.scaleZ(2.5);
@@ -97,7 +99,8 @@ var Script;
         ƒ.Physics.simulate(); // if physics is included and used
         cameraMover();
         // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
-        rigidbodyAvatar.applyForce(ƒ.Vector3.Z(-3));
+        rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
+        console.log(jumpforce);
         if (isGrounded) {
             rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(7));
             isGrounded = false;
@@ -133,11 +136,13 @@ var Script;
         tileNumber;
         pitch;
         length;
-        constructor(tileNumber, pitch, length, _position, _color) {
+        jumpforce;
+        constructor(tileNumber, pitch, length, jumpforce, _position, _color) {
             super("Tile");
             this.tileNumber = tileNumber;
             this.pitch = pitch;
             this.length = length;
+            this.jumpforce = jumpforce;
             this.addComponent(new ƒ.ComponentMesh(Tile.meshTile));
             let cmpMaterial = new ƒ.ComponentMaterial(Tile.mtrTile);
             cmpMaterial.clrPrimary = _color;

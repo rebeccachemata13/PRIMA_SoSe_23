@@ -7,12 +7,14 @@ namespace Script{
         tileNumber: number;
         pitch: string;
         length: string;
+        jumpforce: number;
         
-        constructor(tileNumber: number, pitch: string, length: string, _position: ƒ.Vector3, _color: ƒ.Color){
+        constructor(tileNumber: number, pitch: string, length: string, jumpforce:number, _position: ƒ.Vector3, _color: ƒ.Color){
             super("Tile");
             this.tileNumber = tileNumber;
             this.pitch = pitch;
             this.length = length;
+            this.jumpforce = jumpforce;
 
             this.addComponent(new ƒ.ComponentMesh(Tile.meshTile));
 
