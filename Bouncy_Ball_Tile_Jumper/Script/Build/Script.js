@@ -39,6 +39,24 @@ var Script;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
+    var ƒUi = FudgeUserInterface;
+    class Gamestate extends ƒ.Mutable {
+        score;
+        constructor() {
+            super();
+            this.score = 0;
+            let vui = document.querySelector("div#vui");
+            new ƒUi.Controller(this, vui);
+            this.addEventListener("mutate" /* ƒ.EVENT.MUTATE */, () => console.log(this));
+        }
+        reduceMutator(_mutator) {
+        }
+    }
+    Script.Gamestate = Gamestate;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
     //import ƒUi = FudgeUserInterface;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
@@ -78,7 +96,6 @@ var Script;
         let pitch = 0;
         let pitches = { "C": 0, "D": 3, "E": 6, "F": 9, "G": 12, "A": 15, "H": 18 };
         let distances = { "1/4": 4, "1/2": 10, "1/8": 3, "4/4": 17 };
-        console.log(config.tiles[0].tileNumber);
         let position = new ƒ.Vector3(pitch, yPos, distance);
         for (let configTile of config.tiles) {
             pitch = pitches[configTile.pitch];
@@ -87,7 +104,7 @@ var Script;
             // console.log(config.tiles[5].tileLength);
             position.z -= distance;
             position.x = pitch;
-            let tile = new Script.Tile(configTile.tileNumber, configTile.pitch, configTile.length, configTile.jumpforce, position, ƒ.Color.CSS("blue"));
+            let tile = new Script.Tile(configTile.pitch, configTile.length, configTile.jumpforce, position, ƒ.Color.CSS("blue"));
             tile.mtxLocal.scaleX(1.5);
             tile.mtxLocal.scaleY(0.2);
             tile.mtxLocal.scaleZ(2.5);
@@ -109,7 +126,6 @@ var Script;
         ƒ.AudioManager.default.update();
     }
     function cameraMover() {
-        console.log("is this working?");
         let posCamera = cmpCamera.mtxPivot.translation;
         let posBall = avatar.mtxLocal.translation;
         let cameraMovement = new ƒ.Vector3(posBall.x, posCamera.y, posBall.z + 9);
@@ -124,7 +140,13 @@ var Script;
     function avatarCollided() {
         isGrounded = true;
         let customEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
+        let gamestate = new Script.Gamestate();
+        gamestate.score++;
+        console.log(gamestate.score);
+        console.log(avatar.mtxWorld.translation);
         avatar.dispatchEvent(customEvent);
+        // console.log(gamestate.score);
+        // gamestate.score++;
     }
 })(Script || (Script = {}));
 var Script;
@@ -133,13 +155,11 @@ var Script;
     class Tile extends ƒ.Node {
         static meshTile = new ƒ.MeshCube("Tile");
         static mtrTile = new ƒ.Material("Tile", ƒ.ShaderFlat, new ƒ.CoatRemissive());
-        tileNumber;
         pitch;
         length;
         jumpforce;
-        constructor(tileNumber, pitch, length, jumpforce, _position, _color) {
+        constructor(pitch, length, jumpforce, _position, _color) {
             super("Tile");
-            this.tileNumber = tileNumber;
             this.pitch = pitch;
             this.length = length;
             this.jumpforce = jumpforce;
@@ -149,6 +169,9 @@ var Script;
             this.addComponent(cmpMaterial);
             let cmpTransform = new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(_position));
             this.addComponent(cmpTransform);
+            let cmpPicker = new ƒ.ComponentPick();
+            cmpPicker.pick = ƒ.PICK.RADIUS;
+            this.addComponent(cmpPicker);
             let cpmRigidbody = new ƒ.ComponentRigidbody(1, ƒ.BODY_TYPE.STATIC, ƒ.COLLIDER_TYPE.CUBE);
             this.addComponent(cpmRigidbody);
         }

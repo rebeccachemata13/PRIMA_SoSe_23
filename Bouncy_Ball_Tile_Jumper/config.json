@@ -2,75 +2,64 @@
     {
         "tiles": [
             {
-                "tileNumber": 1,
                 "pitch": "C",
                 "length": "1/4",
                 "jumpforce": -3
             },
             {
-                "tileNumber": 2,
                 "pitch": "D",
                 "length": "1/4",
                 "jumpforce": -3
 
             },
             {
-                "tileNumber": 3,
                 "pitch": "E",
                 "length": "1/4",
                 "jumpforce": -3
 
             },
             {
-                "tileNumber": 4,
                 "pitch": "F",
                 "length": "1/4",
                 "jumpforce": -3
 
             },
             {
-                "tileNumber": 5,
                 "pitch": "G",
                 "length": "1/2",
                 "jumpforce": -9
 
             },
             {
-                "tileNumber": 6,
                 "pitch": "G",
                 "length": "1/2",
                 "jumpforce": -9
 
             }, 
             {
-                "tileNumber": 7,
                 "pitch": "A",
                 "length": "1/2",
                 "jumpforce": -9
 
             },
             {
-                "tileNumber": 8,
                 "pitch": "A",
                 "length": "1/8",
                 "jumpforce": -2
 
             },
             {
-                "tileNumber": 9,
                 "pitch": "A",
                 "length": "1/8",
                 "jumpforce": -2
 
             },
             {
-                "tileNumber": 10,
                 "pitch": "A",
                 "length": "1/8",
                 "jumpforce": -2
             },
             {
-                "tileNumber": 11,
                 "pitch": "G",
                 "length": "4/4",
                 "jumpforce": -3

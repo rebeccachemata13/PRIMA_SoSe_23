@@ -8,16 +8,23 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    import ƒ = FudgeCore;
+    class Gamestate extends ƒ.Mutable {
+        score: number;
+        constructor();
+        protected reduceMutator(_mutator: ƒ.Mutator): void;
+    }
+}
+declare namespace Script {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
     class Tile extends ƒ.Node {
         static meshTile: ƒ.MeshCube;
         static mtrTile: ƒ.Material;
-        tileNumber: number;
         pitch: string;
         length: string;
         jumpforce: number;
-        constructor(tileNumber: number, pitch: string, length: string, jumpforce: number, _position: ƒ.Vector3, _color: ƒ.Color);
+        constructor(pitch: string, length: string, jumpforce: number, _position: ƒ.Vector3, _color: ƒ.Color);
     }
 }

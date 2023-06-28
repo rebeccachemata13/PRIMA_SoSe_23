@@ -4,14 +4,12 @@ namespace Script{
     export class Tile extends ƒ.Node{
         static meshTile: ƒ.MeshCube = new ƒ.MeshCube("Tile");
         static mtrTile: ƒ.Material = new ƒ.Material("Tile", ƒ.ShaderFlat, new ƒ.CoatRemissive());
-        tileNumber: number;
         pitch: string;
         length: string;
         jumpforce: number;
         
-        constructor(tileNumber: number, pitch: string, length: string, jumpforce:number, _position: ƒ.Vector3, _color: ƒ.Color){
+        constructor(pitch: string, length: string, jumpforce:number, _position: ƒ.Vector3, _color: ƒ.Color){
             super("Tile");
-            this.tileNumber = tileNumber;
             this.pitch = pitch;
             this.length = length;
             this.jumpforce = jumpforce;
@@ -24,6 +22,10 @@ namespace Script{
 
             let cmpTransform: ƒ.ComponentTransform = new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(_position));
             this.addComponent(cmpTransform);
+
+            let cmpPicker: ƒ.ComponentPick = new ƒ.ComponentPick();
+            cmpPicker.pick = ƒ.PICK.RADIUS;
+            this.addComponent(cmpPicker);
 
             let cpmRigidbody: ƒ.ComponentRigidbody = new ƒ.ComponentRigidbody(1, ƒ.BODY_TYPE.STATIC, ƒ.COLLIDER_TYPE.CUBE );
             this.addComponent(cpmRigidbody);

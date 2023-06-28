@@ -9,6 +9,8 @@ namespace Script {
   let cmpCamera: ƒ.ComponentCamera;
   let config: { tiles: Tile[] };
   let jumpforce: number;
+  
+  
   //let rigidbodyTile: ƒ.ComponentRigidbody;
   let isGrounded: boolean;
   // let control: ƒ.Control = new ƒ.Control("Proportional", 1, ƒ.CONTROL_TYPE.PROPORTIONAL, 2);
@@ -23,6 +25,8 @@ namespace Script {
     config = await response.json();
     console.log(response);
     console.log(config);
+    
+    
 
     viewport = _event.detail;
     cmpCamera = viewport.getBranch().getComponent(ƒ.ComponentCamera);
@@ -47,7 +51,6 @@ namespace Script {
     let pitch: number = 0;
     let pitches: { [note: string]: number } = { "C": 0, "D": 3, "E": 6, "F": 9, "G": 12, "A": 15, "H": 18 };
     let distances: { [abstand: string]: number } = { "1/4": 4, "1/2": 10, "1/8": 3, "4/4": 17 };
-    console.log(config.tiles[0].tileNumber);
     let position: ƒ.Vector3 = new ƒ.Vector3(pitch, yPos, distance);
 
     for (let configTile of config.tiles) {
@@ -57,7 +60,7 @@ namespace Script {
       // console.log(config.tiles[5].tileLength);
       position.z -= distance;
       position.x = pitch;
-      let tile: Tile = new Tile(configTile.tileNumber, configTile.pitch, configTile.length, configTile.jumpforce, position, ƒ.Color.CSS("blue"));
+      let tile: Tile = new Tile(configTile.pitch, configTile.length, configTile.jumpforce, position, ƒ.Color.CSS("blue"));
       tile.mtxLocal.scaleX(1.5);
       tile.mtxLocal.scaleY(0.2);
       tile.mtxLocal.scaleZ(2.5);
@@ -68,14 +71,16 @@ namespace Script {
 
   function update(_event: Event): void {
     ƒ.Physics.simulate();  // if physics is included and used
-   
+    
     cameraMover();
     // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
     rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
     console.log(jumpforce);
     if (isGrounded) {
       rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(7));
+
       isGrounded = false;
+
     }
 
     viewport.draw();
@@ -83,7 +88,6 @@ namespace Script {
   }
 
   function cameraMover():void {
-    console.log("is this working?");
     let posCamera: ƒ.Vector3 = cmpCamera.mtxPivot.translation;
     let posBall: ƒ.Vector3 = avatar.mtxLocal.translation;
 
@@ -101,7 +105,15 @@ namespace Script {
   function avatarCollided(): void {
     isGrounded = true;
     let customEvent: CustomEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
+
+    let gamestate: Gamestate = new Gamestate();
+    gamestate.score++;
+    console.log(gamestate.score);
+    
+    console.log(avatar.mtxWorld.translation);
     avatar.dispatchEvent(customEvent);
+    // console.log(gamestate.score);
+    // gamestate.score++;
   }
 
 
