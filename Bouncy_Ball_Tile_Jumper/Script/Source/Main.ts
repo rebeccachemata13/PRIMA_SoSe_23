@@ -12,6 +12,7 @@ namespace Script {
   let tileList: Tile[] = new Array();
   let score: number = -1;
   let gamestate: Gamestate;
+  let avatarPos: ƒ.Vector3 = new ƒ.Vector3;
 
 
   //let rigidbodyTile: ƒ.ComponentRigidbody;
@@ -45,6 +46,7 @@ namespace Script {
   }
 
   const audioContext = new AudioContext();
+
   function generateTone(frequency: number, duration: number) {
     // Audio-Knoten erstellen
     const oscillator = audioContext.createOscillator();
@@ -76,6 +78,7 @@ namespace Script {
 
   }
 
+
   function buildTiles(): void {
     let yPos: number = 1;
     let distance: number = 0;
@@ -106,6 +109,7 @@ namespace Script {
     ƒ.Physics.simulate();  // if physics is included and used
 
     cameraMover();
+    avatarPos = rigidbodyAvatar.node.mtxLocal.translation;
     // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
     rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
     // console.log(jumpforce);
@@ -114,6 +118,10 @@ namespace Script {
 
       isGrounded = false;
 
+    }
+
+    if (avatarPos.y < -4){
+      window.location.reload();
     }
 
     viewport.draw();

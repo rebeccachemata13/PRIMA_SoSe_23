@@ -68,6 +68,7 @@ var Script;
     let tileList = new Array();
     let score = -1;
     let gamestate;
+    let avatarPos = new ƒ.Vector3;
     //let rigidbodyTile: ƒ.ComponentRigidbody;
     let isGrounded;
     // let control: ƒ.Control = new ƒ.Control("Proportional", 1, ƒ.CONTROL_TYPE.PROPORTIONAL, 2);
@@ -140,12 +141,16 @@ var Script;
     function update(_event) {
         ƒ.Physics.simulate(); // if physics is included and used
         cameraMover();
+        avatarPos = rigidbodyAvatar.node.mtxLocal.translation;
         // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
         rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
         // console.log(jumpforce);
         if (isGrounded) {
             rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(7));
             isGrounded = false;
+        }
+        if (avatarPos.y < -4) {
+            window.location.reload();
         }
         viewport.draw();
         ƒ.AudioManager.default.update();
