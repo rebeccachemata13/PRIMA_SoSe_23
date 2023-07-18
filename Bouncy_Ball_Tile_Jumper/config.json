@@ -74,6 +74,40 @@
             {
                 "pitch": "G",
                 "length": "4/4",
+                "jumpforce": 0,
+                "frequency": 392.00
+
+            },
+            {
+                "pitch": "A",
+                "length": "4/4",
+                "jumpforce": -2,
+                "frequency": 440.00
+
+            },
+            {
+                "pitch": "A",
+                "length": "1/8",
+                "jumpforce": -2,
+                "frequency": 440.00
+
+            },
+            {
+                "pitch": "A",
+                "length": "1/8",
+                "jumpforce": -2,
+                "frequency": 440.00
+
+            },
+            {
+                "pitch": "A",
+                "length": "1/8",
+                "jumpforce": -19,
+                "frequency": 440.00
+            },
+            {
+                "pitch": "G",
+                "length": "4/4",
                 "jumpforce": -19,
                 "frequency": 392.00
 
