@@ -66,7 +66,7 @@ var Script;
     let config;
     let jumpforce = -3;
     let tileList = new Array();
-    let score = 0;
+    let score = -1;
     let gamestate;
     //let rigidbodyTile: ƒ.ComponentRigidbody;
     let isGrounded;
@@ -91,6 +91,26 @@ var Script;
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
+    const audioContext = new AudioContext();
+    function generateTone(frequency, duration) {
+        // Audio-Knoten erstellen
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain(); // Hüllkurven-Knoten erstellen
+        oscillator.type = 'sine'; // Wellenform des Tons (hier: Sinuswelle)
+        oscillator.frequency.value = frequency; // Frequenz des Tons
+        // Verbindung zum Hüllkurven-Knoten herstellen
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        // Hüllkurve definieren
+        const releaseTime = 0.5; // Zeit zum allmählichen Abfaden des Tons (hier: 0.2 Sekunden)
+        const currentTime = audioContext.currentTime;
+        gainNode.gain.setValueAtTime(1, currentTime); // Startlautstärke
+        gainNode.gain.linearRampToValueAtTime(0, currentTime + releaseTime); // Endlautstärke
+        // Tonausgabe starten
+        oscillator.start();
+        // Tonausgabe nach der angegebenen Dauer stoppen
+        oscillator.stop(audioContext.currentTime + duration);
+    }
     function handleMousemove(_event) {
         rigidbodyAvatar.applyForce(ƒ.Vector3.X(_event.movementX * 0.4));
     }
@@ -107,7 +127,7 @@ var Script;
             // console.log(config.tiles[5].tileLength);
             position.z -= distance;
             position.x = pitch;
-            let tile = new Script.Tile(configTile.pitch, configTile.length, configTile.jumpforce, position, ƒ.Color.CSS("blue"));
+            let tile = new Script.Tile(configTile.pitch, configTile.length, configTile.jumpforce, configTile.frequency, position, ƒ.Color.CSS("blue"));
             tile.mtxLocal.scaleX(1.5);
             tile.mtxLocal.scaleY(0.2);
             tile.mtxLocal.scaleZ(2.5);
@@ -153,6 +173,7 @@ var Script;
         gamestate.score = score;
         posTile = tileList[score].mtxLocal.translation;
         jumpforce = tileList[score].jumpforce;
+        generateTone(tileList[score].frequency, 1);
         console.log(posTile);
         console.log(jumpforce);
         console.log(posBall.z);
@@ -167,11 +188,13 @@ var Script;
         pitch;
         length;
         jumpforce;
-        constructor(pitch, length, jumpforce, _position, _color) {
+        frequency;
+        constructor(pitch, length, jumpforce, frequency, _position, _color) {
             super("Tile");
             this.pitch = pitch;
             this.length = length;
             this.jumpforce = jumpforce;
+            this.frequency = frequency;
             this.addComponent(new ƒ.ComponentMesh(Tile.meshTile));
             let cmpMaterial = new ƒ.ComponentMaterial(Tile.mtrTile);
             cmpMaterial.clrPrimary = _color;

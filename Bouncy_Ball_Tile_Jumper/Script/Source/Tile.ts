@@ -7,12 +7,14 @@ namespace Script{
         pitch: string;
         length: string;
         jumpforce: number;
+        frequency: number;
         
-        constructor(pitch: string, length: string, jumpforce:number, _position: ƒ.Vector3, _color: ƒ.Color){
+        constructor(pitch: string, length: string, jumpforce:number, frequency:number, _position: ƒ.Vector3, _color: ƒ.Color){
             super("Tile");
             this.pitch = pitch;
             this.length = length;
             this.jumpforce = jumpforce;
+            this.frequency = frequency;
 
             this.addComponent(new ƒ.ComponentMesh(Tile.meshTile));
 

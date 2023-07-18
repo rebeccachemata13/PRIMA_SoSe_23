@@ -10,7 +10,7 @@ namespace Script {
   let config: { tiles: Tile[] };
   let jumpforce: number = -3;
   let tileList: Tile[] = new Array();
-  let score: number = 0;
+  let score: number = -1;
   let gamestate: Gamestate;
 
 
@@ -44,6 +44,33 @@ namespace Script {
     ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
 
+  const audioContext = new AudioContext();
+  function generateTone(frequency: number, duration: number) {
+    // Audio-Knoten erstellen
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain(); // Hüllkurven-Knoten erstellen
+    
+    oscillator.type = 'sine'; // Wellenform des Tons (hier: Sinuswelle)
+    oscillator.frequency.value = frequency; // Frequenz des Tons
+    
+    // Verbindung zum Hüllkurven-Knoten herstellen
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    // Hüllkurve definieren
+    const releaseTime = 0.5; // Zeit zum allmählichen Abfaden des Tons (hier: 0.2 Sekunden)
+    const currentTime = audioContext.currentTime;
+    
+    gainNode.gain.setValueAtTime(1, currentTime); // Startlautstärke
+    gainNode.gain.linearRampToValueAtTime(0, currentTime + releaseTime); // Endlautstärke
+    
+    // Tonausgabe starten
+    oscillator.start();
+    
+    // Tonausgabe nach der angegebenen Dauer stoppen
+    oscillator.stop(audioContext.currentTime + duration);
+  }
+
   function handleMousemove(_event: MouseEvent): void {
     rigidbodyAvatar.applyForce(ƒ.Vector3.X(_event.movementX * 0.4));
 
@@ -63,7 +90,7 @@ namespace Script {
       // console.log(config.tiles[5].tileLength);
       position.z -= distance;
       position.x = pitch;
-      let tile = new Tile(configTile.pitch, configTile.length, configTile.jumpforce, position, ƒ.Color.CSS("blue"));
+      let tile = new Tile(configTile.pitch, configTile.length, configTile.jumpforce, configTile.frequency, position, ƒ.Color.CSS("blue"));
       tile.mtxLocal.scaleX(1.5);
       tile.mtxLocal.scaleY(0.2);
       tile.mtxLocal.scaleZ(2.5);
@@ -119,12 +146,13 @@ namespace Script {
     avatar.dispatchEvent(customEvent);
     score++;
     gamestate.score = score;
-    
-      posTile = tileList[score].mtxLocal.translation;
-      jumpforce = tileList[score].jumpforce;
-      console.log(posTile);
-      console.log(jumpforce);
-      console.log(posBall.z);
+
+    posTile = tileList[score].mtxLocal.translation;
+    jumpforce = tileList[score].jumpforce;
+    generateTone(tileList[score].frequency, 1);
+    console.log(posTile);
+    console.log(jumpforce);
+    console.log(posBall.z);
 
   }
 }

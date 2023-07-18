@@ -25,6 +25,7 @@ declare namespace Script {
         pitch: string;
         length: string;
         jumpforce: number;
-        constructor(pitch: string, length: string, jumpforce: number, _position: ƒ.Vector3, _color: ƒ.Color);
+        frequency: number;
+        constructor(pitch: string, length: string, jumpforce: number, frequency: number, _position: ƒ.Vector3, _color: ƒ.Color);
     }
 }
