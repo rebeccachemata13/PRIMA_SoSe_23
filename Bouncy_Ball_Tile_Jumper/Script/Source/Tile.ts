@@ -29,6 +29,7 @@ namespace Script{
 
             let cpmRigidbody: ƒ.ComponentRigidbody = new ƒ.ComponentRigidbody(1, ƒ.BODY_TYPE.STATIC, ƒ.COLLIDER_TYPE.CUBE );
             this.addComponent(cpmRigidbody);
+            
         }
     }
 }

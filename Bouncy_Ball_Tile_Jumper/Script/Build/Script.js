@@ -64,7 +64,10 @@ var Script;
     let rigidbodyAvatar;
     let cmpCamera;
     let config;
-    let jumpforce;
+    let jumpforce = -3;
+    let tileList = new Array();
+    let score = 0;
+    let gamestate;
     //let rigidbodyTile: ƒ.ComponentRigidbody;
     let isGrounded;
     // let control: ƒ.Control = new ƒ.Control("Proportional", 1, ƒ.CONTROL_TYPE.PROPORTIONAL, 2);
@@ -76,8 +79,9 @@ var Script;
     async function start(_event) {
         let response = await fetch("config.json");
         config = await response.json();
-        console.log(response);
-        console.log(config);
+        gamestate = new Script.Gamestate();
+        // console.log(response);
+        // console.log(config);
         viewport = _event.detail;
         cmpCamera = viewport.getBranch().getComponent(ƒ.ComponentCamera);
         viewport.camera = cmpCamera;
@@ -95,12 +99,11 @@ var Script;
         let distance = 0;
         let pitch = 0;
         let pitches = { "C": 0, "D": 3, "E": 6, "F": 9, "G": 12, "A": 15, "H": 18 };
-        let distances = { "1/4": 4, "1/2": 10, "1/8": 3, "4/4": 17 };
+        let distances = { "1/4": 4, "1/2": 10, "1/8": 5, "4/4": 17 };
         let position = new ƒ.Vector3(pitch, yPos, distance);
         for (let configTile of config.tiles) {
             pitch = pitches[configTile.pitch];
             distance = distances[configTile.length];
-            jumpforce = configTile.jumpforce;
             // console.log(config.tiles[5].tileLength);
             position.z -= distance;
             position.x = pitch;
@@ -110,14 +113,16 @@ var Script;
             tile.mtxLocal.scaleZ(2.5);
             tile.mtxLocal.translateY(-8);
             viewport.getBranch().addChild(tile);
+            tileList.push(tile);
         }
     }
+    console.log(tileList);
     function update(_event) {
         ƒ.Physics.simulate(); // if physics is included and used
         cameraMover();
         // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
         rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
-        console.log(jumpforce);
+        // console.log(jumpforce);
         if (isGrounded) {
             rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(7));
             isGrounded = false;
@@ -130,7 +135,7 @@ var Script;
         let posBall = avatar.mtxLocal.translation;
         let cameraMovement = new ƒ.Vector3(posBall.x, posCamera.y, posBall.z + 9);
         cmpCamera.mtxPivot.translation = cameraMovement;
-        console.log(cameraMovement);
+        // console.log(cameraMovement);
     }
     function setupAvatar() {
         avatar = viewport.getBranch().getChildrenByName("Avatar")[0];
@@ -140,13 +145,17 @@ var Script;
     function avatarCollided() {
         isGrounded = true;
         let customEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
-        let gamestate = new Script.Gamestate();
-        gamestate.score++;
-        console.log(gamestate.score);
-        console.log(avatar.mtxWorld.translation);
+        let posBall = avatar.mtxLocal.translation;
+        let posTile;
+        // console.log(avatar.mtxWorld.translation);
         avatar.dispatchEvent(customEvent);
-        // console.log(gamestate.score);
-        // gamestate.score++;
+        score++;
+        gamestate.score = score;
+        posTile = tileList[score].mtxLocal.translation;
+        jumpforce = tileList[score].jumpforce;
+        console.log(posTile);
+        console.log(jumpforce);
+        console.log(posBall.z);
     }
 })(Script || (Script = {}));
 var Script;

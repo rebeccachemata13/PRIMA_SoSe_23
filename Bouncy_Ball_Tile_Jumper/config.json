@@ -33,19 +33,19 @@
             {
                 "pitch": "G",
                 "length": "1/2",
-                "jumpforce": -9
+                "jumpforce": -2
 
             }, 
             {
                 "pitch": "A",
                 "length": "1/2",
-                "jumpforce": -9
+                "jumpforce": -3
 
             },
             {
                 "pitch": "A",
                 "length": "1/8",
-                "jumpforce": -2
+                "jumpforce": -1
 
             },
             {
@@ -62,7 +62,7 @@
             {
                 "pitch": "G",
                 "length": "4/4",
-                "jumpforce": -3
+                "jumpforce": -19
 
             }
 
