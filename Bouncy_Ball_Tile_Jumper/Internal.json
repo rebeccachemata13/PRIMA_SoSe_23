@@ -121,8 +121,8 @@
                 {
                   "ƒ.ComponentMaterial": {
                     "sortForAlpha": false,
-                    "clrPrimary": "[0.9411764705882353, 0.0392156862745098, 0.7450980392156863, 1]",
-                    "clrSecondary": "[1, 1, 1, 1]",
+                    "clrPrimary": "[2, -2.600000000000001, 2, 1]",
+                    "clrSecondary": "[1, 0, 1, 1]",
                     "pivot": {
                       "translation": "[0, 0]",
                       "rotation": 0,
@@ -141,7 +141,7 @@
                     "local": {
                       "translation": "[0, 0.6000000238418579, -4.199999809265137]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
+                      "scaling": "[1, 1.0047472715377808, 1]"
                     },
                     "Component": {
                       "active": true
@@ -171,6 +171,14 @@
                     "Component": {
                       "active": true
                     }
+                  }
+                }
+              ],
+              "BallBouncer": [
+                {
+                  "Script.BallBouncer": {
+                    "active": true,
+                    "scaleY": 1.5
                   }
                 }
               ]

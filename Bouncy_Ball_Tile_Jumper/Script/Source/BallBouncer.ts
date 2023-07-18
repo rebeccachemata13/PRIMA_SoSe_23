@@ -2,11 +2,11 @@ namespace Script {
   import ƒ = FudgeCore;
   ƒ.Project.registerScriptNamespace(Script);  // Register the namespace to FUDGE for serialization
 
-  export class CustomComponentScript extends ƒ.ComponentScript {
+  export class BallBouncer extends ƒ.ComponentScript {
     // Register the script as component for use in the editor via drag&drop
-    public static readonly iSubclass: number = ƒ.Component.registerSubclass(CustomComponentScript);
+    public static readonly iSubclass: number = ƒ.Component.registerSubclass(BallBouncer);
     // Properties may be mutated by users in the editor via the automatically created user interface
-    public message: string = "CustomComponentScript added to ";
+    public scaleY: number = 1.5;
 
 
     constructor() {
@@ -26,7 +26,7 @@ namespace Script {
     public hndEvent = (_event: Event): void => {
       switch (_event.type) {
         case ƒ.EVENT.COMPONENT_ADD:
-          ƒ.Debug.log(this.message, this.node);
+          this.node.addEventListener(ƒ.EVENT.RENDER_PREPARE, this.update);
           break;
         case ƒ.EVENT.COMPONENT_REMOVE:
           this.removeEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
@@ -38,9 +38,17 @@ namespace Script {
       }
     }
 
-    // protected reduceMutator(_mutator: ƒ.Mutator): void {
-    //   // delete properties that should not be mutated
-    //   // undefined properties and private fields (#) will not be included by default
-    // }
+    public update = (_event: Event): void => {
+      if (isGrounded) {
+        let material: ƒ.ComponentMaterial = this.node.getComponent(ƒ.ComponentMaterial);
+        let color: string = ƒ.Random.default.getElement(["purple"]);
+        material.clrPrimary = ƒ.Color.CSS(color);
+        
+        rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(7));
+        isGrounded = false;
+      }
+    }
   }
+
+
 }

@@ -5,7 +5,7 @@ namespace Script {
 
   let viewport: ƒ.Viewport;
   let avatar: ƒ.Node;
-  let rigidbodyAvatar: ƒ.ComponentRigidbody;
+  export let rigidbodyAvatar: ƒ.ComponentRigidbody;
   let cmpCamera: ƒ.ComponentCamera;
   let config: { tiles: Tile[] };
   let jumpforce: number = -3;
@@ -13,10 +13,10 @@ namespace Script {
   let score: number = -1;
   let gamestate: Gamestate;
   let avatarPos: ƒ.Vector3 = new ƒ.Vector3;
+  export let isGrounded:boolean;
 
 
   //let rigidbodyTile: ƒ.ComponentRigidbody;
-  let isGrounded: boolean;
   // let control: ƒ.Control = new ƒ.Control("Proportional", 1, ƒ.CONTROL_TYPE.PROPORTIONAL, 2);
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
 
@@ -93,7 +93,7 @@ namespace Script {
       // console.log(config.tiles[5].tileLength);
       position.z -= distance;
       position.x = pitch;
-      let tile = new Tile(configTile.pitch, configTile.length, configTile.jumpforce, configTile.frequency, position, ƒ.Color.CSS("blue"));
+      let tile = new Tile(configTile.pitch, configTile.length, configTile.jumpforce, configTile.frequency, position, ƒ.Color.CSS("beige"));
       tile.mtxLocal.scaleX(1.5);
       tile.mtxLocal.scaleY(0.2);
       tile.mtxLocal.scaleZ(2.5);
@@ -113,12 +113,6 @@ namespace Script {
     // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
     rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
     // console.log(jumpforce);
-    if (isGrounded) {
-      rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(7));
-
-      isGrounded = false;
-
-    }
 
     if (avatarPos.y < -4){
       window.location.reload();
@@ -145,6 +139,7 @@ namespace Script {
 
   function avatarCollided(): void {
     isGrounded = true;
+   
     let customEvent: CustomEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
     let posBall: ƒ.Vector3 = avatar.mtxLocal.translation;
     let posTile: ƒ.Vector3;
@@ -157,6 +152,8 @@ namespace Script {
 
     posTile = tileList[score].mtxLocal.translation;
     jumpforce = tileList[score].jumpforce;
+    let material: ƒ.ComponentMaterial = tileList[score].getComponent(ƒ.ComponentMaterial);
+    material.clrPrimary = ƒ.Color.CSS("purple");
     generateTone(tileList[score].frequency, 1);
     console.log(posTile);
     console.log(jumpforce);

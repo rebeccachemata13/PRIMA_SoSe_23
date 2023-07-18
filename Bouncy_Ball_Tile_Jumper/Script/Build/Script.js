@@ -3,11 +3,11 @@ var Script;
 (function (Script) {
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
-    class CustomComponentScript extends ƒ.ComponentScript {
+    class BallBouncer extends ƒ.ComponentScript {
         // Register the script as component for use in the editor via drag&drop
-        static iSubclass = ƒ.Component.registerSubclass(CustomComponentScript);
+        static iSubclass = ƒ.Component.registerSubclass(BallBouncer);
         // Properties may be mutated by users in the editor via the automatically created user interface
-        message = "CustomComponentScript added to ";
+        scaleY = 1.5;
         constructor() {
             super();
             // Don't start when running in editor
@@ -22,7 +22,7 @@ var Script;
         hndEvent = (_event) => {
             switch (_event.type) {
                 case "componentAdd" /* ƒ.EVENT.COMPONENT_ADD */:
-                    ƒ.Debug.log(this.message, this.node);
+                    this.node.addEventListener("renderPrepare" /* ƒ.EVENT.RENDER_PREPARE */, this.update);
                     break;
                 case "componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */:
                     this.removeEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
@@ -33,8 +33,17 @@ var Script;
                     break;
             }
         };
+        update = (_event) => {
+            if (Script.isGrounded) {
+                let material = this.node.getComponent(ƒ.ComponentMaterial);
+                let color = ƒ.Random.default.getElement(["purple"]);
+                material.clrPrimary = ƒ.Color.CSS(color);
+                Script.rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(7));
+                Script.isGrounded = false;
+            }
+        };
     }
-    Script.CustomComponentScript = CustomComponentScript;
+    Script.BallBouncer = BallBouncer;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -61,7 +70,6 @@ var Script;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
     let avatar;
-    let rigidbodyAvatar;
     let cmpCamera;
     let config;
     let jumpforce = -3;
@@ -70,7 +78,6 @@ var Script;
     let gamestate;
     let avatarPos = new ƒ.Vector3;
     //let rigidbodyTile: ƒ.ComponentRigidbody;
-    let isGrounded;
     // let control: ƒ.Control = new ƒ.Control("Proportional", 1, ƒ.CONTROL_TYPE.PROPORTIONAL, 2);
     document.addEventListener("interactiveViewportStarted", start);
     let BOUNCYBALL;
@@ -113,7 +120,7 @@ var Script;
         oscillator.stop(audioContext.currentTime + duration);
     }
     function handleMousemove(_event) {
-        rigidbodyAvatar.applyForce(ƒ.Vector3.X(_event.movementX * 0.4));
+        Script.rigidbodyAvatar.applyForce(ƒ.Vector3.X(_event.movementX * 0.4));
     }
     function buildTiles() {
         let yPos = 1;
@@ -128,7 +135,7 @@ var Script;
             // console.log(config.tiles[5].tileLength);
             position.z -= distance;
             position.x = pitch;
-            let tile = new Script.Tile(configTile.pitch, configTile.length, configTile.jumpforce, configTile.frequency, position, ƒ.Color.CSS("blue"));
+            let tile = new Script.Tile(configTile.pitch, configTile.length, configTile.jumpforce, configTile.frequency, position, ƒ.Color.CSS("beige"));
             tile.mtxLocal.scaleX(1.5);
             tile.mtxLocal.scaleY(0.2);
             tile.mtxLocal.scaleZ(2.5);
@@ -141,14 +148,10 @@ var Script;
     function update(_event) {
         ƒ.Physics.simulate(); // if physics is included and used
         cameraMover();
-        avatarPos = rigidbodyAvatar.node.mtxLocal.translation;
+        avatarPos = Script.rigidbodyAvatar.node.mtxLocal.translation;
         // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
-        rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
+        Script.rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
         // console.log(jumpforce);
-        if (isGrounded) {
-            rigidbodyAvatar.addVelocity(ƒ.Vector3.Y(7));
-            isGrounded = false;
-        }
         if (avatarPos.y < -4) {
             window.location.reload();
         }
@@ -164,11 +167,11 @@ var Script;
     }
     function setupAvatar() {
         avatar = viewport.getBranch().getChildrenByName("Avatar")[0];
-        rigidbodyAvatar = avatar.getComponent(ƒ.ComponentRigidbody);
-        rigidbodyAvatar.addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, avatarCollided);
+        Script.rigidbodyAvatar = avatar.getComponent(ƒ.ComponentRigidbody);
+        Script.rigidbodyAvatar.addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, avatarCollided);
     }
     function avatarCollided() {
-        isGrounded = true;
+        Script.isGrounded = true;
         let customEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
         let posBall = avatar.mtxLocal.translation;
         let posTile;
@@ -178,6 +181,8 @@ var Script;
         gamestate.score = score;
         posTile = tileList[score].mtxLocal.translation;
         jumpforce = tileList[score].jumpforce;
+        let material = tileList[score].getComponent(ƒ.ComponentMaterial);
+        material.clrPrimary = ƒ.Color.CSS("purple");
         generateTone(tileList[score].frequency, 1);
         console.log(posTile);
         console.log(jumpforce);
