@@ -51,9 +51,13 @@ var Script;
     var ƒUi = FudgeUserInterface;
     class Gamestate extends ƒ.Mutable {
         score;
+        note;
+        frequency;
         constructor() {
             super();
             this.score = 0;
+            this.note = "";
+            this.frequency = this.frequency;
             let vui = document.querySelector("div#vui");
             new ƒUi.Controller(this, vui);
             this.addEventListener("mutate" /* ƒ.EVENT.MUTATE */, () => console.log(this));
@@ -173,10 +177,11 @@ var Script;
     function avatarCollided() {
         Script.isGrounded = true;
         let customEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
-        let posTile;
         avatar.dispatchEvent(customEvent);
         score++;
         gamestate.score = score;
+        gamestate.note = tileList[score].pitch;
+        gamestate.frequency = tileList[score].frequency;
         let material = tileList[score].getComponent(ƒ.ComponentMaterial);
         let rigidbodyTile = tileList[score].getComponent(ƒ.ComponentRigidbody);
         let animation = avatar.getComponent(ƒ.ComponentAnimator);
@@ -185,7 +190,6 @@ var Script;
         setTimeout(() => {
             animation.playmode = ƒ.ANIMATION_PLAYMODE.STOP;
         }, 200);
-        posTile = tileList[score].mtxLocal.translation;
         jumpforce = tileList[score].jumpforce;
         material.clrPrimary = ƒ.Color.CSS("purple");
         rigidbodyTile.typeBody = ƒ.BODY_TYPE.DYNAMIC;

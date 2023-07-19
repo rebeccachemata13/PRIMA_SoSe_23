@@ -143,10 +143,12 @@ namespace Script {
     
    
     let customEvent: CustomEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
-    let posTile: ƒ.Vector3;
+    
     avatar.dispatchEvent(customEvent);
     score++;
     gamestate.score = score;
+    gamestate.note = tileList[score].pitch;
+    gamestate.frequency = tileList[score].frequency;
 
     let material: ƒ.ComponentMaterial = tileList[score].getComponent(ƒ.ComponentMaterial);
     let rigidbodyTile: ƒ.ComponentRigidbody = tileList[score].getComponent(ƒ.ComponentRigidbody);
@@ -159,7 +161,6 @@ namespace Script {
     }, 200);
 
 
-    posTile = tileList[score].mtxLocal.translation;
     jumpforce = tileList[score].jumpforce;
     material.clrPrimary = ƒ.Color.CSS("purple");
     rigidbodyTile.typeBody = ƒ.BODY_TYPE.DYNAMIC;

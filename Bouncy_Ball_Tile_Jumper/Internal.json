@@ -29,6 +29,53 @@
       "type": "MeshCube"
     }
   },
+  "Animation|2023-07-19T09:43:44.578Z|11917": {
+    "ƒ.Animation": {
+      "idResource": "Animation|2023-07-19T09:43:44.578Z|11917",
+      "name": "Animation",
+      "labels": {},
+      "events": {},
+      "framesPerSecond": 60,
+      "animationStructure": {
+        "components": {
+          "ComponentTransform": [
+            {
+              "mtxLocal": {
+                "scaling": {
+                  "y": {
+                    "keys": [
+                      {
+                        "time": 0,
+                        "value": 0.9999999999999999,
+                        "slopeIn": 0,
+                        "slopeOut": 0,
+                        "constant": false
+                      },
+                      {
+                        "time": 244.34389048010664,
+                        "value": 0.5398673326357765,
+                        "slopeIn": 0,
+                        "slopeOut": 0,
+                        "constant": false
+                      },
+                      {
+                        "time": 502.2624415424414,
+                        "value": 0.9999999999999994,
+                        "slopeIn": 0,
+                        "slopeOut": 0,
+                        "constant": false
+                      }
+                    ],
+                    "animationSequence": true
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
   "Graph|2023-06-11T16:58:29.873Z|39295": {
     "ƒ.Graph": {
       "name": "Level",
@@ -285,53 +332,6 @@
       ],
       "idResource": "Graph|2023-06-11T16:58:29.873Z|39295",
       "type": "Graph"
-    }
-  },
-  "Animation|2023-07-19T09:43:44.578Z|11917": {
-    "ƒ.Animation": {
-      "idResource": "Animation|2023-07-19T09:43:44.578Z|11917",
-      "name": "Animation",
-      "labels": {},
-      "events": {},
-      "framesPerSecond": 60,
-      "animationStructure": {
-        "components": {
-          "ComponentTransform": [
-            {
-              "mtxLocal": {
-                "scaling": {
-                  "y": {
-                    "keys": [
-                      {
-                        "time": 0,
-                        "value": 0.9999999999999999,
-                        "slopeIn": 0,
-                        "slopeOut": 0,
-                        "constant": false
-                      },
-                      {
-                        "time": 244.34389048010664,
-                        "value": 0.5398673326357765,
-                        "slopeIn": 0,
-                        "slopeOut": 0,
-                        "constant": false
-                      },
-                      {
-                        "time": 502.2624415424414,
-                        "value": 0.9999999999999994,
-                        "slopeIn": 0,
-                        "slopeOut": 0,
-                        "constant": false
-                      }
-                    ],
-                    "animationSequence": true
-                  }
-                }
-              }
-            }
-          ]
-        }
-      }
     }
   }
 }

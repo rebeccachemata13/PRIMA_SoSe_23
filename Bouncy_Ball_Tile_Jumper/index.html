@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Bouncy_Ball_Tile_Jumper</title>
+<title>Tiles Jumper</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="styles.css" />
 
 <!--Editor settings of this project-->
-<meta type="settings" autoview="Graph|2023-06-11T16:58:29.873Z|39295" project="{'name':'Bouncy_Ball_Tile_Jumper','graphAutoView':'Graph|2023-06-11T16:58:29.873Z|39295'}" panels="[{'type':'PanelProject','state':{}},{'type':'PanelGraph','state':{'graph':'Graph|2023-06-11T16:58:29.873Z|39295'}},{'type':'PanelAnimation','state':{}}]" />
+<meta type="settings" autoview="Graph|2023-06-11T16:58:29.873Z|39295" project="{'name':'Tiles Jumper','graphAutoView':'Graph|2023-06-11T16:58:29.873Z|39295'}" panels="[{'type':'PanelProject','state':{}},{'type':'PanelGraph','state':{'graph':'Graph|2023-06-11T16:58:29.873Z|39295'}},{'type':'PanelAnimation','state':{}}]" />
 
 <!--Activate the following line to include the FUDGE-version of Oimo-Physics. You may want to download a local copy to work offline and be independent from future changes!-->
 <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Physics/OimoPhysics.js"></script>
@@ -31,14 +31,22 @@
 <dialog>
 <p>FUDGE Autoview</p>
 <h1>Title (will be replaced by Autoview)</h1>
-<p>click to start</p>
+<p id="name_semester">Rebecca Chemata OMB 6</p>
+<button id="startButton"><p>START</p></button>
 </dialog>
 <!--Canvas for FUDGE to render to-->
 <canvas class="fullscreen">
 </canvas>
 <div id="vui">
     Score: <input key="score" type="number" />
+    <br>
+    <br>
+    Note: <input key="note" type="text" />
+    <br>
+    <br>
+    Frequency: <input key="frequency" type="number" />
 </div>
+
 
 
 

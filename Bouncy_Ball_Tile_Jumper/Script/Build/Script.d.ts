@@ -12,6 +12,8 @@ declare namespace Script {
     import ƒ = FudgeCore;
     class Gamestate extends ƒ.Mutable {
         score: number;
+        note: string;
+        frequency: number;
         constructor();
         protected reduceMutator(_mutator: ƒ.Mutator): void;
     }
