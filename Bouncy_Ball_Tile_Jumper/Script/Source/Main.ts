@@ -4,20 +4,28 @@ namespace Script {
   ƒ.Debug.info("Main Program Template running!");
 
   let viewport: ƒ.Viewport;
+
+  //Avatar Variables
   let avatar: ƒ.Node;
+  let avatarPos: ƒ.Vector3 = new ƒ.Vector3;
   export let rigidbodyAvatar: ƒ.ComponentRigidbody;
-  let cmpCamera: ƒ.ComponentCamera;
-  let config: { tiles: Tile[] };
+  export let isGrounded:boolean;
   let jumpforce: number = -3;
+  
+  //Camera
+  let cmpCamera: ƒ.ComponentCamera;
+
+  //Tiles
+  let config: { tiles: Tile[] };
   let tileList: Tile[] = new Array();
   let score: number = -1;
+
+  //Gamestate
   let gamestate: Gamestate;
-  let avatarPos: ƒ.Vector3 = new ƒ.Vector3;
-  export let isGrounded:boolean;
+  
+  //Audio
+  const audioContext = new AudioContext();
 
-
-  //let rigidbodyTile: ƒ.ComponentRigidbody;
-  // let control: ƒ.Control = new ƒ.Control("Proportional", 1, ƒ.CONTROL_TYPE.PROPORTIONAL, 2);
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
 
   enum BOUNCYBALL {
@@ -28,11 +36,7 @@ namespace Script {
     let response: Response = await fetch("config.json");
     config = await response.json();
     gamestate = new Gamestate();
-    // console.log(response);
-    // console.log(config);
-
-
-
+ 
     viewport = _event.detail;
     cmpCamera = viewport.getBranch().getComponent(ƒ.ComponentCamera);
     viewport.camera = cmpCamera;
@@ -42,34 +46,28 @@ namespace Script {
     buildTiles();
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
-    ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    ƒ.Loop.start();
   }
 
-  const audioContext = new AudioContext();
-
   function generateTone(frequency: number, duration: number) {
-    // Audio-Knoten erstellen
     const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain(); // Hüllkurven-Knoten erstellen
+    const gainNode = audioContext.createGain();
     
-    oscillator.type = 'sine'; // Wellenform des Tons (hier: Sinuswelle)
-    oscillator.frequency.value = frequency; // Frequenz des Tons
+    oscillator.type = 'sine'; 
+    oscillator.frequency.value = frequency;
     
-    // Verbindung zum Hüllkurven-Knoten herstellen
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
     
-    // Hüllkurve definieren
-    const releaseTime = 0.5; // Zeit zum allmählichen Abfaden des Tons (hier: 0.2 Sekunden)
+  
+    const releaseTime = 0.5; 
     const currentTime = audioContext.currentTime;
     
-    gainNode.gain.setValueAtTime(1, currentTime); // Startlautstärke
-    gainNode.gain.linearRampToValueAtTime(0, currentTime + releaseTime); // Endlautstärke
+    gainNode.gain.setValueAtTime(1, currentTime); 
+    gainNode.gain.linearRampToValueAtTime(0, currentTime + releaseTime); 
     
-    // Tonausgabe starten
     oscillator.start();
     
-    // Tonausgabe nach der angegebenen Dauer stoppen
     oscillator.stop(audioContext.currentTime + duration);
   }
 
@@ -77,8 +75,7 @@ namespace Script {
     rigidbodyAvatar.applyForce(ƒ.Vector3.X(_event.movementX * 0.4));
 
   }
-
-
+  
   function buildTiles(): void {
     let yPos: number = 1;
     let distance: number = 0;
@@ -90,7 +87,6 @@ namespace Script {
     for (let configTile of config.tiles) {
       pitch = pitches[configTile.pitch];
       distance = distances[configTile.length];
-      // console.log(config.tiles[5].tileLength);
       position.z -= distance;
       position.x = pitch;
       let tile = new Tile(configTile.pitch, configTile.length, configTile.jumpforce, configTile.frequency, position, ƒ.Color.CSS("beige"));
@@ -103,17 +99,15 @@ namespace Script {
     }
   }
 
-  console.log(tileList);
+  console.log("Tile Liste:", tileList);
 
   function update(_event: Event): void {
-    ƒ.Physics.simulate();  // if physics is included and used
-
+    ƒ.Physics.simulate();
     cameraMover();
     avatarPos = rigidbodyAvatar.node.mtxLocal.translation;
-    // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
     rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
-    // console.log(jumpforce);
-
+    
+    //death
     if (avatarPos.y < -4){
       alert("Oh no you lost! Reload the page with STRG + F5 and try again :D");
     }
@@ -124,11 +118,8 @@ namespace Script {
 
   function cameraMover(): void {
     let posCamera: ƒ.Vector3 = cmpCamera.mtxPivot.translation;
-    let posBall: ƒ.Vector3 = avatar.mtxLocal.translation;
-
-    let cameraMovement: ƒ.Vector3 = new ƒ.Vector3(posBall.x, posCamera.y, posBall.z + 9);
+    let cameraMovement: ƒ.Vector3 = new ƒ.Vector3(avatarPos.x, posCamera.y, avatarPos.z + 9);
     cmpCamera.mtxPivot.translation = cameraMovement;
-    // console.log(cameraMovement);
   }
 
   function setupAvatar(): void {
@@ -140,11 +131,12 @@ namespace Script {
   function avatarCollided(): void {
     isGrounded = true;
 
-    
-   
+    //generate Custom Event vor Collision
     let customEvent: CustomEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
     
     avatar.dispatchEvent(customEvent);
+
+    //Update Gamestate
     score++;
     gamestate.score = score;
     gamestate.note = tileList[score].pitch;
@@ -154,21 +146,21 @@ namespace Script {
     let rigidbodyTile: ƒ.ComponentRigidbody = tileList[score].getComponent(ƒ.ComponentRigidbody);
     let animation: ƒ.ComponentAnimator = avatar.getComponent(ƒ.ComponentAnimator);
 
+    //Play and Stop Animation
     animation.playmode = ƒ.ANIMATION_PLAYMODE.LOOP;
     console.log(animation.time);
     setTimeout(()=> {
       animation.playmode = ƒ.ANIMATION_PLAYMODE.STOP;
     }, 200);
 
-
+    //Adjust Jumpforce, Color and Tile TypeBody
     jumpforce = tileList[score].jumpforce;
     material.clrPrimary = ƒ.Color.CSS("purple");
     rigidbodyTile.typeBody = ƒ.BODY_TYPE.DYNAMIC;
 
+    //Generate Tone Audio
     generateTone(tileList[score].frequency, 1);
-    // console.log(posTile);
-    // console.log(jumpforce);
-    // console.log(posBall.z);
+
 
   }
 }

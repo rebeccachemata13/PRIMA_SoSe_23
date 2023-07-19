@@ -73,16 +73,20 @@ var Script;
     //import ƒUi = FudgeUserInterface;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
+    //Avatar Variables
     let avatar;
-    let cmpCamera;
-    let config;
+    let avatarPos = new ƒ.Vector3;
     let jumpforce = -3;
+    //Camera
+    let cmpCamera;
+    //Tiles
+    let config;
     let tileList = new Array();
     let score = -1;
+    //Gamestate
     let gamestate;
-    let avatarPos = new ƒ.Vector3;
-    //let rigidbodyTile: ƒ.ComponentRigidbody;
-    // let control: ƒ.Control = new ƒ.Control("Proportional", 1, ƒ.CONTROL_TYPE.PROPORTIONAL, 2);
+    //Audio
+    const audioContext = new AudioContext();
     document.addEventListener("interactiveViewportStarted", start);
     let BOUNCYBALL;
     (function (BOUNCYBALL) {
@@ -92,8 +96,6 @@ var Script;
         let response = await fetch("config.json");
         config = await response.json();
         gamestate = new Script.Gamestate();
-        // console.log(response);
-        // console.log(config);
         viewport = _event.detail;
         cmpCamera = viewport.getBranch().getComponent(ƒ.ComponentCamera);
         viewport.camera = cmpCamera;
@@ -101,26 +103,20 @@ var Script;
         setupAvatar();
         buildTiles();
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
-        ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        ƒ.Loop.start();
     }
-    const audioContext = new AudioContext();
     function generateTone(frequency, duration) {
-        // Audio-Knoten erstellen
         const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain(); // Hüllkurven-Knoten erstellen
-        oscillator.type = 'sine'; // Wellenform des Tons (hier: Sinuswelle)
-        oscillator.frequency.value = frequency; // Frequenz des Tons
-        // Verbindung zum Hüllkurven-Knoten herstellen
+        const gainNode = audioContext.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = frequency;
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
-        // Hüllkurve definieren
-        const releaseTime = 0.5; // Zeit zum allmählichen Abfaden des Tons (hier: 0.2 Sekunden)
+        const releaseTime = 0.5;
         const currentTime = audioContext.currentTime;
-        gainNode.gain.setValueAtTime(1, currentTime); // Startlautstärke
-        gainNode.gain.linearRampToValueAtTime(0, currentTime + releaseTime); // Endlautstärke
-        // Tonausgabe starten
+        gainNode.gain.setValueAtTime(1, currentTime);
+        gainNode.gain.linearRampToValueAtTime(0, currentTime + releaseTime);
         oscillator.start();
-        // Tonausgabe nach der angegebenen Dauer stoppen
         oscillator.stop(audioContext.currentTime + duration);
     }
     function handleMousemove(_event) {
@@ -136,7 +132,6 @@ var Script;
         for (let configTile of config.tiles) {
             pitch = pitches[configTile.pitch];
             distance = distances[configTile.length];
-            // console.log(config.tiles[5].tileLength);
             position.z -= distance;
             position.x = pitch;
             let tile = new Script.Tile(configTile.pitch, configTile.length, configTile.jumpforce, configTile.frequency, position, ƒ.Color.CSS("beige"));
@@ -148,14 +143,13 @@ var Script;
             tileList.push(tile);
         }
     }
-    console.log(tileList);
+    console.log("Tile Liste:", tileList);
     function update(_event) {
-        ƒ.Physics.simulate(); // if physics is included and used
+        ƒ.Physics.simulate();
         cameraMover();
         avatarPos = Script.rigidbodyAvatar.node.mtxLocal.translation;
-        // control.addEventListener(ƒ.EVENT_CONTROL.OUTPUT, cameraMover);
         Script.rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
-        // console.log(jumpforce);
+        //death
         if (avatarPos.y < -4) {
             alert("Oh no you lost! Reload the page with STRG + F5 and try again :D");
         }
@@ -164,10 +158,8 @@ var Script;
     }
     function cameraMover() {
         let posCamera = cmpCamera.mtxPivot.translation;
-        let posBall = avatar.mtxLocal.translation;
-        let cameraMovement = new ƒ.Vector3(posBall.x, posCamera.y, posBall.z + 9);
+        let cameraMovement = new ƒ.Vector3(avatarPos.x, posCamera.y, avatarPos.z + 9);
         cmpCamera.mtxPivot.translation = cameraMovement;
-        // console.log(cameraMovement);
     }
     function setupAvatar() {
         avatar = viewport.getBranch().getChildrenByName("Avatar")[0];
@@ -176,8 +168,10 @@ var Script;
     }
     function avatarCollided() {
         Script.isGrounded = true;
+        //generate Custom Event vor Collision
         let customEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
         avatar.dispatchEvent(customEvent);
+        //Update Gamestate
         score++;
         gamestate.score = score;
         gamestate.note = tileList[score].pitch;
@@ -185,18 +179,18 @@ var Script;
         let material = tileList[score].getComponent(ƒ.ComponentMaterial);
         let rigidbodyTile = tileList[score].getComponent(ƒ.ComponentRigidbody);
         let animation = avatar.getComponent(ƒ.ComponentAnimator);
+        //Play and Stop Animation
         animation.playmode = ƒ.ANIMATION_PLAYMODE.LOOP;
         console.log(animation.time);
         setTimeout(() => {
             animation.playmode = ƒ.ANIMATION_PLAYMODE.STOP;
         }, 200);
+        //Adjust Jumpforce, Color and Tile TypeBody
         jumpforce = tileList[score].jumpforce;
         material.clrPrimary = ƒ.Color.CSS("purple");
         rigidbodyTile.typeBody = ƒ.BODY_TYPE.DYNAMIC;
+        //Generate Tone Audio
         generateTone(tileList[score].frequency, 1);
-        // console.log(posTile);
-        // console.log(jumpforce);
-        // console.log(posBall.z);
     }
 })(Script || (Script = {}));
 var Script;
