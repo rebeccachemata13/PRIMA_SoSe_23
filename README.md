@@ -15,7 +15,7 @@ OMB 6
 ## Docent
 Jirka Dell'Oro-Friedl
 
-## Finished Application 
+## Finished Application Link
 [Tiles Jumper](https://rebeccachemata13.github.io/PRIMA_SoSe_23/Bouncy_Ball_Tile_Jumper/index.html)
 
 ## Repository Link
@@ -36,7 +36,7 @@ I recommend keeping the left mouse button held down while moving the mouse; othe
 |  2 | Hierarchy           | Graph Level has two nodes: Avatar and an ExampleTile. The ExampleTile wasn't necessary, but helped scaling the other tiles.                     |
 |  3 | Editor              | The Avatar and the setup (Camera, Light etc.) where done via Editor, the rest is generated as the game starts.                                  |
 |  4 | Scriptcomponents    | A ScriptComponent was used to make the ball keep bouncing and change its color, but it wasn't necessary.                                        |
-|  5 | Extend              | Used a Tiles Class, in order to make different instances and to adjust position, pitch, jumpforce of the etc. ball for each tile.               |
+|  5 | Extend              | Used a Tiles Class, in order to make different instances and to adjust position, pitch, jumpforce of the ball etc. for each tile.               |
 |  6 | Sound               | Used the Web Audio API to create sinus waves with different frequencies for each tile. Depending on the tile it plays a different sinus wave.   |
 |  7 | VUI                 | The user is able to keep track of their score, the note they are currently playing and its frequency.                                           |
 |  8 | Event-System        | Used Custom Event to call the function avatarCollided() each time the avatar collides with a tile.                                              |
