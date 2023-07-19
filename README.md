@@ -29,6 +29,7 @@ Control the ball via Mouse Movement.
 I recommend keeping the left mouse button held down while moving the mouse; otherwise, you might encounter issues with the window size.
 
 ## Criteria fullfillments
+
 | Nr | Criterion           | Fullfillment                                                                                                                                    |
 |---:|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 |  1 | Units and Positions | 0 is the initial position of the ball at the start of the game and 1 is the next tile along the x-axis or z-axis.                               |
