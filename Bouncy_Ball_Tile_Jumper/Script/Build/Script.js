@@ -173,20 +173,26 @@ var Script;
     function avatarCollided() {
         Script.isGrounded = true;
         let customEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
-        let posBall = avatar.mtxLocal.translation;
         let posTile;
-        // console.log(avatar.mtxWorld.translation);
         avatar.dispatchEvent(customEvent);
         score++;
         gamestate.score = score;
+        let material = tileList[score].getComponent(ƒ.ComponentMaterial);
+        let rigidbodyTile = tileList[score].getComponent(ƒ.ComponentRigidbody);
+        let animation = avatar.getComponent(ƒ.ComponentAnimator);
+        animation.playmode = ƒ.ANIMATION_PLAYMODE.LOOP;
+        console.log(animation.time);
+        setTimeout(() => {
+            animation.playmode = ƒ.ANIMATION_PLAYMODE.STOP;
+        }, 200);
         posTile = tileList[score].mtxLocal.translation;
         jumpforce = tileList[score].jumpforce;
-        let material = tileList[score].getComponent(ƒ.ComponentMaterial);
         material.clrPrimary = ƒ.Color.CSS("purple");
+        rigidbodyTile.typeBody = ƒ.BODY_TYPE.DYNAMIC;
         generateTone(tileList[score].frequency, 1);
-        console.log(posTile);
-        console.log(jumpforce);
-        console.log(posBall.z);
+        // console.log(posTile);
+        // console.log(jumpforce);
+        // console.log(posBall.z);
     }
 })(Script || (Script = {}));
 var Script;

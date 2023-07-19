@@ -141,7 +141,7 @@
                     "local": {
                       "translation": "[0, 0.6000000238418579, -4.199999809265137]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1.0047472715377808, 1]"
+                      "scaling": "[1, 1, 1]"
                     },
                     "Component": {
                       "active": true
@@ -179,6 +179,21 @@
                   "Script.BallBouncer": {
                     "active": true,
                     "scaleY": 1.5
+                  }
+                }
+              ],
+              "ComponentAnimator": [
+                {
+                  "ƒ.ComponentAnimator": {
+                    "Component": {
+                      "active": true
+                    },
+                    "idAnimation": "Animation|2023-07-19T09:43:44.578Z|11917",
+                    "playmode": "stop",
+                    "quantization": "continous",
+                    "scale": 1,
+                    "scaleWithGameTime": true,
+                    "animateInEditor": false
                   }
                 }
               ]
@@ -270,6 +285,53 @@
       ],
       "idResource": "Graph|2023-06-11T16:58:29.873Z|39295",
       "type": "Graph"
+    }
+  },
+  "Animation|2023-07-19T09:43:44.578Z|11917": {
+    "ƒ.Animation": {
+      "idResource": "Animation|2023-07-19T09:43:44.578Z|11917",
+      "name": "Animation",
+      "labels": {},
+      "events": {},
+      "framesPerSecond": 60,
+      "animationStructure": {
+        "components": {
+          "ComponentTransform": [
+            {
+              "mtxLocal": {
+                "scaling": {
+                  "y": {
+                    "keys": [
+                      {
+                        "time": 0,
+                        "value": 0.9999999999999999,
+                        "slopeIn": 0,
+                        "slopeOut": 0,
+                        "constant": false
+                      },
+                      {
+                        "time": 244.34389048010664,
+                        "value": 0.5398673326357765,
+                        "slopeIn": 0,
+                        "slopeOut": 0,
+                        "constant": false
+                      },
+                      {
+                        "time": 502.2624415424414,
+                        "value": 0.9999999999999994,
+                        "slopeIn": 0,
+                        "slopeOut": 0,
+                        "constant": false
+                      }
+                    ],
+                    "animationSequence": true
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
     }
   }
 }

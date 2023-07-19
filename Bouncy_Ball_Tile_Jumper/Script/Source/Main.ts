@@ -139,25 +139,35 @@ namespace Script {
 
   function avatarCollided(): void {
     isGrounded = true;
+
+    
    
     let customEvent: CustomEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
-    let posBall: ƒ.Vector3 = avatar.mtxLocal.translation;
     let posTile: ƒ.Vector3;
-
-
-    // console.log(avatar.mtxWorld.translation);
     avatar.dispatchEvent(customEvent);
     score++;
     gamestate.score = score;
 
+    let material: ƒ.ComponentMaterial = tileList[score].getComponent(ƒ.ComponentMaterial);
+    let rigidbodyTile: ƒ.ComponentRigidbody = tileList[score].getComponent(ƒ.ComponentRigidbody);
+    let animation: ƒ.ComponentAnimator = avatar.getComponent(ƒ.ComponentAnimator);
+
+    animation.playmode = ƒ.ANIMATION_PLAYMODE.LOOP;
+    console.log(animation.time);
+    setTimeout(()=> {
+      animation.playmode = ƒ.ANIMATION_PLAYMODE.STOP;
+    }, 200);
+
+
     posTile = tileList[score].mtxLocal.translation;
     jumpforce = tileList[score].jumpforce;
-    let material: ƒ.ComponentMaterial = tileList[score].getComponent(ƒ.ComponentMaterial);
     material.clrPrimary = ƒ.Color.CSS("purple");
+    rigidbodyTile.typeBody = ƒ.BODY_TYPE.DYNAMIC;
+
     generateTone(tileList[score].frequency, 1);
-    console.log(posTile);
-    console.log(jumpforce);
-    console.log(posBall.z);
+    // console.log(posTile);
+    // console.log(jumpforce);
+    // console.log(posBall.z);
 
   }
 }

@@ -68,7 +68,7 @@
             {
                 "pitch": "A",
                 "length": "1/8",
-                "jumpforce": -19,
+                "jumpforce": -18,
                 "frequency": 440.00
             },
             {
@@ -81,21 +81,21 @@
             {
                 "pitch": "A",
                 "length": "4/4",
-                "jumpforce": -2,
+                "jumpforce": -1,
                 "frequency": 440.00
 
             },
             {
                 "pitch": "A",
                 "length": "1/8",
-                "jumpforce": -2,
+                "jumpforce": -1,
                 "frequency": 440.00
 
             },
             {
                 "pitch": "A",
                 "length": "1/8",
-                "jumpforce": -2,
+                "jumpforce": -1,
                 "frequency": 440.00
 
             },
