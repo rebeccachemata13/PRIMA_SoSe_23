@@ -152,7 +152,7 @@ var Script;
         Script.rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
         //death
         if (avatarPos.y < -4) {
-            location.reload();
+            window.open("https://rebeccachemata13.github.io/PRIMA_SoSe_23/Bouncy_Ball_Tile_Jumper/index.html", "_self");
         }
         viewport.draw();
         ƒ.AudioManager.default.update();
