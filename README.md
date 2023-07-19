@@ -22,7 +22,7 @@ Jirka Dell'Oro-Friedl
 [Repository](https://github.com/rebeccachemata13/PRIMA_SoSe_23/tree/main/Bouncy_Ball_Tile_Jumper)
 
 ## Documentation Link
-[Documentation](https://github.com/rebeccachemata13/PRIMA_SoSe_23/blob/main/Bouncy_Ball_Tile_Jumper/Tiles%20Hoops-Bouncy%20Ball_Dokumentation.pdf)
+[Documentation](https://rebeccachemata13.github.io/PRIMA_SoSe_23/Bouncy_Ball_Tile_Jumper/Tiles%20Hoops-Bouncy%20Ball_Dokumentation.pdf)
 
 
 ## How to interact:
