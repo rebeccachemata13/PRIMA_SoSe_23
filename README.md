@@ -3,17 +3,20 @@
 ## Author
 Rebecca Chemata
 
-## Matriklenummer
+## Matrikelnummer
 266637
 
-## Year and season (Summer, Winter)
+## Year and Season
 Sommersemester 2023
 
-## Curriculum and semester
+## Course
+PRIMA -> Prototyping Inkeraktiver Medien & Apps
+
+## Curriculum and Semester
 OMB 6
 
 ## Docent
-Jirka Dell'Oro-Friedl
+Prof. Dipl.-Ing. Jirka R. Dell'Oro-Friedl, HFU
 
 ## Finished Application Link
 [Tiles Jumper](https://rebeccachemata13.github.io/PRIMA_SoSe_23/Bouncy_Ball_Tile_Jumper/index.html)
@@ -28,7 +31,6 @@ Jirka Dell'Oro-Friedl
 ## How to interact:
 After clicking "START," you need to move the ball either to the left or to the right in order to hit the tiles along your path. 
 Control the ball via Mouse Movement. 
-I recommend keeping the left mouse button held down while moving the mouse; otherwise, you might encounter issues with the window size.
 
 ## Criteria fullfillments
 For more information to the fullfillments check out the documentation!
