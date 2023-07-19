@@ -21,7 +21,9 @@ Jirka Dell'Oro-Friedl
 ## Repository Link
 [Repository](https://github.com/rebeccachemata13/PRIMA_SoSe_23/tree/main/Bouncy_Ball_Tile_Jumper)
 
--> Link Design Document!!!!
+## Documentation Link
+[Documentation](https://github.com/rebeccachemata13/PRIMA_SoSe_23/blob/main/Bouncy_Ball_Tile_Jumper/Tiles%20Hoops-Bouncy%20Ball_Dokumentation.pdf)
+
 
 ## How to interact:
 After clicking "START," you need to move the ball either to the left or to the right in order to hit the tiles along your path. 
@@ -29,6 +31,7 @@ Control the ball via Mouse Movement.
 I recommend keeping the left mouse button held down while moving the mouse; otherwise, you might encounter issues with the window size.
 
 ## Criteria fullfillments
+For more information to the fullfillments check out the documentation!
 
 | Nr | Criterion           | Fullfillment                                                                                                                                    |
 |---:|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
