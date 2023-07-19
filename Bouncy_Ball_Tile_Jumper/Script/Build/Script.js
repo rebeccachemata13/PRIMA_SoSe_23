@@ -100,6 +100,7 @@ var Script;
         cmpCamera = viewport.getBranch().getComponent(ƒ.ComponentCamera);
         viewport.camera = cmpCamera;
         viewport.canvas.addEventListener("mousemove", handleMousemove);
+        viewport.canvas.requestPointerLock();
         setupAvatar();
         buildTiles();
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);

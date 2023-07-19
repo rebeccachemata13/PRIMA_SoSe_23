@@ -41,6 +41,7 @@ namespace Script {
     cmpCamera = viewport.getBranch().getComponent(ƒ.ComponentCamera);
     viewport.camera = cmpCamera;
     viewport.canvas.addEventListener("mousemove", handleMousemove);
+    viewport.canvas.requestPointerLock();
 
     setupAvatar();
     buildTiles();
