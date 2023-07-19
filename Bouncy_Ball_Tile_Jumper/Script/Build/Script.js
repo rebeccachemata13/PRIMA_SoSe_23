@@ -152,7 +152,7 @@ var Script;
         Script.rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
         //death
         if (avatarPos.y < -4) {
-            alert("Oh no you lost! Reload the page with STRG + F5 and try again :D");
+            location.reload();
         }
         viewport.draw();
         ƒ.AudioManager.default.update();
