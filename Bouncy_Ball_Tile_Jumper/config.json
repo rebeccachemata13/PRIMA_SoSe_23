@@ -81,21 +81,21 @@
             {
                 "pitch": "A",
                 "length": "4/4",
-                "jumpforce": -1,
+                "jumpforce": -0,
                 "frequency": 440.00
 
             },
             {
                 "pitch": "A",
                 "length": "1/8",
-                "jumpforce": -1,
+                "jumpforce": -2,
                 "frequency": 440.00
 
             },
             {
                 "pitch": "A",
                 "length": "1/8",
-                "jumpforce": -1,
+                "jumpforce": -2,
                 "frequency": 440.00
 
             },
@@ -108,10 +108,88 @@
             {
                 "pitch": "G",
                 "length": "4/4",
-                "jumpforce": -19,
+                "jumpforce": -3,
                 "frequency": 392.00
 
+            },
+            {
+                "pitch": "F",
+                "length": "1/4",
+                "jumpforce": -3,
+                "frequency": 349.23
+
+            },
+            {
+                "pitch": "F",
+                "length": "1/4",
+                "jumpforce": -3,
+                "frequency": 349.23
+
+            },
+            {
+                "pitch": "F",
+                "length": "1/4",
+                "jumpforce": -3,
+                "frequency": 349.23
+
+            },
+            {
+                "pitch": "F",
+                "length": "1/4",
+                "jumpforce": -3,
+                "frequency": 349.23
+
+            },
+            {
+                "pitch": "E",
+                "length": "1/2",
+                "jumpforce": -6,
+                "frequency": 329.63 
+
+            },
+            {
+                "pitch": "E",
+                "length": "1/2",
+                "jumpforce": -5,
+                "frequency": 329.63 
+
+            },
+            {
+                "pitch": "D",
+                "length": "1/4",
+                "jumpforce": -2,
+                "frequency": 293.66
+
+            },
+            {
+                "pitch": "D",
+                "length": "1/4",
+                "jumpforce": -2,
+                "frequency": 293.66
+
+            },
+            {
+                "pitch": "D",
+                "length": "1/4",
+                "jumpforce": -2,
+                "frequency": 293.66
+
+            },
+            {
+                "pitch": "D",
+                "length": "1/4",
+                "jumpforce": -19,
+                "frequency": 293.66
+
+            },
+            {
+                "pitch": "C",
+                "length": "1/4",
+                "jumpforce": 0,
+                "frequency": 261.63 
             }
+
+
 
 
         ]
