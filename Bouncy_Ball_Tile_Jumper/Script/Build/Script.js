@@ -153,7 +153,9 @@ var Script;
         Script.rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
         // console.log(jumpforce);
         if (avatarPos.y < -4) {
-            window.location.reload();
+            setTimeout(function () {
+                window.location.reload();
+            });
         }
         viewport.draw();
         ƒ.AudioManager.default.update();
