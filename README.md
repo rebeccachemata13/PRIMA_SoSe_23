@@ -10,7 +10,7 @@ Rebecca Chemata
 Sommersemester 2023
 
 ## Course
-PRIMA -> Prototyping Inkeraktiver Medien & Apps
+PRIMA -> Prototyping Interaktiver Medien & Apps
 
 ## Curriculum and Semester
 OMB 6
