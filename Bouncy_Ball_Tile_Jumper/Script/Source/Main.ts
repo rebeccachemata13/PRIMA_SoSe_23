@@ -115,9 +115,7 @@ namespace Script {
     // console.log(jumpforce);
 
     if (avatarPos.y < -4){
-      setTimeout(function(){
-        window.location.reload();
-      });
+      alert("Oh no you lost! Reload the page with STRG + F5 and try again :D");
     }
 
     viewport.draw();
