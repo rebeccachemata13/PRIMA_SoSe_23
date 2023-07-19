@@ -79,6 +79,7 @@ var Script;
     let jumpforce = -3;
     //Camera
     let cmpCamera;
+    let posCamera;
     //Tiles
     let config;
     let tileList = new Array();
@@ -152,13 +153,13 @@ var Script;
         Script.rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
         //death
         if (avatarPos.y < -4) {
-            window.open("https://rebeccachemata13.github.io/PRIMA_SoSe_23/Bouncy_Ball_Tile_Jumper/index.html", "_self");
+            reset();
         }
         viewport.draw();
         ƒ.AudioManager.default.update();
     }
     function cameraMover() {
-        let posCamera = cmpCamera.mtxPivot.translation;
+        posCamera = cmpCamera.mtxPivot.translation;
         let cameraMovement = new ƒ.Vector3(avatarPos.x, posCamera.y, avatarPos.z + 9);
         cmpCamera.mtxPivot.translation = cameraMovement;
     }
@@ -192,6 +193,17 @@ var Script;
         rigidbodyTile.typeBody = ƒ.BODY_TYPE.DYNAMIC;
         //Generate Tone Audio
         generateTone(tileList[score].frequency, 1);
+    }
+    function reset() {
+        avatarPos = Script.rigidbodyAvatar.node.mtxLocal.translation;
+        gamestate.score = -1;
+        for (let i = 0; i < tileList.length; i++) {
+            viewport.getBranch().removeChild(tileList[i]);
+        }
+        avatarPos.z = -4.2;
+        avatarPos.x = 0;
+        avatarPos.y = 0.6;
+        buildTiles();
     }
 })(Script || (Script = {}));
 var Script;

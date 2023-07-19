@@ -9,11 +9,12 @@ namespace Script {
   let avatar: ƒ.Node;
   let avatarPos: ƒ.Vector3 = new ƒ.Vector3;
   export let rigidbodyAvatar: ƒ.ComponentRigidbody;
-  export let isGrounded:boolean;
+  export let isGrounded: boolean;
   let jumpforce: number = -3;
-  
+
   //Camera
   let cmpCamera: ƒ.ComponentCamera;
+  let posCamera: ƒ.Vector3;
 
   //Tiles
   let config: { tiles: Tile[] };
@@ -22,7 +23,7 @@ namespace Script {
 
   //Gamestate
   let gamestate: Gamestate;
-  
+
   //Audio
   const audioContext = new AudioContext();
 
@@ -36,7 +37,7 @@ namespace Script {
     let response: Response = await fetch("config.json");
     config = await response.json();
     gamestate = new Gamestate();
- 
+
     viewport = _event.detail;
     cmpCamera = viewport.getBranch().getComponent(ƒ.ComponentCamera);
     viewport.camera = cmpCamera;
@@ -53,22 +54,22 @@ namespace Script {
   function generateTone(frequency: number, duration: number) {
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
-    
-    oscillator.type = 'sine'; 
+
+    oscillator.type = 'sine';
     oscillator.frequency.value = frequency;
-    
+
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
-    
-  
-    const releaseTime = 0.5; 
+
+
+    const releaseTime = 0.5;
     const currentTime = audioContext.currentTime;
-    
-    gainNode.gain.setValueAtTime(1, currentTime); 
-    gainNode.gain.linearRampToValueAtTime(0, currentTime + releaseTime); 
-    
+
+    gainNode.gain.setValueAtTime(1, currentTime);
+    gainNode.gain.linearRampToValueAtTime(0, currentTime + releaseTime);
+
     oscillator.start();
-    
+
     oscillator.stop(audioContext.currentTime + duration);
   }
 
@@ -76,7 +77,7 @@ namespace Script {
     rigidbodyAvatar.applyForce(ƒ.Vector3.X(_event.movementX * 0.4));
 
   }
-  
+
   function buildTiles(): void {
     let yPos: number = 1;
     let distance: number = 0;
@@ -107,10 +108,10 @@ namespace Script {
     cameraMover();
     avatarPos = rigidbodyAvatar.node.mtxLocal.translation;
     rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
-    
+
     //death
-    if (avatarPos.y < -4){
-      window.open("https://rebeccachemata13.github.io/PRIMA_SoSe_23/Bouncy_Ball_Tile_Jumper/index.html", "_self" );
+    if (avatarPos.y < -4) {
+      reset();
     }
 
     viewport.draw();
@@ -118,7 +119,7 @@ namespace Script {
   }
 
   function cameraMover(): void {
-    let posCamera: ƒ.Vector3 = cmpCamera.mtxPivot.translation;
+    posCamera = cmpCamera.mtxPivot.translation;
     let cameraMovement: ƒ.Vector3 = new ƒ.Vector3(avatarPos.x, posCamera.y, avatarPos.z + 9);
     cmpCamera.mtxPivot.translation = cameraMovement;
   }
@@ -134,7 +135,7 @@ namespace Script {
 
     //generate Custom Event vor Collision
     let customEvent: CustomEvent = new CustomEvent(BOUNCYBALL.AVATAR_COLLIDES, { bubbles: true, detail: avatar.mtxWorld.translation });
-    
+
     avatar.dispatchEvent(customEvent);
 
     //Update Gamestate
@@ -150,7 +151,7 @@ namespace Script {
     //Play and Stop Animation
     animation.playmode = ƒ.ANIMATION_PLAYMODE.LOOP;
     console.log(animation.time);
-    setTimeout(()=> {
+    setTimeout(() => {
       animation.playmode = ƒ.ANIMATION_PLAYMODE.STOP;
     }, 200);
 
@@ -163,5 +164,18 @@ namespace Script {
     generateTone(tileList[score].frequency, 1);
 
 
+  }
+
+  function reset(): void {
+    avatarPos = rigidbodyAvatar.node.mtxLocal.translation;
+    gamestate.score = -1;
+    for (let i: number = 0; i < tileList.length; i++) {
+      viewport.getBranch().removeChild(tileList[i]);
+    }
+    avatarPos.z = -4.2;
+    avatarPos.x = 0;
+    avatarPos.y = 0.6;
+    
+    buildTiles();
   }
 }
