@@ -153,7 +153,7 @@ var Script;
         Script.rigidbodyAvatar.applyForce(ƒ.Vector3.Z(jumpforce));
         //death
         if (avatarPos.y < -4) {
-            reset();
+            alert("Oh no you lost! Try again with CTRL + F5 :D");
         }
         viewport.draw();
         ƒ.AudioManager.default.update();
@@ -193,17 +193,6 @@ var Script;
         rigidbodyTile.typeBody = ƒ.BODY_TYPE.DYNAMIC;
         //Generate Tone Audio
         generateTone(tileList[score].frequency, 1);
-    }
-    function reset() {
-        avatarPos = Script.rigidbodyAvatar.node.mtxLocal.translation;
-        gamestate.score = -1;
-        for (let i = 0; i < tileList.length; i++) {
-            viewport.getBranch().removeChild(tileList[i]);
-        }
-        avatarPos.z = -4.2;
-        avatarPos.x = 0;
-        avatarPos.y = 0.6;
-        buildTiles();
     }
 })(Script || (Script = {}));
 var Script;

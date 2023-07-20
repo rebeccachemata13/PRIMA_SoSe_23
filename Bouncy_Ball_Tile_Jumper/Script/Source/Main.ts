@@ -111,7 +111,7 @@ namespace Script {
 
     //death
     if (avatarPos.y < -4) {
-      reset();
+      alert("Oh no you lost! Try again with CTRL + F5 :D");
     }
 
     viewport.draw();
@@ -164,18 +164,5 @@ namespace Script {
     generateTone(tileList[score].frequency, 1);
 
 
-  }
-
-  function reset(): void {
-    avatarPos = rigidbodyAvatar.node.mtxLocal.translation;
-    gamestate.score = -1;
-    for (let i: number = 0; i < tileList.length; i++) {
-      viewport.getBranch().removeChild(tileList[i]);
-    }
-    avatarPos.z = -4.2;
-    avatarPos.x = 0;
-    avatarPos.y = 0.6;
-    
-    buildTiles();
   }
 }
